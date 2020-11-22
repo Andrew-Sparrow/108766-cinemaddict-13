@@ -10,6 +10,10 @@ import {
   render
 } from "./utils/render-utils";
 
+import {generateFilm} from "./mock/film";
+
+console.log(generateFilm());
+
 const MOVIE_COUNT = 5;
 
 const siteHeaderElement = document.querySelector(`.header`);
