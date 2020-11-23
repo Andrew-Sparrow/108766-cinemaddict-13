@@ -1,4 +1,7 @@
-import {DESCRIPTIONS} from "./consts";
+import {
+  DESCRIPTIONS,
+  AMOUNT_OF_LETTERS
+} from "./consts";
 
 // Функция из интернета по генерации случайного числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
@@ -48,9 +51,9 @@ export const getRandomBoolean = () => {
   return Boolean(getRandomInteger(0, 1));
 };
 
-export const truncateText = (text, letterAmount) => {
-  if (text.length > letterAmount) {
-    return text.substring(0, letterAmount) + `...`;
+export const truncateText = (text) => {
+  if (text.length > AMOUNT_OF_LETTERS) {
+    return text.substring(0, AMOUNT_OF_LETTERS - 1) + `...`;
   }
   return text;
 };

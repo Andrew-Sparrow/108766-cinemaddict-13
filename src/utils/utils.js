@@ -1,5 +1,6 @@
-import {DESCRIPTIONS} from "./consts";
 import dayjs from "dayjs";
+import {DESCRIPTIONS} from "./consts";
+import {pictureTitles} from "./consts";
 
 import {
   getRandomInteger,
@@ -22,17 +23,13 @@ export const getRandomDescriptions = () => {
   return sumStrings.join(` `);
 };
 
-export const getRandomPhotosSrc = () => {
-  const photos = [];
+export const getRandomPhoto = () => {
+  const photo = {};
+  const pictureTitle = pictureTitles[getRandomInteger(0, pictureTitles.length - 1)];
+  photo.src = `./images/posters/${pictureTitle}`;
+  photo.description = ``;
 
-  for (let i = 0; i < getRandomInteger(1, 5); i++) {
-    const photo = {};
-    photo.src = `/images/posters/${getRandomInteger(1, 5)}.jpg`;
-    photo.description = ``;
-    photos.push(photo);
-  }
-
-  return photos;
+  return photo;
 };
 
 export const getRandomPropertyOfObject = (obj) => {
@@ -60,7 +57,7 @@ export const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-const generateDate = () => {
+export const generateDate = () => {
   const yearsAgoAmount = getRandomInteger(0, YEARS_AGO_AMOUNT);
   return dayjs().subtract(yearsAgoAmount, `year`).toDate();
 };

@@ -1,10 +1,14 @@
-import {getRandomDescriptions} from "../utils/utils";
+import {
+  getRandomDescriptions,
+  getRandomPhoto
+} from "../utils/utils";
+
 import {getRandomDate} from "../utils/common-utils";
 
 export const generateFilm = () => {
 
   const film = {
-    pictureSrc: `./images/posters/the-dance-of-life.jpg`,
+    pictureSrc: ``,
     title: null,
     originalTitle: null,
     rating: null,
@@ -19,7 +23,8 @@ export const generateFilm = () => {
     ageRating: null,
   };
 
-  film.pictureSrc = `./images/posters/the-dance-of-life.jpg`;
+  film.pictureSrc = getRandomPhoto().src;
+  film.title = `The Dance of Life`;
   film.description = getRandomDescriptions();
   film.releaseDate = getRandomDate();
 

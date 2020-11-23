@@ -1,34 +1,33 @@
-import {userProfileView} from "./view/user-profile-view";
-import {mainNavigationView} from "./view/main-navigation-view";
-import {sortMenuView} from "./view/sort-menu-view";
-import {filmsView} from "./view/films-view";
-import {showMoreView} from "./view/show-more-view";
-import {filmCardView} from "./view/film-card";
+import {createUserProfileTemplate} from "./view/user-profile-view";
+import {createMainNavigationTemplate} from "./view/main-navigation-view";
+import {createSortMenuTemplate} from "./view/sort-menu-view";
+import {createFilmsTemplate} from "./view/films-view";
+import {createShowMoreTemplate} from "./view/show-more-view";
+import {createFilmCardTemplate} from "./view/film-card-view";
+import {generateFilm} from "./mock/film";
 
 import {
   RenderPosition,
   render
 } from "./utils/render-utils";
 
-import {generateFilm} from "./mock/film";
+const FILMS_COUNT = 1;
 
-console.log(generateFilm());
-
-const MOVIE_COUNT = 5;
+const films = new Array(FILMS_COUNT).fill().map(generateFilm);
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 
-render(siteHeaderElement, userProfileView(), RenderPosition.BEFOREEND);
-render(siteMainElement, mainNavigationView(), RenderPosition.BEFOREEND);
-render(siteMainElement, sortMenuView(), RenderPosition.BEFOREEND);
-render(siteMainElement, filmsView(), RenderPosition.BEFOREEND);
+render(siteHeaderElement, createUserProfileTemplate(), RenderPosition.BEFOREEND);
+render(siteMainElement, createMainNavigationTemplate(), RenderPosition.BEFOREEND);
+render(siteMainElement, createSortMenuTemplate(), RenderPosition.BEFOREEND);
+render(siteMainElement, createFilmsTemplate(), RenderPosition.BEFOREEND);
 
 const filmList = siteMainElement.querySelector(`.films-list`);
 const filmListContainer = filmList.querySelector(`.films-list__container`);
 
-render(filmList, showMoreView(), RenderPosition.BEFOREEND);
+render(filmList, createShowMoreTemplate(), RenderPosition.BEFOREEND);
 
-for (let i = 0; i < MOVIE_COUNT; i++) {
-  render(filmListContainer, filmCardView(), RenderPosition.BEFOREEND);
+for (let i = 0; i < FILMS_COUNT; i++) {
+  render(filmListContainer, createFilmCardTemplate(films[i]), RenderPosition.BEFOREEND);
 }
