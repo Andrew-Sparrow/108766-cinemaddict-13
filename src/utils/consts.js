@@ -18,3 +18,10 @@ export const EMOTIONS = [
   `puke`,
   `angry`
 ];
+
+export const GENRES = [
+  `Musical`,
+  `Western`,
+  `Drama`,
+  `Comedy`
+];

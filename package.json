@@ -10,13 +10,14 @@
     "start": "webpack-dev-server --open"
   },
   "devDependencies": {
+    "css-loader": "5.0.1",
     "eslint": "7.13.0",
     "eslint-config-htmlacademy": "0.6.0",
+    "nanoid": "3.1.18",
+    "style-loader": "1.2.1",
     "webpack": "4.44.2",
     "webpack-cli": "3.3.12",
-    "webpack-dev-server": "3.11.0",
-    "css-loader": "5.0.1",
-    "style-loader": "1.2.1"
+    "webpack-dev-server": "3.11.0"
   },
   "engines": {
     "node": "10"
