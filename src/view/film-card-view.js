@@ -2,7 +2,7 @@ import {truncateText} from "../utils/common-utils";
 
 export const createFilmCardTemplate = (film) => {
   const {
-    pictureSrc,
+    poster,
     title,
     rating,
     releaseDate,
@@ -19,7 +19,7 @@ export const createFilmCardTemplate = (film) => {
             <span class="film-card__duration">${duration}</span>
             <span class="film-card__genre">${genres[0]}</span>
           </p>
-          <img src="${pictureSrc}" alt="" class="film-card__poster">
+          <img src="${poster.src}" alt="${poster.description}" class="film-card__poster">
           <p class="film-card__description">${truncateText(description)}</p>
           <a class="film-card__comments">5 comments</a>
           <div class="film-card__controls">

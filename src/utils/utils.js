@@ -24,12 +24,12 @@ export const getRandomDescriptions = () => {
 };
 
 export const getRandomPoster = () => {
-  const photo = {};
-  const pictureTitle = pictureTitles[getRandomInteger(0, pictureTitles.length - 1)];
-  photo.src = `./images/posters/${pictureTitle}`;
-  photo.description = ``;
+  const poster = {};
+  const posterTitle = pictureTitles[getRandomInteger(0, pictureTitles.length - 1)];
+  poster.src = `./images/posters/${posterTitle}`;
+  poster.description = `poster of movie`;
 
-  return photo;
+  return poster;
 };
 
 export const generateDate = () => {

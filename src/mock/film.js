@@ -27,7 +27,7 @@ export const generateComments = () => {
 export const generateFilm = () => {
 
   const film = {
-    pictureSrc: ``,
+    poster: ``,
     title: null,
     originalTitle: null,
     rating: null,
@@ -45,18 +45,19 @@ export const generateFilm = () => {
 
   const commentsID = generateComments().map((comment) => comment.id);
 
-  film.pictureSrc = getRandomPoster().src;
+  film.poster = getRandomPoster();
   film.title = `The Dance of Life`;
+  film.originalTitle = `The Dance of Life`;
   film.rating = `8.0`;
   film.director = `Steven Spielberg`;
   film.screenwriters = [`Billy Wilder`, `Robert Towne`, `Quentin Tarantino`];
-  film.actors = [`Robert De Niro`, `Jack Nicholson`, ` Denzel Washington`];
+  film.actors = [`Tom Hanks`, `Jack Nicholson`, `Cate Blanchett`];
   film.releaseDate = generateDate();
   film.duration = `1h 55m`;
   film.country = `New Zealand`;
-  film.genres = GENRES[0];
+  film.genres = GENRES;
   film.description = getRandomDescriptions();
-  film.ageRating = 18;
+  film.ageRating = `18+`;
   film.comments = commentsID;
 
   return film;
