@@ -13,6 +13,7 @@ import {
 } from "./utils/render-utils";
 
 const FILMS_COUNT = 7;
+const FILMS_COUNT_PER_STEP = 5;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilm);
 
@@ -30,8 +31,27 @@ render(siteMainElement, createFilmsTemplate(), RenderPosition.BEFOREEND);
 const filmList = siteMainElement.querySelector(`.films-list`);
 const filmListContainer = filmList.querySelector(`.films-list__container`);
 
-render(filmList, createShowMoreTemplate(), RenderPosition.BEFOREEND);
-
-for (let i = 1; i < FILMS_COUNT; i++) {
+for (let i = 1; i < Math.min(films.length, FILMS_COUNT_PER_STEP); i++) {
   render(filmListContainer, createFilmCardTemplate(films[i]), RenderPosition.BEFOREEND);
+}
+
+if (films.length > FILMS_COUNT_PER_STEP) {
+  let renderedFilmCount = FILMS_COUNT_PER_STEP;
+
+  render(filmList, createShowMoreTemplate(), RenderPosition.BEFOREEND);
+
+  const loadMoreButton = filmList.querySelector(`.films-list__show-more`);
+
+  loadMoreButton.addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    films
+      .slice(renderedFilmCount, renderedFilmCount + FILMS_COUNT_PER_STEP)
+      .forEach((film) => render(filmListContainer, createFilmCardTemplate(film), `beforeend`));
+
+    renderedFilmCount += FILMS_COUNT_PER_STEP;
+
+    if (renderedFilmCount >= films.length) {
+      loadMoreButton.remove();
+    }
+  });
 }
