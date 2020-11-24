@@ -31,12 +31,12 @@ render(siteMainElement, createFilmsTemplate(), RenderPosition.BEFOREEND);
 const filmList = siteMainElement.querySelector(`.films-list`);
 const filmListContainer = filmList.querySelector(`.films-list__container`);
 
-for (let i = 1; i < Math.min(films.length, FILMS_COUNT_PER_STEP); i++) {
+for (let i = 1; i < Math.min(films.length, FILMS_COUNT_PER_STEP + 1); i++) {
   render(filmListContainer, createFilmCardTemplate(films[i]), RenderPosition.BEFOREEND);
 }
 
 if (films.length > FILMS_COUNT_PER_STEP) {
-  let renderedFilmCount = FILMS_COUNT_PER_STEP;
+  let renderedFilmCount = FILMS_COUNT_PER_STEP + 1;
 
   render(filmList, createShowMoreTemplate(), RenderPosition.BEFOREEND);
 
