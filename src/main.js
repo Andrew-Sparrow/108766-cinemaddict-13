@@ -3,7 +3,7 @@ import {createMainNavigationTemplate} from "./view/main-navigation-view";
 import {createSortMenuTemplate} from "./view/sort-menu-view";
 import {createFilmsTemplate} from "./view/films-view";
 import {createShowMoreTemplate} from "./view/show-more-view";
-import {createPopupTemplate} from "./view/popup";
+import {createPopupTemplate} from "./view/popup-view";
 import {createFilmCardTemplate} from "./view/film-card-view";
 import {generateFilm} from "./mock/film";
 

@@ -10,19 +10,10 @@ import {
   getRandomInteger,
 } from "../utils/common-utils";
 
-import {generateComment} from "./comments";
+import {generateComments} from "./comments";
 
-export const generateComments = () => {
-  const comments = [];
-
-  const numberOfCycles = getRandomInteger(1, 5);
-
-  for (let i = 0; i < numberOfCycles; i++) {
-    comments.push(generateComment());
-  }
-
-  return comments;
-};
+const MIN_RATING = `1`;
+const MAX_RATING = `10`;
 
 export const generateFilm = () => {
 
@@ -40,15 +31,13 @@ export const generateFilm = () => {
     genres: [],
     description: null,
     ageRating: null,
-    comments: []
+    commentsID: []
   };
-
-  const commentsID = generateComments().map((comment) => comment.id);
 
   film.poster = getRandomPoster();
   film.title = `The Dance of Life`;
   film.originalTitle = `The Dance of Life`;
-  film.rating = `8.0`;
+  film.rating = `${getRandomInteger(MIN_RATING, MAX_RATING)}.0`;
   film.director = `Steven Spielberg`;
   film.screenwriters = [`Billy Wilder`, `Robert Towne`, `Quentin Tarantino`];
   film.actors = [`Tom Hanks`, `Jack Nicholson`, `Cate Blanchett`];
@@ -58,7 +47,7 @@ export const generateFilm = () => {
   film.genres = GENRES;
   film.description = getRandomDescriptions();
   film.ageRating = `18+`;
-  film.comments = commentsID;
+  film.commentsID = generateComments();
 
   return film;
 };
