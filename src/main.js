@@ -3,7 +3,7 @@ import {createMainNavigationTemplate} from "./view/main-navigation-view";
 import {createSortMenuTemplate} from "./view/sort-menu-view";
 import {createFilmsTemplate} from "./view/films-view";
 import {createShowMoreTemplate} from "./view/show-more-view";
-import {createPopupTemplate} from "./view/popup-view";
+// import {createPopupTemplate} from "./view/popup-view";
 import {createFilmCardTemplate} from "./view/film-card-view";
 import {generateFilm} from "./mock/film";
 import {calculateFilmsInFilter} from "./mock/filter";
@@ -30,7 +30,7 @@ render(siteMainElement, createMainNavigationTemplate(filters), RenderPosition.BE
 
 render(siteMainElement, createSortMenuTemplate(), RenderPosition.BEFOREEND);
 
-render(siteMainElement, createPopupTemplate(films[0]), RenderPosition.BEFOREEND);
+// render(siteMainElement, createPopupTemplate(films[0]), RenderPosition.BEFOREEND);
 
 render(siteMainElement, createFilmsTemplate(), RenderPosition.BEFOREEND);
 

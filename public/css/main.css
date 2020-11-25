@@ -555,7 +555,7 @@ button {
 }
 
 .film-details {
-  position: inherit;
+  position: fixed;
   height: 100vh;
   top: 0;
   right: 0;
