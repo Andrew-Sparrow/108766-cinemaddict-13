@@ -51,9 +51,9 @@ export const generateFilm = () => {
   film.description = getRandomDescriptions();
   film.ageRating = `18+`;
   film.commentsID = generateComments();
-  film.isFavorite = Boolean(getRandomInteger(0, 1));
   film.isInWatchlist = Boolean(getRandomInteger(0, 1));
   film.isWatched = Boolean(getRandomInteger(0, 1));
+  film.isFavorite = Boolean(getRandomInteger(0, 1));
 
   return film;
 };

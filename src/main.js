@@ -6,6 +6,8 @@ import {createShowMoreTemplate} from "./view/show-more-view";
 import {createPopupTemplate} from "./view/popup-view";
 import {createFilmCardTemplate} from "./view/film-card-view";
 import {generateFilm} from "./mock/film";
+import {calculateFilmsInFilter} from "./mock/filter";
+import {createFooterStatisticsTemplate} from "./view/footer-statistics-view";
 
 import {
   RenderPosition,
@@ -16,17 +18,23 @@ const FILMS_COUNT = 7;
 const FILMS_COUNT_PER_STEP = 5;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilm);
+const filters = calculateFilmsInFilter(films);
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
+const footer = document.querySelector(`.footer`);
 
 render(siteHeaderElement, createUserProfileTemplate(), RenderPosition.BEFOREEND);
-render(siteMainElement, createMainNavigationTemplate(), RenderPosition.BEFOREEND);
+
+render(siteMainElement, createMainNavigationTemplate(filters), RenderPosition.BEFOREEND);
+
 render(siteMainElement, createSortMenuTemplate(), RenderPosition.BEFOREEND);
 
 render(siteMainElement, createPopupTemplate(films[0]), RenderPosition.BEFOREEND);
 
 render(siteMainElement, createFilmsTemplate(), RenderPosition.BEFOREEND);
+
+render(footer, createFooterStatisticsTemplate(films.length), RenderPosition.BEFOREEND);
 
 const filmList = siteMainElement.querySelector(`.films-list`);
 const filmListContainer = filmList.querySelector(`.films-list__container`);
