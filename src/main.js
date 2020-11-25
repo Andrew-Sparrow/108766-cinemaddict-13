@@ -30,7 +30,7 @@ render(siteMainElement, createMainNavigationTemplate(filters), RenderPosition.BE
 
 render(siteMainElement, createSortMenuTemplate(), RenderPosition.BEFOREEND);
 
-// render(siteMainElement, createPopupTemplate(films[0]), RenderPosition.BEFOREEND);
+// render(document.body, createPopupTemplate(films[0]), RenderPosition.BEFOREEND);
 
 render(siteMainElement, createFilmsTemplate(), RenderPosition.BEFOREEND);
 
