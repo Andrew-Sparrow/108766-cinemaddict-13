@@ -31,7 +31,7 @@ export const generateFilm = () => {
     genres: [],
     description: null,
     ageRating: null,
-    commentsID: [],
+    comments: [],
     isFavorite: false,
     isInWatchlist: false,
     isWatched: false
@@ -50,7 +50,7 @@ export const generateFilm = () => {
   film.genres = GENRES;
   film.description = getRandomDescriptions();
   film.ageRating = `18+`;
-  film.commentsID = generateComments();
+  film.comments = generateComments();
   film.isInWatchlist = Boolean(getRandomInteger(0, 1));
   film.isWatched = Boolean(getRandomInteger(0, 1));
   film.isFavorite = Boolean(getRandomInteger(0, 1));

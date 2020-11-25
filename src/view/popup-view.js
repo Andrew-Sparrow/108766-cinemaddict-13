@@ -64,7 +64,7 @@ export const createPopupTemplate = (film) => {
     rating,
     description,
     ageRating,
-    commentsID
+    comments
   } = film;
 
   return `<section class="film-details">
@@ -112,9 +112,9 @@ export const createPopupTemplate = (film) => {
 
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsID.length}</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
-        ${getCommentsTemplate(commentsID)}
+        ${getCommentsTemplate(comments)}
 
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label"></div>
