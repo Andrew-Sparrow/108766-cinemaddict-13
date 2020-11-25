@@ -9,7 +9,10 @@ export const createFilmCardTemplate = (film) => {
     duration,
     genres,
     description,
-    commentsID
+    commentsID,
+    isFavorite,
+    isInWatchlist,
+    isWatched
   } = film;
 
   return `<article class="film-card">
@@ -24,9 +27,9 @@ export const createFilmCardTemplate = (film) => {
           <p class="film-card__description">${truncateText(description)}</p>
           <a class="film-card__comments">${commentsID.length} comments</a>
           <div class="film-card__controls">
-            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>
-            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>
-            <button class="film-card__controls-item button film-card__controls-item--favorite" type="button">Mark as favorite</button>
+            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${isInWatchlist ? `film-card__controls-item--active` : ``}" type="button">Add to watchlist</button>
+            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${isWatched ? `film-card__controls-item--active` : ``}" type="button">Mark as watched</button>
+            <button class="film-card__controls-item button film-card__controls-item--favorite ${isFavorite ? `film-card__controls-item--active` : ``}" type="button">Mark as favorite</button>
           </div>
         </article>`;
 };
