@@ -5,7 +5,7 @@ import SortMenuView from "./view/sort-menu-view";
 import FilmsView from "./view/films-view";
 import ShowMoreView from "./view/show-more-view";
 
-// import PopupView from "./view/popup-view";
+import PopupView from "./view/popup-view";
 
 import FilmCardView from "./view/film-card-view";
 
@@ -32,6 +32,10 @@ const renderFilmCard = (filmListElement, film) => {
   const filmCardComponent = new FilmCardView(film);
 
   render(filmListElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
+const renderPopup = (film) => {
+  render(document.body, new PopupView(film).getElement(), RenderPosition.BEFOREEND);
 };
 
 render(siteHeaderElement, new UserProfileView().getElement(), RenderPosition.BEFOREEND);
