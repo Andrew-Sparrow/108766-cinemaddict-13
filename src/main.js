@@ -28,6 +28,12 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const footer = document.querySelector(`.footer`);
 
+const renderFilmCard = (filmListElement, film) => {
+  const filmCardComponent = new FilmCardView(film);
+
+  render(filmListElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
 render(siteHeaderElement, new UserProfileView().getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new MainNavigationView(filters).getElement(), RenderPosition.BEFOREEND);
 
@@ -35,15 +41,17 @@ render(siteMainElement, new SortMenuView().getElement(), RenderPosition.BEFOREEN
 
 // render(document.body, new PopupView(films[0]).getElement(), RenderPosition.BEFOREEND);
 
-render(siteMainElement, new FilmsView().getElement(), RenderPosition.BEFOREEND);
+const filmsComponent = new FilmsView();
+
+render(siteMainElement, filmsComponent.getElement(), RenderPosition.BEFOREEND);
 
 render(footer, new FooterStatisticsView(films.length).getElement(), RenderPosition.BEFOREEND);
 
-const filmList = siteMainElement.querySelector(`.films-list`);
-const filmListContainer = filmList.querySelector(`.films-list__container`);
+const filmList = filmsComponent.getElement().querySelector(`.films-list`);
+const filmListContainer = filmsComponent.getElement().querySelector(`.films-list__container`);
 
 for (let i = 1; i < Math.min(films.length, FILMS_COUNT_PER_STEP + 1); i++) {
-  render(filmListContainer, new FilmCardView(films[i]).getElement(), RenderPosition.BEFOREEND);
+  renderFilmCard(filmListContainer, films[i]);
 }
 
 if (films.length > FILMS_COUNT_PER_STEP) {
