@@ -16,10 +16,12 @@ export default class UserProfile {
     return createUserProfileTemplate();
   }
 
-  getElement(filters) {
+  getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate(filters));
+      this._element = createElement(this.getTemplate());
     }
+
+    return this._element;
   }
 
   removeElement() {
