@@ -5,7 +5,7 @@ import SortMenuView from "./view/sort-menu-view";
 import FilmsView from "./view/films-view";
 import ShowMoreView from "./view/show-more-view";
 
-// import {createPopupTemplate} from "./view/popup-view";
+// import PopupView from "./view/popup-view";
 
 import FilmCardView from "./view/film-card-view";
 
@@ -33,7 +33,7 @@ renderElement(siteMainElement, new MainNavigationView(filters).getElement(), Ren
 
 renderElement(siteMainElement, new SortMenuView().getElement(), RenderPosition.BEFOREEND);
 
-// renderTemplate(document.body, createPopupTemplate(films[0]), RenderPosition.BEFOREEND);
+// renderElement(document.body, new PopupView(films[0]).getElement(), RenderPosition.BEFOREEND);
 
 renderElement(siteMainElement, new FilmsView().getElement(), RenderPosition.BEFOREEND);
 

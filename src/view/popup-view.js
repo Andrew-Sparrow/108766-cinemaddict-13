@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 
 import {getCommentsTemplate} from "./comments-view";
+import {createElement} from "../utils/render-utils";
 
 const getFilmGenresTemplate = (film) => {
   const {genres} = film;
@@ -56,7 +57,7 @@ const getFilmDetailsTemplate = (film) => {
           </table>`;
 };
 
-export const createPopupTemplate = (film) => {
+const createPopupTemplate = (film) => {
   const {
     poster,
     title,
@@ -150,3 +151,26 @@ export const createPopupTemplate = (film) => {
   </form>
 </section>`;
 };
+
+export default class PopupView {
+  constructor(film) {
+    this._element = null;
+    this._film = film;
+  }
+
+  getTemplate() {
+    return createPopupTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
