@@ -1,5 +1,7 @@
 import {createUserProfileTemplate} from "./view/user-profile-view";
-import {createMainNavigationTemplate} from "./view/main-navigation-view";
+// import {createMainNavigationTemplate} from "./view/main-navigation-view";
+import MainNavigation from "./view/main-navigation-view";
+
 import {createSortMenuTemplate} from "./view/sort-menu-view";
 import {createFilmsTemplate} from "./view/films-view";
 import {createShowMoreTemplate} from "./view/show-more-view";
@@ -11,7 +13,8 @@ import {createFooterStatisticsTemplate} from "./view/footer-statistics-view";
 
 import {
   RenderPosition,
-  renderTemplate
+  renderTemplate,
+  renderElement,
 } from "./utils/render-utils";
 
 const FILMS_COUNT = 7;
@@ -26,7 +29,7 @@ const footer = document.querySelector(`.footer`);
 
 renderTemplate(siteHeaderElement, createUserProfileTemplate(), RenderPosition.BEFOREEND);
 
-renderTemplate(siteMainElement, createMainNavigationTemplate(filters), RenderPosition.BEFOREEND);
+renderElement(siteMainElement, new MainNavigation().getElement(filters), RenderPosition.BEFOREEND);
 
 renderTemplate(siteMainElement, createSortMenuTemplate(), RenderPosition.BEFOREEND);
 
