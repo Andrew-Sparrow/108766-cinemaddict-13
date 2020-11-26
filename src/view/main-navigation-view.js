@@ -15,18 +15,21 @@ const createMainNavigationTemplate = (filters) => {
 };
 
 export default class MainNavigation {
-  constructor() {
+  constructor(filters) {
     this._element = null;
+    this._filters = filters;
   }
 
-  getTemplate(filters) {
-    return createMainNavigationTemplate(filters);
+  getTemplate() {
+    return createMainNavigationTemplate(this._filters);
   }
 
-  getElement(filters) {
+  getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate(filters));
+      this._element = createElement(this.getTemplate());
     }
+
+    return this._element;
   }
 
   removeElement() {
