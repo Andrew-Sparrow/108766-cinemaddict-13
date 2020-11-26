@@ -14,7 +14,7 @@ import {calculateFilmsInFilter} from "./mock/filter";
 import FooterStatisticsView from "./view/footer-statistics-view";
 
 import {
-  renderElement,
+  render,
   RenderPosition,
 } from "./utils/render-utils";
 
@@ -28,28 +28,28 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const footer = document.querySelector(`.footer`);
 
-renderElement(siteHeaderElement, new UserProfileView().getElement(), RenderPosition.BEFOREEND);
-renderElement(siteMainElement, new MainNavigationView(filters).getElement(), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new UserProfileView().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new MainNavigationView(filters).getElement(), RenderPosition.BEFOREEND);
 
-renderElement(siteMainElement, new SortMenuView().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new SortMenuView().getElement(), RenderPosition.BEFOREEND);
 
-// renderElement(document.body, new PopupView(films[0]).getElement(), RenderPosition.BEFOREEND);
+// render(document.body, new PopupView(films[0]).getElement(), RenderPosition.BEFOREEND);
 
-renderElement(siteMainElement, new FilmsView().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new FilmsView().getElement(), RenderPosition.BEFOREEND);
 
-renderElement(footer, new FooterStatisticsView(films.length).getElement(), RenderPosition.BEFOREEND);
+render(footer, new FooterStatisticsView(films.length).getElement(), RenderPosition.BEFOREEND);
 
 const filmList = siteMainElement.querySelector(`.films-list`);
 const filmListContainer = filmList.querySelector(`.films-list__container`);
 
 for (let i = 1; i < Math.min(films.length, FILMS_COUNT_PER_STEP + 1); i++) {
-  renderElement(filmListContainer, new FilmCardView(films[i]).getElement(), RenderPosition.BEFOREEND);
+  render(filmListContainer, new FilmCardView(films[i]).getElement(), RenderPosition.BEFOREEND);
 }
 
 if (films.length > FILMS_COUNT_PER_STEP) {
   let renderedFilmCount = FILMS_COUNT_PER_STEP + 1;
 
-  renderElement(filmList, new ShowMoreView().getElement(), RenderPosition.BEFOREEND);
+  render(filmList, new ShowMoreView().getElement(), RenderPosition.BEFOREEND);
 
   const loadMoreButton = filmList.querySelector(`.films-list__show-more`);
 
@@ -57,7 +57,7 @@ if (films.length > FILMS_COUNT_PER_STEP) {
     evt.preventDefault();
     films
       .slice(renderedFilmCount, renderedFilmCount + FILMS_COUNT_PER_STEP)
-      .forEach((film) => renderElement(filmListContainer, new FilmCardView(film).getElement(), RenderPosition.BEFOREEND));
+      .forEach((film) => render(filmListContainer, new FilmCardView(film).getElement(), RenderPosition.BEFOREEND));
 
     renderedFilmCount += FILMS_COUNT_PER_STEP;
 
