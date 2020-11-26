@@ -1,8 +1,9 @@
-import {createUserProfileTemplate} from "./view/user-profile-view";
+import UserProfile from "./view/user-profile-view";
 // import {createMainNavigationTemplate} from "./view/main-navigation-view";
 import MainNavigation from "./view/main-navigation-view";
 
-import {createSortMenuTemplate} from "./view/sort-menu-view";
+// import {createSortMenuTemplate} from "./view/sort-menu-view";
+import SortMenu from "./view/sort-menu-view";
 import {createFilmsTemplate} from "./view/films-view";
 import {createShowMoreTemplate} from "./view/show-more-view";
 // import {createPopupTemplate} from "./view/popup-view";
@@ -27,11 +28,11 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const footer = document.querySelector(`.footer`);
 
-renderTemplate(siteHeaderElement, createUserProfileTemplate(), RenderPosition.BEFOREEND);
+renderElement(siteHeaderElement, new UserProfile().getElement(), RenderPosition.BEFOREEND);
 
 renderElement(siteMainElement, new MainNavigation().getElement(filters), RenderPosition.BEFOREEND);
 
-renderTemplate(siteMainElement, createSortMenuTemplate(), RenderPosition.BEFOREEND);
+renderTemplate(siteMainElement, new SortMenu().getElement(), RenderPosition.BEFOREEND);
 
 // renderTemplate(document.body, createPopupTemplate(films[0]), RenderPosition.BEFOREEND);
 
