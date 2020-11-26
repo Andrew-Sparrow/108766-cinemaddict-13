@@ -3,7 +3,7 @@ import MainNavigation from "./view/main-navigation-view";
 
 import SortMenu from "./view/sort-menu-view";
 import Films from "./view/films-view";
-import {createShowMoreTemplate} from "./view/show-more-view";
+import ShowMore from "./view/show-more-view";
 
 // import {createPopupTemplate} from "./view/popup-view";
 
@@ -48,7 +48,7 @@ for (let i = 1; i < Math.min(films.length, FILMS_COUNT_PER_STEP + 1); i++) {
 if (films.length > FILMS_COUNT_PER_STEP) {
   let renderedFilmCount = FILMS_COUNT_PER_STEP + 1;
 
-  renderTemplate(filmList, createShowMoreTemplate(), RenderPosition.BEFOREEND);
+  renderElement(filmList, new ShowMore().getElement(), RenderPosition.BEFOREEND);
 
   const loadMoreButton = filmList.querySelector(`.films-list__show-more`);
 
