@@ -31,11 +31,30 @@ const footer = document.querySelector(`.footer`);
 const renderFilmCard = (filmListElement, film) => {
   const filmCardComponent = new FilmCardView(film);
 
+  filmCardComponent.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
+    renderPopup(film);
+  });
+
+  filmCardComponent.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
+    renderPopup(film);
+  });
+
+  filmCardComponent.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
+    renderPopup(film);
+  });
+
   render(filmListElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
 const renderPopup = (film) => {
-  render(document.body, new PopupView(film).getElement(), RenderPosition.BEFOREEND);
+  const popupComponent = new PopupView(film);
+
+  popupComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    popupComponent.removeElement();
+  });
+
+  render(document.body, popupComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
 render(siteHeaderElement, new UserProfileView().getElement(), RenderPosition.BEFOREEND);
@@ -43,7 +62,7 @@ render(siteMainElement, new MainNavigationView(filters).getElement(), RenderPosi
 
 render(siteMainElement, new SortMenuView().getElement(), RenderPosition.BEFOREEND);
 
-// render(document.body, new PopupView(films[0]).getElement(), RenderPosition.BEFOREEND);
+// renderPopup(films[0]);
 
 const filmsComponent = new FilmsView();
 
