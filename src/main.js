@@ -32,14 +32,17 @@ const renderFilmCard = (filmListElement, film) => {
   const filmCardComponent = new FilmCardView(film);
 
   filmCardComponent.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
+    document.body.classList.add(`hide-overflow`);
     renderPopup(film);
   });
 
   filmCardComponent.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
+    document.body.classList.add(`hide-overflow`);
     renderPopup(film);
   });
 
   filmCardComponent.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
+    document.body.classList.add(`hide-overflow`);
     renderPopup(film);
   });
 
@@ -49,20 +52,35 @@ const renderFilmCard = (filmListElement, film) => {
 const renderPopup = (film) => {
   const popupComponent = new PopupView(film);
 
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+      document.body.classList.remove(`hide-overflow`);
+      document.body.removeChild(popupComponent.getElement());
+      popupComponent.removeElement();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  document.addEventListener(`keydown`, onEscKeyDown);
+
   popupComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, (evt) => {
     evt.preventDefault();
+    document.body.classList.remove(`hide-overflow`);
+    document.body.removeChild(popupComponent.getElement());
     popupComponent.removeElement();
   });
 
+  // как лучше сделать отрисовку popup'a, так
   render(document.body, popupComponent.getElement(), RenderPosition.BEFOREEND);
+  // или так ?
+  // document.body.appendChild(popupComponent.getElement());
 };
 
 render(siteHeaderElement, new UserProfileView().getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new MainNavigationView(filters).getElement(), RenderPosition.BEFOREEND);
 
 render(siteMainElement, new SortMenuView().getElement(), RenderPosition.BEFOREEND);
-
-// renderPopup(films[0]);
 
 const filmsComponent = new FilmsView();
 
