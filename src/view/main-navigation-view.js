@@ -1,4 +1,6 @@
-export const createMainNavigationTemplate = (filters) => {
+import {createElement} from "../utils/render-utils";
+
+const createMainNavigationTemplate = (filters) => {
   const {watchlist, history, favorites} = filters;
 
   return `<nav class="main-navigation">
@@ -11,3 +13,26 @@ export const createMainNavigationTemplate = (filters) => {
     <a href="#stats" class="main-navigation__additional">Stats</a>
   </nav>`;
 };
+
+export default class MainNavigation {
+  constructor(filters) {
+    this._element = null;
+    this._filters = filters;
+  }
+
+  getTemplate() {
+    return createMainNavigationTemplate(this._filters);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
