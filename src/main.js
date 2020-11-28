@@ -4,10 +4,7 @@ import MainNavigationView from "./view/main-navigation-view";
 import SortMenuView from "./view/sort-menu-view";
 import FilmsView from "./view/films-view";
 import ShowMoreView from "./view/show-more-view";
-
-import PopupView from "./view/popup-view";
-
-import FilmCardView from "./view/film-card-view";
+import {renderFilmCard} from "./utils/render-utils";
 
 import {generateFilm} from "./mock/film";
 import {calculateFilmsInFilter} from "./mock/filter";
@@ -29,51 +26,6 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const footer = document.querySelector(`.footer`);
 
-const renderFilmCard = (filmListElement, film) => {
-  const filmCardComponent = new FilmCardView(film);
-
-  filmCardComponent.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
-    document.body.classList.add(`hide-overflow`);
-    renderPopup(film);
-  });
-
-  filmCardComponent.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
-    document.body.classList.add(`hide-overflow`);
-    renderPopup(film);
-  });
-
-  filmCardComponent.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
-    document.body.classList.add(`hide-overflow`);
-    renderPopup(film);
-  });
-
-  render(filmListElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
-};
-
-const renderPopup = (film) => {
-  const popupComponent = new PopupView(film);
-
-  const onEscKeyDown = (evt) => {
-    if (evt.key === `Escape` || evt.key === `Esc`) {
-      evt.preventDefault();
-      document.body.classList.remove(`hide-overflow`);
-      document.body.removeChild(popupComponent.getElement());
-      popupComponent.removeElement();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  document.addEventListener(`keydown`, onEscKeyDown);
-
-  popupComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, (evt) => {
-    evt.preventDefault();
-    document.body.classList.remove(`hide-overflow`);
-    document.body.removeChild(popupComponent.getElement());
-    popupComponent.removeElement();
-  });
-
-  render(document.body, popupComponent.getElement(), RenderPosition.BEFOREEND);
-};
 
 render(siteHeaderElement, new UserProfileView().getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new MainNavigationView(filters).getElement(), RenderPosition.BEFOREEND);
