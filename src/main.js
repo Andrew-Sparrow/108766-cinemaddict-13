@@ -109,7 +109,6 @@ if (films.length === 0) {
       evt.preventDefault();
       films
         .slice(renderedFilmCount, renderedFilmCount + FILMS_COUNT_PER_STEP)
-        // .forEach((film) => render(filmListContainer, new FilmCardView(film).getElement(), RenderPosition.BEFOREEND));
         .forEach((film, index) => renderFilmCard(filmListContainer, films[index]));
 
       renderedFilmCount += FILMS_COUNT_PER_STEP;
