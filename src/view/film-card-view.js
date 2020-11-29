@@ -1,5 +1,5 @@
+import Abstract from "./abstract";
 import {truncateText} from "../utils/common-utils";
-import {createElement} from "../utils/render-utils";
 
 const createFilmCardTemplate = (film) => {
   const {
@@ -35,25 +35,13 @@ const createFilmCardTemplate = (film) => {
         </article>`;
 };
 
-export default class FilmCardView {
+export default class FilmCardView extends Abstract {
   constructor(film) {
-    this._element = null;
+    super();
     this._film = film;
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

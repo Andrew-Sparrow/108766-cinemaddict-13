@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render-utils";
+import Abstract from "./abstract";
 
 const createUserProfileTemplate = () => {
   return `<section class="header__profile profile">
@@ -7,24 +7,8 @@ const createUserProfileTemplate = () => {
   </section>`;
 };
 
-export default class UserProfile {
-  constructor() {
-    this._element = null;
-  }
-
+export default class UserProfileView extends Abstract {
   getTemplate() {
     return createUserProfileTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

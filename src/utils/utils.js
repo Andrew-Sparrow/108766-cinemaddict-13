@@ -1,11 +1,7 @@
 import dayjs from "dayjs";
-import {DESCRIPTIONS} from "./consts";
-import {pictureTitles} from "./consts";
+import {DESCRIPTIONS, pictureTitles} from "./consts";
 
-import {
-  getRandomInteger,
-  getRandomIndexOfList,
-} from "./common-utils.js";
+import {getRandomIndexOfList, getRandomInteger} from "./common-utils.js";
 
 const MIN_AMOUNT_PHRASES = 1;
 const MAX_AMOUNT_PHRASES = 5;
@@ -35,4 +31,10 @@ export const getRandomPoster = () => {
 export const generateDate = () => {
   const yearsAgoAmount = getRandomInteger(0, YEARS_AGO_AMOUNT);
   return dayjs().subtract(yearsAgoAmount, `year`).toDate();
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
 };

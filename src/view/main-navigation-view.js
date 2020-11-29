@@ -1,4 +1,4 @@
-import {createElement} from "../utils/render-utils";
+import Abstract from "./abstract";
 
 const createMainNavigationTemplate = (filters) => {
   const {watchlist, history, favorites} = filters;
@@ -14,25 +14,13 @@ const createMainNavigationTemplate = (filters) => {
   </nav>`;
 };
 
-export default class MainNavigation {
+export default class MainNavigation extends Abstract {
   constructor(filters) {
-    this._element = null;
+    super();
     this._filters = filters;
   }
 
   getTemplate() {
     return createMainNavigationTemplate(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
