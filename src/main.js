@@ -2,7 +2,7 @@ import UserProfileView from "./view/user-profile-view";
 import MainNavigationView from "./view/main-navigation-view";
 
 import SortMenuView from "./view/sort-menu-view";
-import FilmsView from "./view/films-view";
+import FilmsView from "./view/films-board-view";
 import ShowMoreView from "./view/show-more-view";
 import {renderFilmCard} from "./utils/render-utils";
 
