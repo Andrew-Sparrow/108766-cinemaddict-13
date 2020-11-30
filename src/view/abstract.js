@@ -14,9 +14,15 @@ export default class Abstract {
     throw new Error(`Abstract method. Not implemented: getTemplate`);
   }
 
-  getElement() {
+  getElement(selector = ``) {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
+    }
+
+    // some trick
+    // passing selector as an argument to get inner DOM element
+    if (selector) {
+      return this._element.querySelector(selector);
     }
 
     return this._element;
