@@ -1,7 +1,7 @@
 import FilmsBoardView from "../view/films-board-view";
 import SortMenuView from "../view/sort-menu-view";
 import NoFilmsView from "../view/no-films";
-import FilmCardView from "../view/film-card-view";
+// import FilmCardView from "../view/film-card-view";
 import ShowMoreView from "../view/show-more-view";
 
 const FILMS_COUNT_PER_STEP = 5;

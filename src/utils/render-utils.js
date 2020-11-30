@@ -37,7 +37,7 @@ export const renderPopup = (film) => {
 
   document.addEventListener(`keydown`, onEscKeyDown);
 
-  popupComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, (evt) => {
+  popupComponent.getElement(`.film-details__close-btn`).addEventListener(`click`, (evt) => {
     evt.preventDefault();
     document.body.classList.remove(`hide-overflow`);
     document.body.removeChild(popupComponent.getElement());
@@ -50,17 +50,17 @@ export const renderPopup = (film) => {
 export const renderFilmCard = (filmListElement, film) => {
   const filmCardComponent = new FilmCardView(film);
 
-  filmCardComponent.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
+  filmCardComponent.setPosterClickHandler(() => {
     document.body.classList.add(`hide-overflow`);
     renderPopup(film);
   });
 
-  filmCardComponent.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
+  filmCardComponent.getElement(`.film-card__title`).addEventListener(`click`, () => {
     document.body.classList.add(`hide-overflow`);
     renderPopup(film);
   });
 
-  filmCardComponent.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
+  filmCardComponent.getElement(`.film-card__comments`).addEventListener(`click`, () => {
     document.body.classList.add(`hide-overflow`);
     renderPopup(film);
   });
