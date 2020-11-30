@@ -8,18 +8,6 @@ export const RenderPosition = {
   AFTEREND: `afterend`,
 };
 
-// export const render = (container, element, place) => {
-//   switch (place) {
-//     case RenderPosition.AFTERBEGIN:
-//       container.prepend(element);
-//       break;
-//     case RenderPosition.BEFOREEND:
-//       container.append(element);
-//       break;
-//   }
-// };
-
-
 export const render = (container, child, place) => {
 
   if (container instanceof Abstract) {
@@ -41,6 +29,10 @@ export const render = (container, child, place) => {
 };
 
 export const renderTemplate = (container, template, place) => {
+  if (container instanceof Abstract) {
+    container = container.getElement();
+  }
+
   container.insertAdjacentHTML(place, template);
 };
 
