@@ -4,10 +4,10 @@ const createShowMoreTemplate = () => {
   return `<button class="films-list__show-more">Show more</button>`;
 };
 
-export default class ShowMore extends Abstract {
+export default class ShowMoreView extends Abstract {
   constructor() {
     super();
-    this._clickHandler = this._clickHandler.bind();
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   getTemplate() {
@@ -16,11 +16,11 @@ export default class ShowMore extends Abstract {
 
   _clickHandler(evt) {
     evt.preventDefault();
-    this._calback.click();
+    this._callback.click();
   }
 
   setClickHandler(callback) {
-    this._calback.click = callback;
+    this._callback.click = callback;
     this.getElement().addEventListener(`click`, this._clickHandler);
   }
 }

@@ -6,7 +6,7 @@ import ShowMoreView from "../view/show-more-view";
 
 const FILMS_COUNT_PER_STEP = 5;
 
-export default class Board {
+export default class BoardPresenter {
   constructor(boardContainer) {
     this._boardContainer = boardContainer;
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
@@ -18,4 +18,3 @@ export default class Board {
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
   }
 }
-
