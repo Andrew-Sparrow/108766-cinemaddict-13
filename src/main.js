@@ -4,7 +4,6 @@ import MainNavigationView from "./view/main-navigation-view";
 import SortMenuView from "./view/sort-menu-view";
 import FilmsView from "./view/films-board-view";
 import ShowMoreView from "./view/show-more-view";
-import {renderFilmCard} from "./utils/render-utils";
 
 import {generateFilm} from "./mock/film";
 import {calculateFilmsInFilter} from "./mock/filter";
@@ -14,7 +13,10 @@ import NoFilmsView from "./view/no-films";
 import {
   render,
   RenderPosition,
+  renderFilmCard
 } from "./utils/render-utils";
+
+import {remove} from "./utils/utils";
 
 const FILMS_COUNT = 8;
 const FILMS_COUNT_PER_STEP = 5;
@@ -65,8 +67,7 @@ if (films.length === 0) {
       renderedFilmCount += FILMS_COUNT_PER_STEP;
 
       if (renderedFilmCount >= films.length) {
-        showMoreButton.getElement().remove();
-        showMoreButton.removeElement();
+        remove(showMoreButton);
       }
     });
   }
