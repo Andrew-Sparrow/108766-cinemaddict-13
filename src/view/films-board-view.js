@@ -10,7 +10,7 @@ const createFilmsTemplate = () => {
           </section>`;
 };
 
-export default class Films extends AbstractView {
+export default class FilmsBoardView extends AbstractView {
   getTemplate() {
     return createFilmsTemplate();
   }
