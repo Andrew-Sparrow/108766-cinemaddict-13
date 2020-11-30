@@ -55,7 +55,7 @@ export const renderFilmCard = (filmListElement, film) => {
     renderPopup(film);
   });
 
-  filmCardComponent.getElement(`.film-card__title`).addEventListener(`click`, () => {
+  filmCardComponent.setCardTitleClickHandler(() => {
     document.body.classList.add(`hide-overflow`);
     renderPopup(film);
   });
