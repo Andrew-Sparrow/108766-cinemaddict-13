@@ -50,7 +50,7 @@ export const renderPopup = (film) => {
 export const renderFilmCard = (filmListElement, film) => {
   const filmCardComponent = new FilmCardView(film);
 
-  filmCardComponent.setPosterClickHandler(() => {
+  filmCardComponent.setCardPosterClickHandler(() => {
     document.body.classList.add(`hide-overflow`);
     renderPopup(film);
   });
@@ -60,7 +60,7 @@ export const renderFilmCard = (filmListElement, film) => {
     renderPopup(film);
   });
 
-  filmCardComponent.getElement(`.film-card__comments`).addEventListener(`click`, () => {
+  filmCardComponent.setCardCommentsClickHandler(() => {
     document.body.classList.add(`hide-overflow`);
     renderPopup(film);
   });
