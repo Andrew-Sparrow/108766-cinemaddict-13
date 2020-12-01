@@ -14,4 +14,12 @@ export default class FilmsBoardView extends AbstractView {
   getTemplate() {
     return createFilmsTemplate();
   }
+
+  getFilmListComponent() {
+    return this.getElement(`.films-list`);
+  }
+
+  getFilmListContainerComponent() {
+    return this.getElement(`.films-list__container`);
+  }
 }

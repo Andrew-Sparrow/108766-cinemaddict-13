@@ -35,8 +35,8 @@ render(footer, new FooterStatisticsView(films.length), RenderPosition.BEFOREEND)
 
 const renderBoard = (boardFilms) => {
   const filmsComponent = new FilmsView();
-  const filmList = filmsComponent.getElement(`.films-list`);
-  const filmListContainer = filmsComponent.getElement(`.films-list__container`);
+  const filmList = filmsComponent.getFilmListComponent();
+  const filmListContainer = filmsComponent.getFilmListContainerComponent();
 
   if (boardFilms.length === 0) {
 

@@ -51,7 +51,7 @@ export const renderPopup = (film) => {
 
   document.addEventListener(`keydown`, onEscKeyDown);
 
-  popupComponent.getElement(`.film-details__close-btn`).addEventListener(`click`, (evt) => {
+  popupComponent.getFilmDetailsCloseButtonComponent().addEventListener(`click`, (evt) => {
     evt.preventDefault();
     document.body.classList.remove(`hide-overflow`);
     document.body.removeChild(popupComponent.getElement());

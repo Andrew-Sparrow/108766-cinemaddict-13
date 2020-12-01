@@ -161,4 +161,8 @@ export default class PopupView extends Abstract {
   getTemplate() {
     return createPopupTemplate(this._film);
   }
+
+  getFilmDetailsCloseButtonComponent() {
+    return this.getElement(`.film-details__close-btn`);
+  }
 }
