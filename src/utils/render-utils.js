@@ -1,6 +1,7 @@
 import FilmCardView from "../view/film-card-view";
 import PopupView from "../view/popup-view";
 import Abstract from "../view/abstract";
+import {remove} from "./utils";
 
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
@@ -44,21 +45,21 @@ export const renderPopup = (film) => {
       evt.preventDefault();
       document.body.classList.remove(`hide-overflow`);
       document.body.removeChild(popupComponent.getElement());
-      popupComponent.removeElement();
+      remove(popupComponent);
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
 
   document.addEventListener(`keydown`, onEscKeyDown);
 
-  popupComponent.getFilmDetailsCloseButtonComponent().addEventListener(`click`, (evt) => {
-    evt.preventDefault();
+  popupComponent.setPosterCloseClickHandler(() => {
+    document.removeEventListener(`keydown`, onEscKeyDown);
     document.body.classList.remove(`hide-overflow`);
     document.body.removeChild(popupComponent.getElement());
-    popupComponent.removeElement();
+    remove(popupComponent);
   });
 
-  render(document.body, popupComponent.getElement(), RenderPosition.BEFOREEND);
+  render(document.body, popupComponent, RenderPosition.BEFOREEND);
 };
 
 export const renderFilmCard = (filmListElement, film) => {
@@ -79,5 +80,5 @@ export const renderFilmCard = (filmListElement, film) => {
     renderPopup(film);
   });
 
-  render(filmListElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(filmListElement, filmCardComponent, RenderPosition.BEFOREEND);
 };
