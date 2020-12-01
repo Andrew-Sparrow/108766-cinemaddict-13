@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import {formatCommentDate} from "../utils/utils";
 import {collectionOfComments} from "../mock/comments";
 
 const getCommentTemplate = (commentID) => {
@@ -13,7 +13,7 @@ const getCommentTemplate = (commentID) => {
               <p class="film-details__comment-text">${comment.text}</p>
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${comment.author}</span>
-                <span class="film-details__comment-day">${dayjs(comment.date).format(`YYYY/MM/DD HH:SS`)}</span>
+                <span class="film-details__comment-day">${formatCommentDate(comment.date)}</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>

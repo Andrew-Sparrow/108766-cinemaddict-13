@@ -1,11 +1,16 @@
 import dayjs from "dayjs";
-import {DESCRIPTIONS} from "./consts";
-import {pictureTitles} from "./consts";
+import Abstract from "../view/abstract";
 
 import {
-  getRandomInteger,
+  DESCRIPTIONS,
+  pictureTitles
+} from "./consts";
+
+import {
   getRandomIndexOfList,
+  getRandomInteger
 } from "./common-utils.js";
+
 
 const MIN_AMOUNT_PHRASES = 1;
 const MAX_AMOUNT_PHRASES = 5;
@@ -35,4 +40,27 @@ export const getRandomPoster = () => {
 export const generateDate = () => {
   const yearsAgoAmount = getRandomInteger(0, YEARS_AGO_AMOUNT);
   return dayjs().subtract(yearsAgoAmount, `year`).toDate();
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
+
+export const formatCommentDate = (date) => {
+  return dayjs(date).format(`YYYY/MM/DD HH:SS`);
+};
+
+export const formatReleaseDate = (date) => {
+  return dayjs(date).format(`DD MMMM YYYY`);
+};
+
+export const remove = (component) => {
+  if (!(component instanceof Abstract)) {
+    throw new Error(`Only components can be removed`);
+  }
+
+  component.getElement().remove();
+  component.removeElement();
 };

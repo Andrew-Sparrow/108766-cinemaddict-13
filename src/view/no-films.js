@@ -1,27 +1,11 @@
-import {createElement} from "../utils/render-utils";
+import Abstract from "./abstract";
 
 const createNoFilmsTemplate = () => {
   return `<h2 class="films-list__title">There are no movies in our database</h2>`;
 };
 
-export default class NoFilmsView {
-  constructor() {
-    this._element = null;
-  }
-
+export default class NoFilmsView extends Abstract {
   getTemplate() {
     return createNoFilmsTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

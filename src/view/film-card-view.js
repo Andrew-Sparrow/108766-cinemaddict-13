@@ -1,5 +1,5 @@
+import Abstract from "./abstract";
 import {truncateText} from "../utils/common-utils";
-import {createElement} from "../utils/render-utils";
 
 const createFilmCardTemplate = (film) => {
   const {
@@ -35,25 +35,46 @@ const createFilmCardTemplate = (film) => {
         </article>`;
 };
 
-export default class FilmCardView {
+export default class FilmCardView extends Abstract {
   constructor(film) {
-    this._element = null;
+    super();
     this._film = film;
+    this._posterClickHandler = this._posterClickHandler.bind(this);
+    this._titleClickHandler = this._titleClickHandler.bind(this);
+    this._commentsClickHandler = this._commentsClickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._film);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _posterClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.posterClick();
   }
 
-  removeElement() {
-    this._element = null;
+  _titleClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.titleClick();
+  }
+
+  _commentsClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.commentsClick();
+  }
+
+  setCardPosterClickHandler(callback) {
+    this._callback.posterClick = callback;
+    this.getElement(`.film-card__poster`).addEventListener(`click`, this._posterClickHandler);
+  }
+
+  setCardTitleClickHandler(callback) {
+    this._callback.titleClick = callback;
+    this.getElement(`.film-card__title`).addEventListener(`click`, this._titleClickHandler);
+  }
+
+  setCardCommentsClickHandler(callback) {
+    this._callback.commentsClick = callback;
+    this.getElement(`.film-card__comments`).addEventListener(`click`, this._commentsClickHandler);
   }
 }

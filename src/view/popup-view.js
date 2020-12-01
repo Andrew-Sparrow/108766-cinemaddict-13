@@ -1,7 +1,7 @@
-import dayjs from "dayjs";
+import Abstract from "./abstract";
 
 import {getCommentsTemplate} from "./comments-view";
-import {createElement} from "../utils/render-utils";
+import {formatReleaseDate} from "../utils/utils";
 
 const getFilmGenresTemplate = (film) => {
   const {genres} = film;
@@ -40,7 +40,7 @@ const getFilmDetailsTemplate = (film) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${dayjs(releaseDate).format(`DD MMMM YYYY`)}</td>
+              <td class="film-details__cell">${formatReleaseDate(releaseDate)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
@@ -152,25 +152,24 @@ const createPopupTemplate = (film) => {
 </section>`;
 };
 
-export default class PopupView {
+export default class PopupView extends Abstract {
   constructor(film) {
-    this._element = null;
+    super();
     this._film = film;
+    this._popupCloseHandler = this._popupCloseHandler.bind(this);
   }
 
   getTemplate() {
     return createPopupTemplate(this._film);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _popupCloseHandler(evt) {
+    evt.preventDefault();
+    this._callback.popupCloseClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setPosterCloseClickHandler(callback) {
+    this._callback.popupCloseClick = callback;
+    this.getElement(`.film-details__close-btn`).addEventListener(`click`, this._popupCloseHandler);
   }
 }
