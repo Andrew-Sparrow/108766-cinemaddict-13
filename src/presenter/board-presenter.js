@@ -1,19 +1,21 @@
 import FilmsBoardView from "../view/films-board-view";
 import SortMenuView from "../view/sort-menu-view";
 import NoFilmsView from "../view/no-films";
-// import FilmCardView from "../view/film-card-view";
+import FilmCardView from "../view/film-card-view";
 import ShowMoreView from "../view/show-more-view";
+import {render, RenderPosition} from "../utils/render-utils";
 
 const FILMS_COUNT_PER_STEP = 5;
 
 export default class BoardPresenter {
-  constructor(boardContainer, boardFilms) {
+  constructor(boardContainer, films) {
     this._boardContainer = boardContainer;
-    this._boardFilms = boardFilms;
+    this._films = films;
 
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
 
-    this._boardComponent = new FilmsBoardView();
+    this._filmsBoardComponent = new FilmsBoardView();
+
     this._sortComponent = new SortMenuView();
     this._noFilmsComponent = new NoFilmsView();
     this._showMoreComponent = new ShowMoreView();
@@ -22,6 +24,10 @@ export default class BoardPresenter {
 
   init() {
 
+    // render(this._boardContainer, this._boardComponent, RenderPosition.BEFOREEND);
+    // render(this._boardComponent, this._taskListComponent, RenderPosition.BEFOREEND);
+
+    this._renderBoard();
   }
 
   _renderSort() {
@@ -32,12 +38,12 @@ export default class BoardPresenter {
 
   }
 
-  _renderFilmCards() {
+  _renderFilmCards(from, to) {
 
   }
 
   _renderNoFilms() {
-
+    render(this._filmsBoardComponent.get, this._noFilmsComponent, RenderPosition.BEFOREEND);
   }
 
   _renderShowMoreButton() {
@@ -45,6 +51,17 @@ export default class BoardPresenter {
   }
 
   _renderBoard() {
+    if (this._films.length === 0) {
+      this._renderNoFilms();
+      return;
+    }
 
+    this._renderSort();
+
+    this._renderFilmCards(0, Math.min(this._films.length, FILMS_COUNT_PER_STEP));
+
+    if (this._films.length > FilmsBoardView) {
+      this._renderLoadMoreButton();
+    }
   }
 }

@@ -2,7 +2,7 @@ import UserProfileView from "./view/user-profile-view";
 import MainNavigationView from "./view/main-navigation-view";
 
 import SortMenuView from "./view/sort-menu-view";
-import FilmsView from "./view/films-board-view";
+import FilmsBoardView from "./view/films-board-view";
 import ShowMoreView from "./view/show-more-view";
 
 import {generateFilm} from "./mock/film";
@@ -34,7 +34,7 @@ render(siteMainElement, new MainNavigationView(filters), RenderPosition.BEFOREEN
 render(footer, new FooterStatisticsView(films.length), RenderPosition.BEFOREEND);
 
 const renderBoard = (boardFilms) => {
-  const filmsComponent = new FilmsView();
+  const filmsComponent = new FilmsBoardView();
   const filmList = filmsComponent.getFilmListComponent();
   const filmListContainer = filmsComponent.getFilmListContainerComponent();
 
@@ -46,12 +46,12 @@ const renderBoard = (boardFilms) => {
     render(siteMainElement, new SortMenuView(), RenderPosition.BEFOREEND);
     render(siteMainElement, filmsComponent, RenderPosition.BEFOREEND);
 
-    for (let i = 1; i < Math.min(films.length, FILMS_COUNT_PER_STEP + 1); i++) {
+    for (let i = 0; i < Math.min(films.length, FILMS_COUNT_PER_STEP); i++) {
       renderFilmCard(filmListContainer, films[i]);
     }
 
     if (films.length > FILMS_COUNT_PER_STEP) {
-      let renderedFilmCount = FILMS_COUNT_PER_STEP + 1;
+      let renderedFilmCount = FILMS_COUNT_PER_STEP;
 
       const showMoreButton = new ShowMoreView();
 
