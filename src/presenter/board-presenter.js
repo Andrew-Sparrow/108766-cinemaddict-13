@@ -28,6 +28,7 @@ export default class BoardPresenter {
     this._noFilmsComponent = new NoFilmsView();
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
   init() {
@@ -35,8 +36,15 @@ export default class BoardPresenter {
     render(this._boardContainer, this._filmsComponent, RenderPosition.BEFOREEND);
   }
 
+  _handleSortTypeChange(sortType) {
+    // - Сортируем задачи
+    // - Очищаем список
+    // - Рендерим список заново
+  }
+
   _renderSort() {
     render(this._boardContainer, this._sortComponent, RenderPosition.BEFOREEND);
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderFilmCard(film) {
