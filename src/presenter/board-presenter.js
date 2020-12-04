@@ -3,7 +3,7 @@ import SortMenuView from "../view/sort-menu-view";
 import NoFilmsView from "../view/no-films";
 import FilmCardView from "../view/film-card-view";
 import ShowMoreView from "../view/show-more-view";
-import {render, RenderPosition} from "../utils/render-utils";
+import {render, renderFilmCard, RenderPosition} from "../utils/render-utils";
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -30,16 +30,14 @@ export default class BoardPresenter {
     this._renderBoard();
   }
 
-  _renderSort() {
-
-  }
-
-  _renderFilmCard() {
+  _renderFilmCard(film) {
 
   }
 
   _renderFilmCards(from, to) {
-
+    this._films
+      .slice(from, to)
+      .forEach((film) => this._renderFilmCard(film));
   }
 
   _renderNoFilms() {
@@ -56,7 +54,6 @@ export default class BoardPresenter {
       return;
     }
 
-    this._renderSort();
 
     this._renderFilmCards(0, Math.min(this._films.length, FILMS_COUNT_PER_STEP));
 
