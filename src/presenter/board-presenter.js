@@ -13,31 +13,26 @@ import {remove} from "../utils/utils";
 
 const FILMS_COUNT_PER_STEP = 5;
 
-const siteMainElement = document.querySelector(`.main`);
-
 export default class BoardPresenter {
   constructor(boardContainer, films) {
     this._boardContainer = boardContainer;
     this._films = films;
 
-    this._filmsBoardComponent = new FilmsBoardView();
-    this._filmListContainer = this._filmsBoardComponent.getFilmListContainerComponent();
+    this._filmsComponent = new FilmsBoardView();
+    this._filmList = this._filmsComponent.getFilmListComponent();
+    this._filmListContainer = this._filmsComponent.getFilmListContainerComponent();
 
     this._sortComponent = new SortMenuView();
     this._noFilmsComponent = new NoFilmsView();
-    this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
   }
 
   init() {
-
-    // render(this._boardContainer, this._boardComponent, RenderPosition.BEFOREEND);
-    // render(this._boardComponent, this._taskListComponent, RenderPosition.BEFOREEND);
-
     this._renderBoard();
+    render(this._boardContainer, this._filmsComponent, RenderPosition.BEFOREEND);
   }
 
   _renderSort() {
-    render(siteMainElement, this._sortComponent, RenderPosition.BEFOREEND);
+    render(this._boardContainer, this._sortComponent, RenderPosition.BEFOREEND);
   }
 
   _renderFilmCard(film) {
@@ -59,7 +54,7 @@ export default class BoardPresenter {
   }
 
   _renderNoFilms() {
-    render(this._filmsBoardComponent.get, this._noFilmsComponent, RenderPosition.BEFOREEND);
+    render(this._filmList, this._noFilmsComponent, RenderPosition.BEFOREEND);
   }
 
   _renderShowMoreButton() {
@@ -67,7 +62,7 @@ export default class BoardPresenter {
 
     const showMoreButton = new ShowMoreView();
 
-    render(this._filmListContainer, showMoreButton, RenderPosition.BEFOREEND);
+    render(this._filmList, showMoreButton, RenderPosition.BEFOREEND);
 
     showMoreButton.setClickHandler(() => {
       this._films

@@ -9,6 +9,7 @@ import {generateFilm} from "./mock/film";
 import {calculateFilmsInFilter} from "./mock/filter";
 import FooterStatisticsView from "./view/footer-statistics-view";
 import NoFilmsView from "./view/no-films";
+import BoardPresenter from "./presenter/board-presenter";
 
 import {
   render,
@@ -27,6 +28,8 @@ const filters = calculateFilmsInFilter(films);
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const footer = document.querySelector(`.footer`);
+
+const boardPresenter = new BoardPresenter(siteMainElement, films);
 
 render(siteHeaderElement, new UserProfileView(), RenderPosition.BEFOREEND);
 render(siteMainElement, new MainNavigationView(filters), RenderPosition.BEFOREEND);
@@ -72,4 +75,8 @@ const renderBoard = (boardFilms) => {
   }
 };
 
-renderBoard(films);
+// renderBoard(films);
+
+boardPresenter.init();
+
+

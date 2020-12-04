@@ -62,7 +62,7 @@ export const renderPopup = (film) => {
   render(document.body, popupComponent, RenderPosition.BEFOREEND);
 };
 
-export const renderFilmCard = (filmListElement, film) => {
+export const renderFilmCard = (filmListContainerElement, film) => {
   const filmCardComponent = new FilmCardView(film);
 
   filmCardComponent.setCardPosterClickHandler(() => {
@@ -80,5 +80,5 @@ export const renderFilmCard = (filmListElement, film) => {
     renderPopup(film);
   });
 
-  render(filmListElement, filmCardComponent, RenderPosition.BEFOREEND);
+  render(filmListContainerElement, filmCardComponent, RenderPosition.BEFOREEND);
 };
