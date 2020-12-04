@@ -3,9 +3,16 @@ import SortMenuView from "../view/sort-menu-view";
 import NoFilmsView from "../view/no-films";
 import FilmCardView from "../view/film-card-view";
 import ShowMoreView from "../view/show-more-view";
-import {render, renderFilmCard, RenderPosition} from "../utils/render-utils";
+
+import {
+  render,
+  renderFilmCard,
+  RenderPosition
+} from "../utils/render-utils";
 
 const FILMS_COUNT_PER_STEP = 5;
+
+const siteMainElement = document.querySelector(`.main`);
 
 export default class BoardPresenter {
   constructor(boardContainer, films) {
@@ -30,8 +37,14 @@ export default class BoardPresenter {
     this._renderBoard();
   }
 
-  _renderFilmCard(film) {
+  _renderSort() {
+    render(siteMainElement, this._sortComponent, RenderPosition.BEFOREEND);
+  }
 
+  _renderFilmCard(film) {
+    const filmListContainer = this._filmsBoardComponent.getFilmListContainerComponent();
+
+    renderFilmCard(filmListContainer, film);
   }
 
   _renderFilmCards(from, to) {
@@ -54,10 +67,11 @@ export default class BoardPresenter {
       return;
     }
 
+    this._renderSort();
 
     this._renderFilmCards(0, Math.min(this._films.length, FILMS_COUNT_PER_STEP));
 
-    if (this._films.length > FilmsBoardView) {
+    if (this._films.length > FILMS_COUNT_PER_STEP) {
       this._renderLoadMoreButton();
     }
   }
