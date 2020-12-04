@@ -50,6 +50,14 @@ export default class BoardPresenter {
       .forEach((film) => this._renderFilmCard(film));
   }
 
+  _renderFilmList() {
+    this._renderFilmCards(0, Math.min(this._films.length, FILMS_COUNT_PER_STEP));
+
+    if (this._films.length > FILMS_COUNT_PER_STEP) {
+      this._renderShowMoreButton();
+    }
+  }
+
   _renderNoFilms() {
     render(this._filmsBoardComponent.get, this._noFilmsComponent, RenderPosition.BEFOREEND);
   }
@@ -82,10 +90,6 @@ export default class BoardPresenter {
 
     this._renderSort();
 
-    this._renderFilmCards(0, Math.min(this._films.length, FILMS_COUNT_PER_STEP));
-
-    if (this._films.length > FILMS_COUNT_PER_STEP) {
-      this._renderShowMoreButton();
-    }
+    this._renderFilmList();
   }
 }
