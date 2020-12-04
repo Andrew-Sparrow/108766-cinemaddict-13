@@ -1,7 +1,6 @@
 import FilmsBoardView from "../view/films-board-view";
 import SortMenuView from "../view/sort-menu-view";
 import NoFilmsView from "../view/no-films";
-import FilmCardView from "../view/film-card-view";
 import ShowMoreView from "../view/show-more-view";
 
 import {
@@ -9,6 +8,8 @@ import {
   renderFilmCard,
   RenderPosition
 } from "../utils/render-utils";
+
+import {remove} from "../utils/utils";
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -19,13 +20,11 @@ export default class BoardPresenter {
     this._boardContainer = boardContainer;
     this._films = films;
 
-    this._renderedFilmCount = FILMS_COUNT_PER_STEP;
-
     this._filmsBoardComponent = new FilmsBoardView();
+    this._filmListContainer = this._filmsBoardComponent.getFilmListContainerComponent();
 
     this._sortComponent = new SortMenuView();
     this._noFilmsComponent = new NoFilmsView();
-    this._showMoreComponent = new ShowMoreView();
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
   }
 
@@ -42,9 +41,7 @@ export default class BoardPresenter {
   }
 
   _renderFilmCard(film) {
-    const filmListContainer = this._filmsBoardComponent.getFilmListContainerComponent();
-
-    renderFilmCard(filmListContainer, film);
+    renderFilmCard(this._filmListContainer, film);
   }
 
   _renderFilmCards(from, to) {
@@ -58,7 +55,23 @@ export default class BoardPresenter {
   }
 
   _renderShowMoreButton() {
+    let renderedFilmCount = FILMS_COUNT_PER_STEP;
 
+    const showMoreButton = new ShowMoreView();
+
+    render(this._filmListContainer, showMoreButton, RenderPosition.BEFOREEND);
+
+    showMoreButton.setClickHandler(() => {
+      this._films
+        .slice(renderedFilmCount, renderedFilmCount + FILMS_COUNT_PER_STEP)
+        .forEach((film) => this._renderFilmCard(film));
+
+      renderedFilmCount += FILMS_COUNT_PER_STEP;
+
+      if (renderedFilmCount >= this._films.length) {
+        remove(showMoreButton);
+      }
+    });
   }
 
   _renderBoard() {
@@ -72,7 +85,7 @@ export default class BoardPresenter {
     this._renderFilmCards(0, Math.min(this._films.length, FILMS_COUNT_PER_STEP));
 
     if (this._films.length > FILMS_COUNT_PER_STEP) {
-      this._renderLoadMoreButton();
+      this._renderShowMoreButton();
     }
   }
 }
