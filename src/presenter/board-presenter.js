@@ -17,6 +17,7 @@ import {
 } from "../utils/utils";
 
 const FILMS_COUNT_PER_STEP = 5;
+const MAX_AMOUNT_EXTRA_CARDS = 2;
 
 export default class BoardPresenter {
   constructor(boardContainer, films) {
@@ -41,9 +42,23 @@ export default class BoardPresenter {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
+
   init() {
     this._renderBoard();
     render(this._boardContainer, this._filmsComponent, RenderPosition.BEFOREEND);
+  }
+
+  _getMostRatedFilms() {
+    const mostRatedFilms = [];
+    this._films.sort(sortByRating);
+
+    const lengthExtraFilmList = this._films.length > MAX_AMOUNT_EXTRA_CARDS ? MAX_AMOUNT_EXTRA_CARDS : this._films.length;
+
+    for (let i = 0; i < lengthExtraFilmList; i++) {
+      mostRatedFilms.push(this._films);
+    }
+
+    return mostRatedFilms;
   }
 
   _sortFilms(sortType) {
@@ -59,7 +74,6 @@ export default class BoardPresenter {
     }
 
     this._currentSortType = sortType;
-
   }
 
   _handleSortTypeChange(sortType) {
@@ -93,6 +107,10 @@ export default class BoardPresenter {
     if (this._films.length > FILMS_COUNT_PER_STEP) {
       this._renderShowMoreButton();
     }
+  }
+
+  _renderTopRatedFilmList() {
+
   }
 
   _renderNoFilms() {
