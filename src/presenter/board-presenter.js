@@ -68,7 +68,6 @@ export default class BoardPresenter {
     }
 
     this._sortFilms(sortType);
-    console.log(this._films);
     this._clearFilmList();
     this._renderFilmList();
   }
