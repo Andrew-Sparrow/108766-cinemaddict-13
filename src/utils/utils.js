@@ -64,3 +64,15 @@ export const remove = (component) => {
   component.getElement().remove();
   component.removeElement();
 };
+
+export const sortByDate = (filmA, filmB) => {
+  const result = dayjs(filmA.releaseDate).isBefore(dayjs(filmB.releaseDate));
+  return result ? 1 : -1;
+};
+
+
+export const sortByRating = (filmA, filmB) => {
+  const result = parseInt(filmB.rating, 10) - parseInt(filmA.rating, 10);
+
+  return result;
+};

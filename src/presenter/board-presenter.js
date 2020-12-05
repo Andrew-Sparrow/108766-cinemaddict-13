@@ -2,6 +2,7 @@ import FilmsBoardView from "../view/films-board-view";
 import SortMenuView from "../view/sort-menu-view";
 import NoFilmsView from "../view/no-films";
 import ShowMoreView from "../view/show-more-view";
+import {SortType} from "../utils/consts";
 
 import {
   render,
@@ -9,14 +10,23 @@ import {
   RenderPosition
 } from "../utils/render-utils";
 
-import {remove} from "../utils/utils";
+import {
+  remove,
+  sortByDate,
+  sortByRating
+} from "../utils/utils";
 
 const FILMS_COUNT_PER_STEP = 5;
 
 export default class BoardPresenter {
   constructor(boardContainer, films) {
     this._boardContainer = boardContainer;
-    this._films = films;
+
+    this._films = films.slice();
+    this._sourcedFilms = films.slice();
+
+    this._currentSortType = SortType.DEFAULT;
+
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
 
     this._filmsComponent = new FilmsBoardView();
@@ -36,10 +46,31 @@ export default class BoardPresenter {
     render(this._boardContainer, this._filmsComponent, RenderPosition.BEFOREEND);
   }
 
+  _sortFilms(sortType) {
+    switch (sortType) {
+      case SortType.BY_DATE:
+        this._films.sort(sortByDate);
+        break;
+      case SortType.BY_RATING:
+        this._films.sort(sortByRating);
+        break;
+      default:
+        this._films = this._sourcedFilms;
+    }
+
+    this._currentSortType = sortType;
+
+  }
+
   _handleSortTypeChange(sortType) {
-    // - Сортируем задачи
-    // - Очищаем список
-    // - Рендерим список заново
+    if (this._currentSortType === sortType) {
+      return;
+    }
+
+    this._sortFilms(sortType);
+    console.log(this._films);
+    this._clearFilmList();
+    this._renderFilmList();
   }
 
   _renderSort() {
@@ -77,6 +108,11 @@ export default class BoardPresenter {
     if (this._renderedFilmCount >= this._films.length) {
       remove(this._showMoreButtonComponent);
     }
+  }
+
+  _clearFilmList() {
+    this._filmListContainer.innerHTML = ``;
+    this._renderedFilmCount = FILMS_COUNT_PER_STEP;
   }
 
   _renderShowMoreButton() {
