@@ -1,10 +1,10 @@
 import UserProfileView from "./view/user-profile-view";
 import MainNavigationView from "./view/main-navigation-view";
+import FooterStatisticsView from "./view/footer-statistics-view";
+import BoardPresenter from "./presenter/board-presenter";
 
 import {generateFilm} from "./mock/film";
 import {calculateFilmsInFilter} from "./mock/filter";
-import FooterStatisticsView from "./view/footer-statistics-view";
-import BoardPresenter from "./presenter/board-presenter";
 
 import {
   render,

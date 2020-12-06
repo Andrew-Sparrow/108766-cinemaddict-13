@@ -15,6 +15,7 @@ import {
 const MIN_AMOUNT_PHRASES = 1;
 const MAX_AMOUNT_PHRASES = 5;
 const YEARS_AGO_AMOUNT = 5;
+const MAX_AMOUNT_EXTRA_CARDS = 2;
 
 
 export const getRandomDescriptions = () => {
@@ -75,4 +76,23 @@ export const sortByRating = (filmA, filmB) => {
   const result = parseInt(filmB.rating, 10) - parseInt(filmA.rating, 10);
 
   return result;
+};
+
+export const sortByComments = (filmA, filmB) => {
+  const result = filmB.comments.length - filmA.comments.length;
+
+  return result;
+};
+
+export const getMostValuedFilms = (films, sortByCallback) => {
+  const mostRatedFilms = [];
+  films.sort(sortByCallback);
+
+  const lengthExtraFilmList = films.length > MAX_AMOUNT_EXTRA_CARDS ? MAX_AMOUNT_EXTRA_CARDS : films.length;
+
+  for (let i = 0; i < lengthExtraFilmList; i++) {
+    mostRatedFilms.push(films[i]);
+  }
+
+  return mostRatedFilms;
 };
