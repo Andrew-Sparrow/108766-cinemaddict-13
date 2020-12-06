@@ -74,7 +74,7 @@ export default class BoardPresenter {
 
     this._sortFilms(sortType);
     this._clearFilmList();
-    this._renderFilmList();
+    this._renderBasicFilmList();
   }
 
   _renderSort() {
@@ -92,7 +92,7 @@ export default class BoardPresenter {
       .forEach((film) => this._renderFilmCardInBasicList(film));
   }
 
-  _renderFilmList() {
+  _renderBasicFilmList() {
     render(this._filmsBoardComponent, this._filmListComponent, RenderPosition.BEFOREEND);
 
     this._renderFilmCards(0, Math.min(this._films.length, FILMS_COUNT_PER_STEP));
@@ -154,7 +154,7 @@ export default class BoardPresenter {
 
     this._renderSort();
 
-    this._renderFilmList();
+    this._renderBasicFilmList();
     this._renderExtraTop(`Top rated`, sortByRating);
     this._renderExtraTop(`Most commented`, sortByComments);
   }
