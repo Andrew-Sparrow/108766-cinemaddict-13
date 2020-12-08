@@ -1,4 +1,3 @@
-import FilmCardView from "../view/film-card-view";
 import PopupView from "../view/popup-view";
 import Abstract from "../view/abstract";
 import {remove} from "./utils";
@@ -60,25 +59,4 @@ export const renderPopup = (film) => {
   });
 
   render(document.body, popupComponent, RenderPosition.BEFOREEND);
-};
-
-export const renderFilmCard = (filmListContainerElement, film) => {
-  const filmCardComponent = new FilmCardView(film);
-
-  filmCardComponent.setCardPosterClickHandler(() => {
-    document.body.classList.add(`hide-overflow`);
-    renderPopup(film);
-  });
-
-  filmCardComponent.setCardTitleClickHandler(() => {
-    document.body.classList.add(`hide-overflow`);
-    renderPopup(film);
-  });
-
-  filmCardComponent.setCardCommentsClickHandler(() => {
-    document.body.classList.add(`hide-overflow`);
-    renderPopup(film);
-  });
-
-  render(filmListContainerElement, filmCardComponent, RenderPosition.BEFOREEND);
 };

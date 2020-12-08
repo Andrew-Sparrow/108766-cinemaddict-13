@@ -3,12 +3,12 @@ import SortMenuView from "../view/sort-menu-view";
 import NoFilmsView from "../view/no-films";
 import ShowMoreView from "../view/show-more-view";
 import FilmsListView from "../view/films-list-view";
+import FilmCardPresenter from "./film-presenter";
 
 import {SortType} from "../utils/consts";
 
 import {
   render,
-  renderFilmCard,
   RenderPosition
 } from "../utils/render-utils";
 
@@ -82,14 +82,15 @@ export default class BoardPresenter {
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
-  _renderFilmCardInBasicList(film) {
-    renderFilmCard(this._filmListContainerComponent, film);
+  _renderFilmCard(filmListContainerComponent, film) {
+    const filmPresenter = new FilmCardPresenter(filmListContainerComponent);
+    filmPresenter.init(film);
   }
 
   _renderFilmCards(from, to) {
     this._films
       .slice(from, to)
-      .forEach((film) => this._renderFilmCardInBasicList(film));
+      .forEach((film) => this._renderFilmCard(this._filmListContainerComponent, film));
   }
 
   _renderBasicFilmList() {
@@ -141,7 +142,7 @@ export default class BoardPresenter {
       filmListTitleComponent.innerHTML = title;
 
       for (let film of mostRatedFilms) {
-        renderFilmCard(filmListContainerComponent, film);
+        this._renderFilmCard(filmListContainerComponent, film);
       }
     }
   }
