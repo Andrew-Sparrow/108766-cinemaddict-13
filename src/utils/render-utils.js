@@ -89,6 +89,6 @@ export const updateItem = (items, updatedItem) => {
   return [
     ...items.slice(0, index),
     updatedItem,
-    ...index.slice(index + 1)
+    ...items.slice(index + 1)
   ];
 };

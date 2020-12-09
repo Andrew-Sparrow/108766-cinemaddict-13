@@ -86,7 +86,7 @@ export const sortByComments = (filmA, filmB) => {
 
 export const getMostValuedFilms = (films, sortByCallback) => {
   const mostRatedFilms = [];
-  films.sort(sortByCallback);
+  films.slice().sort(sortByCallback);
 
   const lengthExtraFilmList = films.length > MAX_AMOUNT_EXTRA_CARDS ? MAX_AMOUNT_EXTRA_CARDS : films.length;
 

@@ -15,6 +15,7 @@ import {generateComments} from "./comments";
 
 const MIN_RATING = `1`;
 const MAX_RATING = `10`;
+let START_NUMBER_FOR_TITLE = 0;
 
 export const generateFilm = () => {
 
@@ -41,7 +42,7 @@ export const generateFilm = () => {
 
   film.id = nanoid();
   film.poster = getRandomPoster();
-  film.title = `The Dance of Life`;
+  film.title = `Title - ` + ++START_NUMBER_FOR_TITLE;
   film.originalTitle = `The Dance of Life`;
   film.rating = `${getRandomInteger(MIN_RATING, MAX_RATING)}.0`;
   film.director = `Steven Spielberg`;
