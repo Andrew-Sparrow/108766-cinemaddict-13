@@ -85,14 +85,14 @@ export const sortByComments = (filmA, filmB) => {
 };
 
 export const getMostValuedFilms = (films, sortByCallback) => {
-  const mostRatedFilms = [];
-  films.slice().sort(sortByCallback);
+  const mostValuedFilms = [];
+  films = films.slice().sort(sortByCallback);
 
   const lengthExtraFilmList = films.length > MAX_AMOUNT_EXTRA_CARDS ? MAX_AMOUNT_EXTRA_CARDS : films.length;
 
   for (let i = 0; i < lengthExtraFilmList; i++) {
-    mostRatedFilms.push(films[i]);
+    mostValuedFilms.push(films[i]);
   }
-
-  return mostRatedFilms;
+  console.log(mostValuedFilms);
+  return mostValuedFilms;
 };

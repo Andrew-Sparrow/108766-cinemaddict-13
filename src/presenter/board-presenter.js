@@ -43,7 +43,8 @@ export default class BoardPresenter {
 
     this._sortComponent = new SortMenuView();
     this._noFilmsComponent = new NoFilmsView();
-    // this._mostValuedFilmsByRating = getMostValuedFilms(this._films, sortByRating);
+    this._mostValuedFilmsByRating = getMostValuedFilms(this._films, sortByRating);
+    this._mostValuedFilmsByComments = getMostValuedFilms(this._films, sortByComments);
 
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
@@ -118,11 +119,9 @@ export default class BoardPresenter {
   }
 
   _handleShowMoreButtonClick() {
-    // console.log(this._renderedFilmCount);
     this._renderFilmCards(this._renderedFilmCount, this._renderedFilmCount + FILMS_COUNT_PER_STEP);
 
     this._renderedFilmCount += FILMS_COUNT_PER_STEP;
-    // console.log(this._renderedFilmCount);
 
     if (this._renderedFilmCount >= this._films.length) {
       remove(this._showMoreButtonComponent);
@@ -141,8 +140,7 @@ export default class BoardPresenter {
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
 
-  _renderExtraTop(title, sortByCallback) {
-    const mostRatedFilms = getMostValuedFilms(this._films, sortByCallback);
+  _renderExtraTop(title, mostRatedFilms) {
 
     if (mostRatedFilms.length !== 0 && parseInt(mostRatedFilms[0].rating, 10) !== 0) {
       const filmListComponent = new FilmsListView();
@@ -170,7 +168,13 @@ export default class BoardPresenter {
     this._renderSort();
 
     this._renderBasicFilmList();
-    this._renderExtraTop(`Top rated`, sortByRating);
-    this._renderExtraTop(`Most commented`, sortByComments);
+
+    if (this._mostValuedFilmsByRating.length !== 0 && parseInt(this._mostValuedFilmsByRating[0].rating, 10) !== 0) {
+      this._renderExtraTop(`Top rated`, this._mostValuedFilmsByRating);
+    }
+
+    if (this._mostValuedFilmsByComments.length !== 0 && this._mostValuedFilmsByComments[0].comments.length !== 0) {
+      this._renderExtraTop(`Most commented`, this._mostValuedFilmsByComments);
+    }
   }
 }
