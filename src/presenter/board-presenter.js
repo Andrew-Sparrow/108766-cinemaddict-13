@@ -9,6 +9,7 @@ import {SortType} from "../utils/consts";
 
 import {
   render,
+  updateItem,
   RenderPosition
 } from "../utils/render-utils";
 
@@ -107,6 +108,11 @@ export default class BoardPresenter {
 
   _renderNoFilms() {
     render(this._filmListComponent, this._noFilmsComponent, RenderPosition.BEFOREEND);
+  }
+
+  _handleFilmChange(updatedFilm) {
+    this._films = updateItem(this._films, updatedFilm);
+    this._filmPresenter.get(updatedFilm.id).init(updatedFilm);
   }
 
   _handleShowMoreButtonClick() {
