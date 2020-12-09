@@ -28,6 +28,7 @@ export default class BoardPresenter {
 
     this._films = films.slice();
     this._sourcedFilms = films.slice();
+    this._filmPresenter = new Map();
 
     this._currentSortType = SortType.DEFAULT;
 
@@ -85,6 +86,7 @@ export default class BoardPresenter {
   _renderFilmCard(filmListContainerComponent, film) {
     const filmPresenter = new FilmCardPresenter(filmListContainerComponent);
     filmPresenter.init(film);
+    this._filmPresenter.set(film.id, filmPresenter);
   }
 
   _renderFilmCards(from, to) {
@@ -118,8 +120,10 @@ export default class BoardPresenter {
   }
 
   _clearFilmList() {
-    this._filmListContainerComponent.innerHTML = ``;
+    this._filmPresenter.forEach((presenter) => presenter.destroy());
+    this._filmPresenter = {};
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
+    remove(this._showMoreButtonComponent);
   }
 
   _renderShowMoreButton() {

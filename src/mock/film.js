@@ -1,4 +1,5 @@
 import {GENRES} from "../utils/consts";
+import {nanoid} from 'nanoid';
 
 import {
   generateDate,
@@ -18,6 +19,7 @@ const MAX_RATING = `10`;
 export const generateFilm = () => {
 
   const film = {
+    id: null,
     poster: ``,
     title: null,
     originalTitle: null,
@@ -37,6 +39,7 @@ export const generateFilm = () => {
     isWatched: false
   };
 
+  film.id = nanoid();
   film.poster = getRandomPoster();
   film.title = `The Dance of Life`;
   film.originalTitle = `The Dance of Life`;
