@@ -1,7 +1,8 @@
-import FilmCardView from "../view/film-card-view";
 import PopupView from "../view/popup-view";
 import Abstract from "../view/abstract";
 import {remove} from "./utils";
+
+let prevPopupComponent = null;
 
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
@@ -38,13 +39,12 @@ export const renderTemplate = (container, template, place) => {
 };
 
 export const renderPopup = (film) => {
-  const popupComponent = new PopupView(film);
+  let popupComponent = new PopupView(film);
 
   const onEscKeyDown = (evt) => {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
       document.body.classList.remove(`hide-overflow`);
-      document.body.removeChild(popupComponent.getElement());
       remove(popupComponent);
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
@@ -52,33 +52,50 @@ export const renderPopup = (film) => {
 
   document.addEventListener(`keydown`, onEscKeyDown);
 
-  popupComponent.setPosterCloseClickHandler(() => {
+  popupComponent.setPopupCloseClickHandler(() => {
     document.removeEventListener(`keydown`, onEscKeyDown);
     document.body.classList.remove(`hide-overflow`);
-    document.body.removeChild(popupComponent.getElement());
     remove(popupComponent);
   });
 
-  render(document.body, popupComponent, RenderPosition.BEFOREEND);
+  if (prevPopupComponent === null) {
+    render(document.body, popupComponent, RenderPosition.BEFOREEND);
+    prevPopupComponent = popupComponent;
+  } else {
+    remove(prevPopupComponent);
+    render(document.body, popupComponent, RenderPosition.BEFOREEND);
+    prevPopupComponent = popupComponent;
+  }
 };
 
-export const renderFilmCard = (filmListElement, film) => {
-  const filmCardComponent = new FilmCardView(film);
+export const replace = (newChild, oldChild) => {
+  if (oldChild instanceof Abstract) {
+    oldChild = oldChild.getElement();
+  }
 
-  filmCardComponent.setCardPosterClickHandler(() => {
-    document.body.classList.add(`hide-overflow`);
-    renderPopup(film);
-  });
+  if (newChild instanceof Abstract) {
+    newChild = newChild.getElement();
+  }
 
-  filmCardComponent.setCardTitleClickHandler(() => {
-    document.body.classList.add(`hide-overflow`);
-    renderPopup(film);
-  });
+  const parent = oldChild.parentElement;
 
-  filmCardComponent.setCardCommentsClickHandler(() => {
-    document.body.classList.add(`hide-overflow`);
-    renderPopup(film);
-  });
+  if (parent === null || oldChild === null || newChild === null) {
+    throw new Error(`Can't replace unexisting elements`);
+  }
 
-  render(filmListElement, filmCardComponent, RenderPosition.BEFOREEND);
+  parent.replaceChild(newChild, oldChild);
+};
+
+export const updateItem = (items, updatedItem) => {
+  const index = items.findIndex((item) => item.id === updatedItem.id);
+
+  if (index === -1) {
+    return items;
+  }
+
+  return [
+    ...items.slice(0, index),
+    updatedItem,
+    ...items.slice(index + 1)
+  ];
 };
