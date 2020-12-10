@@ -11,6 +11,7 @@ import {remove} from "../utils/utils";
 
 export default class FilmCardPresenter {
   constructor(filmListContainerElement, handleChangeData) {
+
     this._filmListContainerElement = filmListContainerElement;
     this._handleChangeData = handleChangeData;
 
@@ -32,6 +33,7 @@ export default class FilmCardPresenter {
     this._filmCardComponent.setCardPosterClickHandler(this._handlePopupOpen);
     this._filmCardComponent.setCardTitleClickHandler(this._handlePopupOpen);
     this._filmCardComponent.setCardCommentsClickHandler(this._handlePopupOpen);
+
     this._filmCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._filmCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._filmCardComponent.setWatchedClickHandler(this._handleWatchedClick);

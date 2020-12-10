@@ -2,6 +2,8 @@ import PopupView from "../view/popup-view";
 import Abstract from "../view/abstract";
 import {remove} from "./utils";
 
+let prevPopupComponent = null;
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
@@ -37,13 +39,12 @@ export const renderTemplate = (container, template, place) => {
 };
 
 export const renderPopup = (film) => {
-  const popupComponent = new PopupView(film);
+  let popupComponent = new PopupView(film);
 
   const onEscKeyDown = (evt) => {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
       document.body.classList.remove(`hide-overflow`);
-      document.body.removeChild(popupComponent.getElement());
       remove(popupComponent);
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
@@ -51,14 +52,20 @@ export const renderPopup = (film) => {
 
   document.addEventListener(`keydown`, onEscKeyDown);
 
-  popupComponent.setPosterCloseClickHandler(() => {
+  popupComponent.setPopupCloseClickHandler(() => {
     document.removeEventListener(`keydown`, onEscKeyDown);
     document.body.classList.remove(`hide-overflow`);
-    document.body.removeChild(popupComponent.getElement());
     remove(popupComponent);
   });
 
-  render(document.body, popupComponent, RenderPosition.BEFOREEND);
+  if (prevPopupComponent === null) {
+    render(document.body, popupComponent, RenderPosition.BEFOREEND);
+    prevPopupComponent = popupComponent;
+  } else {
+    remove(prevPopupComponent);
+    render(document.body, popupComponent, RenderPosition.BEFOREEND);
+    prevPopupComponent = popupComponent;
+  }
 };
 
 export const replace = (newChild, oldChild) => {
