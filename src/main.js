@@ -11,7 +11,7 @@ import {
   RenderPosition,
 } from "./utils/render-utils";
 
-const FILMS_COUNT = 3;
+const FILMS_COUNT = 8;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilm);
 const filters = calculateFilmsInFilter(films);

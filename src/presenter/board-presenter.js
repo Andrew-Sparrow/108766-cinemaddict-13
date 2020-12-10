@@ -30,7 +30,8 @@ export default class BoardPresenter {
     this._films = films.slice();
     this._sourcedFilms = films.slice();
 
-    this._listRenderedPresenters = new Map();
+    this._listRenderedPresentersInBasicBlock = new Map();
+    this._listRenderedPresentersInExtraBlock = new Map();
 
     this._currentSortType = SortType.DEFAULT;
 
@@ -84,7 +85,7 @@ export default class BoardPresenter {
     const filmCardPresenter = new FilmCardPresenter(this._mainFilmListContainerComponent, this._handleFilmChange);
 
     filmCardPresenter.init(film, this._mainFilmListContainerComponent);
-    this._listRenderedPresenters.set(film.id, filmCardPresenter);
+    this._listRenderedPresentersInBasicBlock.set(film.id, filmCardPresenter);
   }
 
   _renderFilmCards(from, to) {
@@ -103,12 +104,12 @@ export default class BoardPresenter {
     }
   }
 
-  _clearFilmList() {
-    this._listRenderedPresenters.forEach((presenter) => {
+  _clearFilmListInBasicBlock() {
+    this._listRenderedPresentersInBasicBlock.forEach((presenter) => {
       presenter.destroy();
     });
 
-    this._listRenderedPresenters = new Map();
+    this._listRenderedPresentersInBasicBlock = new Map();
 
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
     remove(this._showMoreButtonComponent);
@@ -120,7 +121,13 @@ export default class BoardPresenter {
 
   _handleFilmChange(updatedFilm) {
     this._films = updateItem(this._films, updatedFilm);
-    this._listRenderedPresenters.get(updatedFilm.id).init(updatedFilm, this._mainFilmListContainerComponent);
+
+    // verifying if rendered FilmCard exists in basic Map,
+    // this was made for synchronizing clicking on favorites and etc. in Basic Block and Extra Blocks
+    if (this._listRenderedPresentersInBasicBlock.has(updatedFilm.id)) {
+      this._listRenderedPresentersInBasicBlock.get(updatedFilm.id).init(updatedFilm);
+    }
+    this._listRenderedPresentersInExtraBlock.get(updatedFilm.id).init(updatedFilm);
   }
 
   _handleShowMoreButtonClick() {
@@ -139,8 +146,9 @@ export default class BoardPresenter {
     }
 
     this._sortFilms(sortType);
-    this._clearFilmList();
+    this._clearFilmListInBasicBlock();
     this._renderBasicFilmList();
+
     this._clearExtraBlocks();
     this._renderExtraBlocks();
   }
@@ -150,43 +158,11 @@ export default class BoardPresenter {
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
 
-  // _renderFilmCardPresenterForExtraBlock(filmListContainerComponent, film) {
-  //   const filmCardPresenter = new FilmCardPresenter(this._handleFilmChange);
-  //
-  //   filmCardPresenter.init(film, filmListContainerComponent);
-  // }
-
-  // _renderExtraBlock(title, mostRatedFilms) {
-  //   const filmListComponent = new FilmsListView();
-  //   const filmListContainerComponent = filmListComponent.getFilmListContainerComponent();
-  //
-  //   render(this._filmsBoardComponent, filmListComponent, RenderPosition.BEFOREEND);
-  //
-  //   filmListComponent.addClassExtra();
-  //
-  //   filmListComponent.addTitleForFilmListBlock(title);
-  //
-  //   for (let film of mostRatedFilms) {
-  //     this._renderFilmCardPresenterForExtraBlock(filmListContainerComponent, film);
-  //   }
-  //
-  //   return filmListComponent;
-  // }
-  //
-  // _renderExtraBlocks() {
-  //   if (this._topRatedFilms.length !== 0 && parseInt(this._topRatedFilms[0].rating, 10) !== 0) {
-  //     this._filmListComponentTopRated = this._renderExtraBlock(`Top rated`, this._topRatedFilms);
-  //   }
-  //
-  //   if (this._mostCommentedFilms.length !== 0 && this._mostCommentedFilms[0].comments.length !== 0) {
-  //     this._filmListComponentMostCommented = this._renderExtraBlock(`Most commented`, this._mostCommentedFilms);
-  //   }
-  // }
-
   _renderFilmCardPresenterForExtraBlock(filmListContainerComponent, film) {
     const filmCardPresenter = new FilmCardPresenter(filmListContainerComponent, this._handleFilmChange);
 
     filmCardPresenter.init(film);
+    this._listRenderedPresentersInExtraBlock.set(film.id, filmCardPresenter);
   }
 
   _renderExtraBlock(title, mostRatedFilms) {
