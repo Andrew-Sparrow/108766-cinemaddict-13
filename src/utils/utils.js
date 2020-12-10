@@ -93,6 +93,5 @@ export const getMostValuedFilms = (films, sortByCallback) => {
   for (let i = 0; i < lengthExtraFilmList; i++) {
     mostValuedFilms.push(films[i]);
   }
-  console.log(mostValuedFilms);
   return mostValuedFilms;
 };

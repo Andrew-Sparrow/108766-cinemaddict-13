@@ -20,4 +20,14 @@ export default class FilmsListView extends AbstractView {
   getFilmListContainerComponent() {
     return this.getElement(`.films-list__container`);
   }
+
+  addTitleForFilmListBlock(title) {
+    const filmListTitleComponent = this.getFilmListTitleComponent();
+    filmListTitleComponent.classList.remove(`visually-hidden`);
+    filmListTitleComponent.innerHTML = title;
+  }
+
+  addClassExtra() {
+    this.getElement().classList.add(`films-list--extra`);
+  }
 }
