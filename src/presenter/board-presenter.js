@@ -123,7 +123,7 @@ export default class BoardPresenter {
     this._films = updateItem(this._films, updatedFilm);
 
     // verifying if rendered FilmCard exists in basic Map,
-    // this was made for synchronizing clicking on favorites and etc. in Basic Block and Extra Blocks
+    // this was made for synchronizing of clicking on favorites and etc. in Basic Block and Extra Blocks
     if (this._listRenderedPresentersInBasicBlock.has(updatedFilm.id)) {
       this._listRenderedPresentersInBasicBlock.get(updatedFilm.id).init(updatedFilm);
     }
