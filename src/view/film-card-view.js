@@ -51,6 +51,15 @@ export default class FilmCardView extends Abstract {
     return createFilmCardTemplate(this._film);
   }
 
+  updateElement() {
+    let prevElement = this.getElement();
+    const parent = prevElement.parentElement();
+    this.removeElement();
+
+    const newElement = this.getElement();
+    parent.replaceChild(newElement, prevElement);
+  }
+
   _posterClickHandler(evt) {
     evt.preventDefault();
     this._callback.posterClick();
