@@ -38,36 +38,6 @@ export const renderTemplate = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-export const renderPopup = (film) => {
-  let popupComponent = new PopupView(film);
-
-  const onEscKeyDown = (evt) => {
-    if (evt.key === `Escape` || evt.key === `Esc`) {
-      evt.preventDefault();
-      document.body.classList.remove(`hide-overflow`);
-      remove(popupComponent);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  document.addEventListener(`keydown`, onEscKeyDown);
-
-  popupComponent.setPopupCloseClickHandler(() => {
-    document.removeEventListener(`keydown`, onEscKeyDown);
-    document.body.classList.remove(`hide-overflow`);
-    remove(popupComponent);
-  });
-
-  if (prevPopupComponent === null) {
-    render(document.body, popupComponent, RenderPosition.BEFOREEND);
-    prevPopupComponent = popupComponent;
-  } else {
-    remove(prevPopupComponent);
-    render(document.body, popupComponent, RenderPosition.BEFOREEND);
-    prevPopupComponent = popupComponent;
-  }
-};
-
 export const replace = (newChild, oldChild) => {
   if (oldChild instanceof Abstract) {
     oldChild = oldChild.getElement();
