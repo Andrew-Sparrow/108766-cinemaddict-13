@@ -1,4 +1,4 @@
-import Abstract from "./abstract";
+import Smart from "./smart";
 
 import {getCommentsTemplate} from "./comments-view";
 import {formatReleaseDate} from "../utils/utils";
@@ -152,11 +152,15 @@ const createPopupTemplate = (film) => {
 </section>`;
 };
 
-export default class PopupView extends Abstract {
+export default class PopupView extends Smart {
   constructor(film) {
     super();
     this._film = film;
     this._popupCloseHandler = this._popupCloseHandler.bind(this);
+    this._emotionClickHandler = this._emotionClickHandler.bind(this);
+
+    this.getElement(`.film-details__emoji-list`)
+      .addEventListener(`click`, this._emotionClickHandler);
   }
 
   getTemplate() {
@@ -166,6 +170,11 @@ export default class PopupView extends Abstract {
   _popupCloseHandler(evt) {
     evt.preventDefault();
     this._callback.popupCloseClick();
+  }
+
+  _emotionClickHandler(evt) {
+    evt.preventDefault();
+    this.updateData(); // TODO
   }
 
   setPopupCloseClickHandler(callback) {

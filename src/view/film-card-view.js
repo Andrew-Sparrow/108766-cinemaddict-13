@@ -1,4 +1,4 @@
-import Abstract from "./abstract";
+import Smart from "./smart";
 import {truncateText} from "../utils/common-utils";
 
 const createFilmCardTemplate = (film) => {
@@ -35,7 +35,7 @@ const createFilmCardTemplate = (film) => {
         </article>`;
 };
 
-export default class FilmCardView extends Abstract {
+export default class FilmCardView extends Smart {
   constructor(film) {
     super();
     this._film = film;
@@ -49,27 +49,6 @@ export default class FilmCardView extends Abstract {
 
   getTemplate() {
     return createFilmCardTemplate(this._film);
-  }
-
-  updateData(updatedData) {
-    if (!updatedData) {
-      return;
-    }
-
-    this._film = Object.assign(
-        {},
-        this._film,
-        updatedData
-    );
-  }
-
-  updateElement() {
-    let prevElement = this.getElement();
-    const parent = prevElement.parentElement;
-    this.removeElement();
-
-    const newElement = this.getElement();
-    parent.replaceChild(newElement, prevElement);
   }
 
   _posterClickHandler(evt) {
