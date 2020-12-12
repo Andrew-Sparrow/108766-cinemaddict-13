@@ -4,6 +4,7 @@ import NoFilmsView from "../view/no-films";
 import ShowMoreView from "../view/show-more-view";
 import FilmsListView from "../view/films-list-view";
 import FilmCardPresenter from "./film-presenter";
+import PopupPresenter from "./popup-presenter";
 
 import {SortType} from "../utils/consts";
 
@@ -45,6 +46,9 @@ export default class BoardPresenter {
 
     this._sortComponent = new SortMenuView();
     this._noFilmsComponent = new NoFilmsView();
+
+    this._popupPresenter = new PopupPresenter();
+
     this._filmListComponentTopRated = null;
     this._filmListComponentMostCommented = null;
 
@@ -82,7 +86,11 @@ export default class BoardPresenter {
   }
 
   _renderFilmCardInBasicBlock(film) {
-    const filmCardPresenter = new FilmCardPresenter(this._mainFilmListContainerComponent, this._handleFilmChange);
+    const filmCardPresenter = new FilmCardPresenter(
+        this._mainFilmListContainerComponent,
+        this._handleFilmChange,
+        this._popupPresenter
+    );
 
     filmCardPresenter.init(film, this._mainFilmListContainerComponent);
     this._listRenderedPresentersInBasicBlock.set(film.id, filmCardPresenter);

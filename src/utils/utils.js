@@ -58,6 +58,7 @@ export const formatReleaseDate = (date) => {
 };
 
 export const remove = (component) => {
+  console.log(component);
   if (!(component instanceof Abstract)) {
     throw new Error(`Only components can be removed`);
   }
