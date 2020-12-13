@@ -1,7 +1,7 @@
 import Smart from "./smart";
 
 import {getCommentsTemplate} from "./comments-view";
-import {formatReleaseDate} from "../utils/utils";
+import {formatReleaseDate, remove} from "../utils/utils";
 
 const getFilmGenresTemplate = (film) => {
   const {genres} = film;
@@ -156,7 +156,10 @@ export default class PopupView extends Smart {
   constructor(film) {
     super();
     this._film = film;
+    this._imageElement = document.createElement(`img`);
+
     this._popupCloseHandler = this._popupCloseHandler.bind(this);
+
     this._emotionClickHandler = this._emotionClickHandler.bind(this);
 
     this._isFavoriteToggleHandler = this._isFavoriteToggleHandler.bind(this);
@@ -164,6 +167,7 @@ export default class PopupView extends Smart {
     this._isWatchedToggleHandler = this._isWatchedToggleHandler.bind(this);
 
     this._commentInputHandler = this._commentInputHandler.bind(this);
+    this._chosenEmotionContainer = this.getElement(`.film-details__add-emoji-label`);
 
     this._setInnerHandlers();
   }
@@ -179,6 +183,16 @@ export default class PopupView extends Smart {
 
   _emotionClickHandler(evt) {
     evt.preventDefault();
+
+    if (this._chosenEmotionContainer.contains(this._imageElement)) {
+      this._imageElement.src = evt.target.getAttribute(`src`);
+    } else {
+      this._imageElement.width = 55;
+      this._imageElement.height = 55;
+      this._chosenEmotionContainer.appendChild(this._imageElement);
+      this._imageElement.src = evt.target.getAttribute(`src`);
+    }
+
     this.updateData(); // TODO
   }
 
@@ -231,6 +245,12 @@ export default class PopupView extends Smart {
 
     this.getElement(`.film-details__comment-input`)
       .addEventListener(`input`, this._commentInputHandler);
+  }
+
+  reset(film) {
+    this.updateData(
+      // TaskEdit.parseTaskToData(film)
+    );
   }
 
   restoreHandlers() {
