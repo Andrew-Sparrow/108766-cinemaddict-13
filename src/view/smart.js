@@ -6,7 +6,7 @@ export default class Smart extends Abstract {
     this._film = {};
   }
 
-  updateData(updatedData) {
+  updateData(updatedData, justDataUpdating) {
     if (!updatedData) {
       return;
     }
@@ -16,6 +16,12 @@ export default class Smart extends Abstract {
         this._film,
         updatedData
     );
+
+    if (justDataUpdating) {
+      return;
+    }
+
+    this.updateElement();
   }
 
   updateElement() {

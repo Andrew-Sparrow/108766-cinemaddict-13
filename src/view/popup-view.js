@@ -162,6 +162,10 @@ export default class PopupView extends Smart {
     this._isFavoriteToggleHandler = this._isFavoriteToggleHandler.bind(this);
     this._isInWatchListToggleHandler = this._isInWatchListToggleHandler.bind(this);
     this._isWatchedToggleHandler = this._isWatchedToggleHandler.bind(this);
+
+    this._commentInputHandler = this._commentInputHandler.bind(this);
+
+    this._setInnerHandlers();
   }
 
   getTemplate() {
@@ -204,6 +208,14 @@ export default class PopupView extends Smart {
     this._callback.formSubmit(); // TODO
   }
 
+  _commentInputHandler(evt) {
+    // evt.preventDefault();
+    // this.updateData({
+    //   description: evt.target.value
+    // }, true); TODO
+    // console.log(evt.target.value);
+  }
+
   _setInnerHandlers() {
     this.getElement(`.film-details__emoji-list`)
       .addEventListener(`click`, this._emotionClickHandler);
@@ -216,6 +228,9 @@ export default class PopupView extends Smart {
 
     this.getElement(`.film-details__control-label--watched`)
       .addEventListener(`click`, this._isWatchedToggleHandler);
+
+    this.getElement(`.film-details__comment-input`)
+      .addEventListener(`input`, this._commentInputHandler);
   }
 
   restoreHandlers() {
