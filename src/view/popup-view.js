@@ -159,8 +159,9 @@ export default class PopupView extends Smart {
     this._popupCloseHandler = this._popupCloseHandler.bind(this);
     this._emotionClickHandler = this._emotionClickHandler.bind(this);
 
-    this.getElement(`.film-details__emoji-list`)
-      .addEventListener(`click`, this._emotionClickHandler);
+    this._isFavoriteToggleHandler = this._isFavoriteToggleHandler.bind(this);
+    this._isInWatchListToggleHandler = this._isInWatchListToggleHandler.bind(this);
+    this._isWatchedToggleHandler = this._isWatchedToggleHandler.bind(this);
   }
 
   getTemplate() {
@@ -175,6 +176,56 @@ export default class PopupView extends Smart {
   _emotionClickHandler(evt) {
     evt.preventDefault();
     this.updateData(); // TODO
+  }
+
+  _isFavoriteToggleHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      isFavorite: !this._film.isFavorite
+    });
+  }
+
+  _isInWatchListToggleHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      isInWatchlist: !this._film.isInWatchlist
+    });
+  }
+
+  _isWatchedToggleHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      isWatched: !this._film.isWatched
+    });
+  }
+
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit(); // TODO
+  }
+
+  _setInnerHandlers() {
+    this.getElement(`.film-details__emoji-list`)
+      .addEventListener(`click`, this._emotionClickHandler);
+
+    this.getElement(`.film-details__control-label--favorite`)
+      .addEventListener(`click`, this._isFavoriteToggleHandler);
+
+    this.getElement(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, this._isInWatchListToggleHandler);
+
+    this.getElement(`.film-details__control-label--watched`)
+      .addEventListener(`click`, this._isWatchedToggleHandler);
+  }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector(`form`).addEventListener(`submit`, this._formSubmitHandler);
   }
 
   setPopupCloseClickHandler(callback) {
