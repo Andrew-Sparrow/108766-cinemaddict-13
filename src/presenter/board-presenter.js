@@ -47,8 +47,6 @@ export default class BoardPresenter {
     this._sortComponent = new SortMenuView();
     this._noFilmsComponent = new NoFilmsView();
 
-    this._popupPresenter = new PopupPresenter();
-
     this._filmListComponentTopRated = null;
     this._filmListComponentMostCommented = null;
 
@@ -58,6 +56,8 @@ export default class BoardPresenter {
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+
+    this._popupPresenter = new PopupPresenter(this._handleFilmChange);
   }
 
   init() {
@@ -166,7 +166,7 @@ export default class BoardPresenter {
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
 
-  _renderFilmCardPresenterForExtraBlock(filmListContainerComponent, film) {
+  _renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film) {
     const filmCardPresenter = new FilmCardPresenter(filmListContainerComponent, this._handleFilmChange);
 
     filmCardPresenter.init(film);
@@ -184,7 +184,7 @@ export default class BoardPresenter {
     filmListComponent.addTitleForFilmListBlock(title);
 
     for (let film of mostRatedFilms) {
-      this._renderFilmCardPresenterForExtraBlock(filmListContainerComponent, film);
+      this._renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film);
     }
 
     return filmListComponent;

@@ -1,7 +1,7 @@
 import Smart from "./smart";
 
 import {getCommentsTemplate} from "./comments-view";
-import {formatReleaseDate, remove} from "../utils/utils";
+import {formatReleaseDate} from "../utils/utils";
 
 const getFilmGenresTemplate = (film) => {
   const {genres} = film;
@@ -65,7 +65,10 @@ const createPopupTemplate = (film) => {
     rating,
     description,
     ageRating,
-    comments
+    comments,
+    isInWatchlist,
+    isWatched,
+    isFavorite
   } = film;
 
   return `<section class="film-details">
@@ -101,13 +104,13 @@ const createPopupTemplate = (film) => {
 
       <section class="film-details__controls">
         <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
-        <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
+        <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist" ${isInWatchlist ? `checked` : ``}>Add to watchlist</label>
 
         <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
-        <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
+        <label for="watched" class="film-details__control-label film-details__control-label--watched" ${isWatched ? `checked` : ``}>Already watched</label>
 
         <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
-        <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
+        <label for="favorite" class="film-details__control-label film-details__control-label--favorite" ${isFavorite ? `checked` : ``}>Add to favorites</label>
       </section>
     </div>
 
@@ -161,10 +164,11 @@ export default class PopupView extends Smart {
     this._popupCloseHandler = this._popupCloseHandler.bind(this);
 
     this._emotionClickHandler = this._emotionClickHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
 
-    this._isFavoriteToggleHandler = this._isFavoriteToggleHandler.bind(this);
-    this._isInWatchListToggleHandler = this._isInWatchListToggleHandler.bind(this);
-    this._isWatchedToggleHandler = this._isWatchedToggleHandler.bind(this);
+    // this._isFavoriteToggleHandler = this._isFavoriteToggleHandler.bind(this);
+    // this._isInWatchListToggleHandler = this._isInWatchListToggleHandler.bind(this);
+    // this._isWatchedToggleHandler = this._isWatchedToggleHandler.bind(this);
 
     this._commentInputHandler = this._commentInputHandler.bind(this);
     this._chosenEmotionContainer = this.getElement(`.film-details__add-emoji-label`);
@@ -196,33 +200,33 @@ export default class PopupView extends Smart {
     this.updateData(); // TODO
   }
 
-  _isFavoriteToggleHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      isFavorite: !this._film.isFavorite
-    });
-  }
-
-  _isInWatchListToggleHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      isInWatchlist: !this._film.isInWatchlist
-    });
-  }
-
-  _isWatchedToggleHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      isWatched: !this._film.isWatched
-    });
-  }
+  // _isFavoriteToggleHandler(evt) {
+  //   evt.preventDefault();
+  //   this.updateData({
+  //     isFavorite: !this._film.isFavorite
+  //   });
+  // }
+  //
+  // _isInWatchListToggleHandler(evt) {
+  //   evt.preventDefault();
+  //   this.updateData({
+  //     isInWatchlist: !this._film.isInWatchlist
+  //   });
+  // }
+  //
+  // _isWatchedToggleHandler(evt) {
+  //   evt.preventDefault();
+  //   this.updateData({
+  //     isWatched: !this._film.isWatched
+  //   });
+  // }
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
     this._callback.formSubmit(); // TODO
   }
 
-  _commentInputHandler(evt) {
+  _commentInputHandler() {
     // evt.preventDefault();
     // this.updateData({
     //   description: evt.target.value
@@ -234,22 +238,27 @@ export default class PopupView extends Smart {
     this.getElement(`.film-details__emoji-list`)
       .addEventListener(`click`, this._emotionClickHandler);
 
-    this.getElement(`.film-details__control-label--favorite`)
-      .addEventListener(`click`, this._isFavoriteToggleHandler);
-
-    this.getElement(`.film-details__control-label--watchlist`)
-      .addEventListener(`click`, this._isInWatchListToggleHandler);
-
-    this.getElement(`.film-details__control-label--watched`)
-      .addEventListener(`click`, this._isWatchedToggleHandler);
-
     this.getElement(`.film-details__comment-input`)
       .addEventListener(`input`, this._commentInputHandler);
+
+    // this.getElement(`.film-details__control-label--favorite`)
+    //   .addEventListener(`click`, this._isFavoriteToggleHandler);
+    //
+    // this.getElement(`.film-details__control-label--watchlist`)
+    //   .addEventListener(`click`, this._isInWatchListToggleHandler);
+    //
+    // this.getElement(`.film-details__control-label--watched`)
+    //   .addEventListener(`click`, this._isWatchedToggleHandler);
   }
 
-  reset(film) {
+  _watchlistClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchlist();
+  }
+
+  reset() {
     this.updateData(
-      // TaskEdit.parseTaskToData(film)
+        // TaskEdit.parseTaskToData(film)
     );
   }
 
@@ -258,13 +267,33 @@ export default class PopupView extends Smart {
     this.setFormSubmitHandler(this._callback.formSubmit);
   }
 
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement(`.film-details__control-label--favorite`)
+     .addEventListener(`click`, this._favoriteClickHandler);
+  }
+
+  setWatchlistClickHandler(callback) {
+    this._callback.watchlist = callback;
+    this.getElement(`.film-details__control-label--watchlist`)
+     .addEventListener(`click`, this._watchlistClickHandler);
+  }
+
+  setWatchedClickHandler(callback) {
+    this._callback.watched = callback;
+    this.getElement(`.film-details__control-label--watched`)
+     .addEventListener(`click`, this._watchedClickHandler);
+  }
+
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
-    this.getElement().querySelector(`form`).addEventListener(`submit`, this._formSubmitHandler);
+    this.getElement().querySelector(`form`)
+     .addEventListener(`submit`, this._formSubmitHandler);
   }
 
   setPopupCloseClickHandler(callback) {
     this._callback.popupCloseClick = callback;
-    this.getElement(`.film-details__close-btn`).addEventListener(`click`, this._popupCloseHandler);
+    this.getElement(`.film-details__close-btn`)
+     .addEventListener(`click`, this._popupCloseHandler);
   }
 }
