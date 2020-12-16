@@ -57,7 +57,6 @@ export default class FilmCardPresenter {
 
   _handlePopupOpen() {
     document.body.classList.add(`hide-overflow`);
-    // renderPopup(this._film);
     this._popupPresenter.init(this._film);
   }
 

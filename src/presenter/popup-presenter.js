@@ -39,12 +39,14 @@ export default class PopupPresenter {
   }
 
   _handleAddToWatchList() {
+    this._film.isInWatchlist = !this._film.isInWatchlist;
+
     this._handleChangeData(
         Object.assign(
             {},
             this._film,
             {
-              isInWatchlist: !this._film.isInWatchlist
+              isInWatchlist: this._film.isInWatchlist
             }
         )
     );
@@ -60,6 +62,7 @@ export default class PopupPresenter {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
       document.body.classList.remove(`hide-overflow`);
+      // this._popupComponent.reset(this._film);
       remove(this._popupComponent);
       document.removeEventListener(`keydown`, this._handleEscKeyDown);
     }

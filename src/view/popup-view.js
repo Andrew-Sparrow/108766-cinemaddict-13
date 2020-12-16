@@ -180,6 +180,11 @@ export default class PopupView extends Smart {
     return createPopupTemplate(this._film);
   }
 
+  restoreHandlers() {
+    this._setInnerHandlers();
+    // this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
   _popupCloseHandler(evt) {
     evt.preventDefault();
     this._callback.popupCloseClick();
@@ -245,7 +250,7 @@ export default class PopupView extends Smart {
     //   .addEventListener(`click`, this._isFavoriteToggleHandler);
     //
     // this.getElement(`.film-details__control-label--watchlist`)
-    //   .addEventListener(`click`, this._isInWatchListToggleHandler);
+    //   .addEventListener(`click`, this._watchlistClickHandler);
     //
     // this.getElement(`.film-details__control-label--watched`)
     //   .addEventListener(`click`, this._isWatchedToggleHandler);
@@ -256,15 +261,10 @@ export default class PopupView extends Smart {
     this._callback.watchlist();
   }
 
-  reset() {
+  reset(film) {
     this.updateData(
-        // TaskEdit.parseTaskToData(film)
+        film
     );
-  }
-
-  restoreHandlers() {
-    this._setInnerHandlers();
-    this.setFormSubmitHandler(this._callback.formSubmit);
   }
 
   setFavoriteClickHandler(callback) {
@@ -285,11 +285,11 @@ export default class PopupView extends Smart {
      .addEventListener(`click`, this._watchedClickHandler);
   }
 
-  setFormSubmitHandler(callback) {
-    this._callback.formSubmit = callback;
-    this.getElement().querySelector(`form`)
-     .addEventListener(`submit`, this._formSubmitHandler);
-  }
+  // setFormSubmitHandler(callback) {
+  //   this._callback.formSubmit = callback;
+  //   this.getElement().querySelector(`form`)
+  //    .addEventListener(`submit`, this._formSubmitHandler);
+  // }
 
   setPopupCloseClickHandler(callback) {
     this._callback.popupCloseClick = callback;

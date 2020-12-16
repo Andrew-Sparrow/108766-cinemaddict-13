@@ -135,7 +135,12 @@ export default class BoardPresenter {
     if (this._listRenderedPresentersInBasicBlock.has(updatedFilm.id)) {
       this._listRenderedPresentersInBasicBlock.get(updatedFilm.id).init(updatedFilm);
     }
-    this._listRenderedPresentersInExtraBlock.get(updatedFilm.id).init(updatedFilm);
+
+    // verifying if rendered FilmCard exists in basic Map,
+    // this was made for synchronizing of clicking on favorites and etc. in Popup and Extra Blocks
+    if (this._listRenderedPresentersInExtraBlock.has(updatedFilm.id)) {
+      this._listRenderedPresentersInExtraBlock.get(updatedFilm.id).init(updatedFilm);
+    }
   }
 
   _handleShowMoreButtonClick() {
@@ -167,7 +172,11 @@ export default class BoardPresenter {
   }
 
   _renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film) {
-    const filmCardPresenter = new FilmCardPresenter(filmListContainerComponent, this._handleFilmChange);
+    const filmCardPresenter = new FilmCardPresenter(
+        filmListContainerComponent,
+        this._handleFilmChange,
+        this._popupPresenter
+    );
 
     filmCardPresenter.init(film);
     this._listRenderedPresentersInExtraBlock.set(film.id, filmCardPresenter);
