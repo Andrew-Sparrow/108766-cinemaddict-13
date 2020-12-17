@@ -164,11 +164,10 @@ export default class PopupView extends Smart {
     this._popupCloseHandler = this._popupCloseHandler.bind(this);
 
     this._emotionClickHandler = this._emotionClickHandler.bind(this);
-    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
 
-    // this._isFavoriteToggleHandler = this._isFavoriteToggleHandler.bind(this);
-    // this._isInWatchListToggleHandler = this._isInWatchListToggleHandler.bind(this);
-    // this._isWatchedToggleHandler = this._isWatchedToggleHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+    this._watchedClickHandler = this._watchedClickHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
 
     this._commentInputHandler = this._commentInputHandler.bind(this);
     this._chosenEmotionContainer = this.getElement(`.film-details__add-emoji-label`);
@@ -205,27 +204,6 @@ export default class PopupView extends Smart {
     this.updateData(); // TODO
   }
 
-  // _isFavoriteToggleHandler(evt) {
-  //   evt.preventDefault();
-  //   this.updateData({
-  //     isFavorite: !this._film.isFavorite
-  //   });
-  // }
-  //
-  // _isInWatchListToggleHandler(evt) {
-  //   evt.preventDefault();
-  //   this.updateData({
-  //     isInWatchlist: !this._film.isInWatchlist
-  //   });
-  // }
-  //
-  // _isWatchedToggleHandler(evt) {
-  //   evt.preventDefault();
-  //   this.updateData({
-  //     isWatched: !this._film.isWatched
-  //   });
-  // }
-
   _formSubmitHandler(evt) {
     evt.preventDefault();
     // this._callback.formSubmit(); // TODO
@@ -245,15 +223,16 @@ export default class PopupView extends Smart {
 
     this.getElement(`.film-details__comment-input`)
       .addEventListener(`input`, this._commentInputHandler);
+  }
 
-    // this.getElement(`.film-details__control-label--favorite`)
-    //   .addEventListener(`click`, this._isFavoriteToggleHandler);
-    //
-    // this.getElement(`.film-details__control-label--watchlist`)
-    //   .addEventListener(`click`, this._watchlistClickHandler);
-    //
-    // this.getElement(`.film-details__control-label--watched`)
-    //   .addEventListener(`click`, this._isWatchedToggleHandler);
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favorite();
+  }
+
+  _watchedClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watched();
   }
 
   _watchlistClickHandler(evt) {
@@ -268,21 +247,21 @@ export default class PopupView extends Smart {
   }
 
   setFavoriteClickHandler(callback) {
-    this._callback.favoriteClick = callback;
+    this._callback.favorite = callback;
     this.getElement(`.film-details__control-label--favorite`)
      .addEventListener(`click`, this._favoriteClickHandler);
-  }
-
-  setWatchlistClickHandler(callback) {
-    this._callback.watchlist = callback;
-    this.getElement(`.film-details__control-label--watchlist`)
-     .addEventListener(`click`, this._watchlistClickHandler);
   }
 
   setWatchedClickHandler(callback) {
     this._callback.watched = callback;
     this.getElement(`.film-details__control-label--watched`)
      .addEventListener(`click`, this._watchedClickHandler);
+  }
+
+  setWatchlistClickHandler(callback) {
+    this._callback.watchlist = callback;
+    this.getElement(`.film-details__control-label--watchlist`)
+     .addEventListener(`click`, this._watchlistClickHandler);
   }
 
   // setFormSubmitHandler(callback) {

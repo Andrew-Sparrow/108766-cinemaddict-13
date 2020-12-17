@@ -194,7 +194,7 @@ export default class BoardPresenter {
     }
   }
 
-  _renderExtraBlock(title, mostRatedFilms) {
+  _renderExtraBlock(blockTitle, mostValuedFilms) {
     const filmListComponent = new FilmsListView();
     const filmListContainerComponent = filmListComponent.getFilmListContainerComponent();
 
@@ -202,10 +202,10 @@ export default class BoardPresenter {
 
     filmListComponent.addClassExtra();
 
-    filmListComponent.addTitleForFilmListBlock(title);
+    filmListComponent.addTitleForFilmListBlock(blockTitle);
 
-    for (let film of mostRatedFilms) {
-      this._renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, title);
+    for (let film of mostValuedFilms) {
+      this._renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, blockTitle);
     }
 
     return filmListComponent;

@@ -16,7 +16,9 @@ export default class PopupPresenter {
     this._handlePopupCloseClick = this._handlePopupCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
 
-    this._handleAddToWatchList = this._handleAddToWatchList.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleWatchedClick = this._handleWatchedClick.bind(this);
+    this._handleWatchList = this._handleWatchList.bind(this);
   }
 
   init(film) {
@@ -26,7 +28,10 @@ export default class PopupPresenter {
 
     document.addEventListener(`keydown`, this._handleEscKeyDown);
     this._popupComponent.setPopupCloseClickHandler(this._handlePopupCloseClick);
-    this._popupComponent.setWatchlistClickHandler(this._handleAddToWatchList);
+
+    this._popupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._popupComponent.setWatchedClickHandler(this._handleWatchedClick);
+    this._popupComponent.setWatchlistClickHandler(this._handleWatchList);
 
     if (this._prevPopupComponent === null) {
       render(this._popupContainerElement, this._popupComponent, RenderPosition.BEFOREEND);
@@ -38,16 +43,22 @@ export default class PopupPresenter {
     }
   }
 
-  _handleAddToWatchList() {
-    let newData = Object.assign(
-        {},
-        this._film,
-        {
-          isInWatchlist: !this._film.isInWatchlist
-        }
-    );
+  _handleFeaturesClick(updatedData) {
+    const newData = Object.assign({}, this._film, updatedData);
     this._handleChangeData(newData);
     this.init(newData);
+  }
+
+  _handleFavoriteClick() {
+    this._handleFeaturesClick({isFavorite: !this._film.isFavorite});
+  }
+
+  _handleWatchedClick() {
+    this._handleFeaturesClick({isWatched: !this._film.isWatched});
+  }
+
+  _handleWatchList() {
+    this._handleFeaturesClick({isInWatchlist: !this._film.isInWatchlist});
   }
 
   _handlePopupCloseClick() {
