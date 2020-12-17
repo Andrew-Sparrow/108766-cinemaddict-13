@@ -39,17 +39,15 @@ export default class PopupPresenter {
   }
 
   _handleAddToWatchList() {
-    this._film.isInWatchlist = !this._film.isInWatchlist;
-
-    this._handleChangeData(
-        Object.assign(
-            {},
-            this._film,
-            {
-              isInWatchlist: this._film.isInWatchlist
-            }
-        )
+    let newData = Object.assign(
+        {},
+        this._film,
+        {
+          isInWatchlist: !this._film.isInWatchlist
+        }
     );
+    this._handleChangeData(newData);
+    this.init(newData);
   }
 
   _handlePopupCloseClick() {

@@ -210,6 +210,12 @@ export default class BoardPresenter {
   }
 
   _clearExtraBlocks() {
+    this._listRenderedPresentersInExtraBlock.forEach((presenter) => {
+      presenter.destroy();
+    });
+
+    this._listRenderedPresentersInExtraBlock = new Map();
+
     remove(this._filmListComponentTopRated);
     remove(this._filmListComponentMostCommented);
   }

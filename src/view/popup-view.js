@@ -228,7 +228,7 @@ export default class PopupView extends Smart {
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit(); // TODO
+    // this._callback.formSubmit(); // TODO
   }
 
   _commentInputHandler() {
