@@ -32,7 +32,8 @@ export default class BoardPresenter {
     this._sourcedFilms = films.slice();
 
     this._listRenderedPresentersInBasicBlock = new Map();
-    this._listRenderedPresentersInExtraBlock = new Map();
+    this._listRenderedPresentersInTopRatedBlock = new Map();
+    this._listRenderedPresentersInMostCommentedBlock = new Map();
 
     this._currentSortType = SortType.DEFAULT;
 
@@ -138,8 +139,12 @@ export default class BoardPresenter {
 
     // verifying if rendered FilmCard exists in basic Map,
     // this was made for synchronizing of clicking on favorites and etc. in Popup and Extra Blocks
-    if (this._listRenderedPresentersInExtraBlock.has(updatedFilm.id)) {
-      this._listRenderedPresentersInExtraBlock.get(updatedFilm.id).init(updatedFilm);
+    if (this._listRenderedPresentersInTopRatedBlock.has(updatedFilm.id)) {
+      this._listRenderedPresentersInTopRatedBlock.get(updatedFilm.id).init(updatedFilm);
+    }
+
+    if (this._listRenderedPresentersInMostCommentedBlock.has(updatedFilm.id)) {
+      this._listRenderedPresentersInMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
     }
   }
 
@@ -171,7 +176,7 @@ export default class BoardPresenter {
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
 
-  _renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film) {
+  _renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, blockTitle) {
     const filmCardPresenter = new FilmCardPresenter(
         filmListContainerComponent,
         this._handleFilmChange,
@@ -179,7 +184,14 @@ export default class BoardPresenter {
     );
 
     filmCardPresenter.init(film);
-    this._listRenderedPresentersInExtraBlock.set(film.id, filmCardPresenter);
+
+    if (blockTitle === `Top rated`) {
+      this._listRenderedPresentersInTopRatedBlock.set(film.id, filmCardPresenter);
+    }
+
+    if (blockTitle === `Most commented`) {
+      this._listRenderedPresentersInMostCommentedBlock.set(film.id, filmCardPresenter);
+    }
   }
 
   _renderExtraBlock(title, mostRatedFilms) {
@@ -193,7 +205,7 @@ export default class BoardPresenter {
     filmListComponent.addTitleForFilmListBlock(title);
 
     for (let film of mostRatedFilms) {
-      this._renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film);
+      this._renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, title);
     }
 
     return filmListComponent;
@@ -210,11 +222,16 @@ export default class BoardPresenter {
   }
 
   _clearExtraBlocks() {
-    this._listRenderedPresentersInExtraBlock.forEach((presenter) => {
+    this._listRenderedPresentersInTopRatedBlock.forEach((presenter) => {
       presenter.destroy();
     });
 
-    this._listRenderedPresentersInExtraBlock = new Map();
+    this._listRenderedPresentersInMostCommentedBlock.forEach((presenter) => {
+      presenter.destroy();
+    });
+
+    this._listRenderedPresentersInTopRatedBlock = new Map();
+    this._listRenderedPresentersInMostCommentedBlock = new Map();
 
     remove(this._filmListComponentTopRated);
     remove(this._filmListComponentMostCommented);
