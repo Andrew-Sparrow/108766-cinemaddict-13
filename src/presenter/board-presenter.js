@@ -8,21 +8,13 @@ import PopupPresenter from "./popup-presenter";
 
 import {SortType} from "../utils/consts";
 
-import {
-  render,
-  updateItem,
-  RenderPosition
-} from "../utils/render-utils";
+import {render, RenderPosition, updateItem} from "../utils/render-utils";
 
-import {
-  remove,
-  sortByDate,
-  sortByRating,
-  sortByComments,
-  getMostValuedFilms
-} from "../utils/utils";
+import {getMostValuedFilms, remove, sortByComments, sortByDate, sortByRating} from "../utils/utils";
 
 const FILMS_COUNT_PER_STEP = 5;
+
+export const collectionOfComments = new Map();
 
 export default class BoardPresenter {
   constructor(boardContainer, films) {
@@ -31,9 +23,9 @@ export default class BoardPresenter {
     this._films = films.slice();
     this._sourcedFilms = films.slice();
 
-    this._listRenderedPresentersInBasicBlock = new Map();
-    this._listRenderedPresentersInTopRatedBlock = new Map();
-    this._listRenderedPresentersInMostCommentedBlock = new Map();
+    this._listRenderedPresentersBasicBlock = new Map();
+    this._listRenderedPresentersTopRatedBlock = new Map();
+    this._listRenderedPresentersMostCommentedBlock = new Map();
 
     this._currentSortType = SortType.DEFAULT;
 
@@ -94,7 +86,7 @@ export default class BoardPresenter {
     );
 
     filmCardPresenter.init(film, this._mainFilmListContainerComponent);
-    this._listRenderedPresentersInBasicBlock.set(film.id, filmCardPresenter);
+    this._listRenderedPresentersBasicBlock.set(film.id, filmCardPresenter);
   }
 
   _renderFilmCards(from, to) {
@@ -114,11 +106,11 @@ export default class BoardPresenter {
   }
 
   _clearFilmListInBasicBlock() {
-    this._listRenderedPresentersInBasicBlock.forEach((presenter) => {
+    this._listRenderedPresentersBasicBlock.forEach((presenter) => {
       presenter.destroy();
     });
 
-    this._listRenderedPresentersInBasicBlock = new Map();
+    this._listRenderedPresentersBasicBlock = new Map();
 
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
     remove(this._showMoreButtonComponent);
@@ -133,18 +125,18 @@ export default class BoardPresenter {
 
     // verifying if rendered FilmCard exists in basic Map,
     // this was made for synchronizing of clicking on favorites and etc. in Basic Block and Extra Blocks
-    if (this._listRenderedPresentersInBasicBlock.has(updatedFilm.id)) {
-      this._listRenderedPresentersInBasicBlock.get(updatedFilm.id).init(updatedFilm);
+    if (this._listRenderedPresentersBasicBlock.has(updatedFilm.id)) {
+      this._listRenderedPresentersBasicBlock.get(updatedFilm.id).init(updatedFilm);
     }
 
     // verifying if rendered FilmCard exists in basic Map,
     // this was made for synchronizing of clicking on favorites and etc. in Popup and Extra Blocks
-    if (this._listRenderedPresentersInTopRatedBlock.has(updatedFilm.id)) {
-      this._listRenderedPresentersInTopRatedBlock.get(updatedFilm.id).init(updatedFilm);
+    if (this._listRenderedPresentersTopRatedBlock.has(updatedFilm.id)) {
+      this._listRenderedPresentersTopRatedBlock.get(updatedFilm.id).init(updatedFilm);
     }
 
-    if (this._listRenderedPresentersInMostCommentedBlock.has(updatedFilm.id)) {
-      this._listRenderedPresentersInMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
+    if (this._listRenderedPresentersMostCommentedBlock.has(updatedFilm.id)) {
+      this._listRenderedPresentersMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
     }
   }
 
@@ -186,11 +178,11 @@ export default class BoardPresenter {
     filmCardPresenter.init(film);
 
     if (blockTitle === `Top rated`) {
-      this._listRenderedPresentersInTopRatedBlock.set(film.id, filmCardPresenter);
+      this._listRenderedPresentersTopRatedBlock.set(film.id, filmCardPresenter);
     }
 
     if (blockTitle === `Most commented`) {
-      this._listRenderedPresentersInMostCommentedBlock.set(film.id, filmCardPresenter);
+      this._listRenderedPresentersMostCommentedBlock.set(film.id, filmCardPresenter);
     }
   }
 
@@ -222,16 +214,16 @@ export default class BoardPresenter {
   }
 
   _clearExtraBlocks() {
-    this._listRenderedPresentersInTopRatedBlock.forEach((presenter) => {
+    this._listRenderedPresentersTopRatedBlock.forEach((presenter) => {
       presenter.destroy();
     });
 
-    this._listRenderedPresentersInMostCommentedBlock.forEach((presenter) => {
+    this._listRenderedPresentersMostCommentedBlock.forEach((presenter) => {
       presenter.destroy();
     });
 
-    this._listRenderedPresentersInTopRatedBlock = new Map();
-    this._listRenderedPresentersInMostCommentedBlock = new Map();
+    this._listRenderedPresentersTopRatedBlock = new Map();
+    this._listRenderedPresentersMostCommentedBlock = new Map();
 
     remove(this._filmListComponentTopRated);
     remove(this._filmListComponentMostCommented);

@@ -1,5 +1,5 @@
-import {formatCommentDate} from "../utils/utils";
 import {collectionOfComments} from "../presenter/board-presenter";
+import {formatCommentDate} from "../utils/utils";
 import Smart from "./smart";
 
 const getCommentTemplate = (commentID) => {
@@ -8,7 +8,7 @@ const getCommentTemplate = (commentID) => {
 
   return `<li class="film-details__comment">
             <span class="film-details__comment-emoji">
-              <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-${comment.emotion}">
+              <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-smile">
             </span>
             <div>
               <p class="film-details__comment-text">${comment.text}</p>
@@ -21,21 +21,13 @@ const getCommentTemplate = (commentID) => {
           </li>`;
 };
 
-export const getCommentsTemplate = (commentsID) => {
-  const listOfCommentTemplates = commentsID.map((commentID) => getCommentTemplate(commentID)).join(``);
-
-  return `<ul class="film-details__comments-list">
-          ${listOfCommentTemplates}
-        </ul>`;
-};
-
-export default class CommentsView extends Smart {
-  constructor(film) {
+export default class CommentView extends Smart {
+  constructor(commentID) {
     super();
-    this._film = film;
+    this._commentID = commentID;
   }
 
   getTemplate() {
-    getCommentsTemplate(this._film.comments);
+    return getCommentTemplate(this._commentID);
   }
 }

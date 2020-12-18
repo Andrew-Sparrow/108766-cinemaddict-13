@@ -1,6 +1,7 @@
 import {nanoid} from 'nanoid';
 import {EMOTIONS} from "../utils/consts";
 import {getRandomInteger} from "../utils/common-utils";
+import {collectionOfComments} from "../presenter/board-presenter";
 
 const MIN_AMOUNT_OF_COMMENTS = 0;
 const MAX__AMOUNT_OF_COMMENTS = 5;
@@ -23,7 +24,6 @@ export const generateComment = () => {
   return comment;
 };
 
-export const collectionOfComments = new Map();
 
 export const generateComments = () => {
   const commentsID = [];

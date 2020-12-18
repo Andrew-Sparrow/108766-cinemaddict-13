@@ -2,7 +2,6 @@ import FilmCardView from "../view/film-card-view";
 
 import {
   render,
-  // renderPopup,
   replace,
   RenderPosition
 } from "../utils/render-utils";
