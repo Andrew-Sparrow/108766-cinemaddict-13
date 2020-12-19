@@ -1,5 +1,7 @@
-import CommentView from "../view/comments-view";
+import CommentView from "../view/comment-view";
+
 import {remove} from "../utils/utils";
+
 import {
   render,
   RenderPosition

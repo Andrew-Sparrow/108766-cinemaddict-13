@@ -1,6 +1,6 @@
 import Smart from "./smart";
 
-import {getCommentsTemplate} from "./comments-view";
+// import {getCommentsTemplate} from "./comments-view";
 import {formatReleaseDate} from "../utils/utils";
 
 const getFilmGenresTemplate = (film) => {
@@ -117,9 +117,6 @@ const createPopupTemplate = (film) => {
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
-
-        ${getCommentsTemplate(comments)}
-
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label"></div>
 
@@ -182,6 +179,14 @@ export default class PopupView extends Smart {
   restoreHandlers() {
     this._setInnerHandlers();
     // this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
+  getCommentsWrapContainer() {
+    return this.getElement(`.film-details__comments-wrap`);
+  }
+
+  getCommentsTitle() {
+    return this.getElement(`.film-details__comments-title`);
   }
 
   _popupCloseHandler(evt) {

@@ -9,19 +9,22 @@ export default class CommentsPresenter {
     this._listRenderedComments = [];
   }
 
-  init(commentsID) {
-    this._commentsID = commentsID;
-    this._filmCommentsComponent = new CommentsView(this._commentsID);
-    // this._filmCommentsElement = this._filmCommentsComponent;
+  init(film) {
+    this._commentsID = film.comments;
+    this._filmCommentsComponent = new CommentsView();
 
-    render(this._commentsContainer, this._filmCommentsComponent, RenderPosition.BEFOREEND);
+    render(this._commentsContainer, this._filmCommentsComponent, RenderPosition.AFTEREND);
 
-    this._renderComments(commentsID);
+    this._renderComments(this._commentsID);
   }
 
   destroy() {
-    this._listRenderedComments.forEach((commentPresenter) => commentPresenter.destroy());
+    this._clearComments();
     remove(this._filmCommentsComponent);
+  }
+
+  _clearComments() {
+    this._listRenderedComments.forEach((commentPresenter) => commentPresenter.destroy());
   }
 
   _renderComment(commentID) {

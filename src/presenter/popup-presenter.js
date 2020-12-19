@@ -6,6 +6,8 @@ import {
   RenderPosition
 } from "../utils/render-utils";
 
+import CommentsPresenter from "./comments-presenter";
+
 export default class PopupPresenter {
   constructor(handleChangeData) {
     this._popupContainerElement = document.body;
@@ -35,12 +37,20 @@ export default class PopupPresenter {
 
     if (this._prevPopupComponent === null) {
       render(this._popupContainerElement, this._popupComponent, RenderPosition.BEFOREEND);
+      this._renderCommentsBlock(this._film);
       this._prevPopupComponent = this._popupComponent;
     } else {
       remove(this._prevPopupComponent);
       render(this._popupContainerElement, this._popupComponent, RenderPosition.BEFOREEND);
+      this._renderCommentsBlock(this._film);
       this._prevPopupComponent = this._popupComponent;
     }
+  }
+
+  _renderCommentsBlock(film) {
+    const commentsPresenter = new CommentsPresenter(this._popupComponent.getCommentsTitle());
+
+    commentsPresenter.init(film);
   }
 
   _handleFeaturesClick(updatedData) {
