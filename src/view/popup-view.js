@@ -160,29 +160,13 @@ export default class PopupView extends Smart {
 
     this._popupCloseHandler = this._popupCloseHandler.bind(this);
 
-    this._emotionClickHandler = this._emotionClickHandler.bind(this);
-
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._watchedClickHandler = this._watchedClickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
-
-    this._commentInputHandler = this._commentInputHandler.bind(this);
-    this._chosenEmotionContainer = this.getElement(`.film-details__add-emoji-label`);
-
-    this._setInnerHandlers();
   }
 
   getTemplate() {
     return createPopupTemplate(this._film);
-  }
-
-  restoreHandlers() {
-    this._setInnerHandlers();
-    // this.setFormSubmitHandler(this._callback.formSubmit);
-  }
-
-  getCommentsWrapContainer() {
-    return this.getElement(`.film-details__comments-wrap`);
   }
 
   getCommentsTitle() {
@@ -192,42 +176,6 @@ export default class PopupView extends Smart {
   _popupCloseHandler(evt) {
     evt.preventDefault();
     this._callback.popupCloseClick();
-  }
-
-  _emotionClickHandler(evt) {
-    evt.preventDefault();
-
-    if (this._chosenEmotionContainer.contains(this._imageElement)) {
-      this._imageElement.src = evt.target.getAttribute(`src`);
-    } else {
-      this._imageElement.width = 55;
-      this._imageElement.height = 55;
-      this._chosenEmotionContainer.appendChild(this._imageElement);
-      this._imageElement.src = evt.target.getAttribute(`src`);
-    }
-
-    this.updateData(); // TODO
-  }
-
-  _formSubmitHandler(evt) {
-    evt.preventDefault();
-    // this._callback.formSubmit(); // TODO
-  }
-
-  _commentInputHandler() {
-    // evt.preventDefault();
-    // this.updateData({
-    //   description: evt.target.value
-    // }, true); TODO
-    // console.log(evt.target.value);
-  }
-
-  _setInnerHandlers() {
-    this.getElement(`.film-details__emoji-list`)
-      .addEventListener(`click`, this._emotionClickHandler);
-
-    this.getElement(`.film-details__comment-input`)
-      .addEventListener(`input`, this._commentInputHandler);
   }
 
   _favoriteClickHandler(evt) {
@@ -243,12 +191,6 @@ export default class PopupView extends Smart {
   _watchlistClickHandler(evt) {
     evt.preventDefault();
     this._callback.watchlist();
-  }
-
-  reset(film) {
-    this.updateData(
-        film
-    );
   }
 
   setFavoriteClickHandler(callback) {
@@ -268,12 +210,6 @@ export default class PopupView extends Smart {
     this.getElement(`.film-details__control-label--watchlist`)
      .addEventListener(`click`, this._watchlistClickHandler);
   }
-
-  // setFormSubmitHandler(callback) {
-  //   this._callback.formSubmit = callback;
-  //   this.getElement().querySelector(`form`)
-  //    .addEventListener(`submit`, this._formSubmitHandler);
-  // }
 
   setPopupCloseClickHandler(callback) {
     this._callback.popupCloseClick = callback;

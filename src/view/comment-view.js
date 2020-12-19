@@ -30,4 +30,14 @@ export default class CommentView extends Smart {
   getTemplate() {
     return getCommentTemplate(this._commentID);
   }
+
+  _deleteCommentClickHandler(evt) {
+    evt.preventDefault();
+    this.callback.commentDeleteClick();
+  }
+
+  setDeleteCommentClick(callback) {
+    this._callback.commentDeleteClick = callback;
+    this.getElement(`.film-details__comment-delete`).addEventListener(`click`, this._deleteCommentClickHandler);
+  }
 }
