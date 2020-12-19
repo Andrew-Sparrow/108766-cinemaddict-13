@@ -127,7 +127,6 @@ export default class PopupView extends Smart {
   constructor(film) {
     super();
     this._film = film;
-    this._imageElement = document.createElement(`img`);
 
     this._popupCloseHandler = this._popupCloseHandler.bind(this);
 

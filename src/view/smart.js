@@ -3,7 +3,7 @@ import Abstract from "./abstract";
 export default class Smart extends Abstract {
   constructor() {
     super();
-    this._film = {};
+    this._data = {};
   }
 
   updateData(updatedData, justDataUpdating) {
@@ -11,9 +11,9 @@ export default class Smart extends Abstract {
       return;
     }
 
-    this._film = Object.assign(
+    this._data = Object.assign(
         {},
-        this._film,
+        this._data,
         updatedData
     );
 

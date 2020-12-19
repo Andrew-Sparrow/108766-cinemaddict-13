@@ -1,6 +1,19 @@
 import Smart from "./smart";
 
-const getNewCommentTemplate = (checkedEmoji) => {
+const BLANK_COMMENT = {
+  id: null,
+  text: ``,
+  emotion: null,
+  author: null,
+  date: null,
+};
+
+const getNewCommentTemplate = (comment) => {
+  const {
+    text,
+    emotion
+  } = comment;
+
   return `<div class="film-details__new-comment">
             <div class="film-details__add-emoji-label"></div>
   
@@ -14,7 +27,7 @@ const getNewCommentTemplate = (checkedEmoji) => {
                  type="radio"
                  id="emoji-smile"
                  value="smile"
-                 ${checkedEmoji === `smile` ? `checked` : ``}>
+                 ${emotion === `smile` ? `checked` : ``}>
               <label class="film-details__emoji-label" for="emoji-smile">
                 <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
               </label>
@@ -24,7 +37,7 @@ const getNewCommentTemplate = (checkedEmoji) => {
                 type="radio"
                 id="emoji-sleeping"
                 value="sleeping"
-                ${checkedEmoji === `sleeping` ? `checked` : ``}>
+                ${emotion === `sleeping` ? `checked` : ``}>
               <label class="film-details__emoji-label" for="emoji-sleeping">
                 <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
               </label>
@@ -34,7 +47,7 @@ const getNewCommentTemplate = (checkedEmoji) => {
                 type="radio"
                 id="emoji-puke"
                 value="puke"
-                ${checkedEmoji === `puke` ? `checked` : ``}>
+                ${emotion === `puke` ? `checked` : ``}>
               <label class="film-details__emoji-label" for="emoji-puke">
                 <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
               </label>
@@ -44,7 +57,7 @@ const getNewCommentTemplate = (checkedEmoji) => {
                 type="radio"
                 id="emoji-angry"
                 value="angry"
-                ${checkedEmoji === `angry` ? `checked` : ``}>
+                ${emotion === `angry` ? `checked` : ``}>
               <label class="film-details__emoji-label" for="emoji-angry">
                 <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
               </label>
@@ -53,18 +66,20 @@ const getNewCommentTemplate = (checkedEmoji) => {
 };
 
 export default class NewCommentView extends Smart {
-  constructor(checkedEmoji) {
+  constructor(comment = BLANK_COMMENT) {
     super();
-    this._checkedEmoji = checkedEmoji;
-    this._chosenEmotionContainer = this.getElement(`.film-details__add-emoji-label`);
+    this._comment = comment;
+    this._imageElement = document.createElement(`img`);
 
-    this._commentSubmitHandler = this._commentSubmitHandler.bind();
+    this._emojiClickHandler = this._emojiClickHandler.bind(this);
+    this._commentInputHandler = this._commentInputHandler.bind(this);
+    this._commentSubmitHandler = this._commentSubmitHandler.bind(this);
 
     this._setInnerHandlers();
   }
 
   getTemplate() {
-    return getNewCommentTemplate(this._checkedEmoji);
+    return getNewCommentTemplate(this._comment);
   }
 
   restoreHandlers() {
@@ -78,26 +93,6 @@ export default class NewCommentView extends Smart {
     // );
   }
 
-  _emotionClickHandler(evt) {
-    evt.preventDefault();
-
-    if (this._chosenEmotionContainer.contains(this._imageElement)) {
-      this._imageElement.src = evt.target.getAttribute(`src`);
-    } else {
-      this._imageElement.width = 55;
-      this._imageElement.height = 55;
-      this._chosenEmotionContainer.appendChild(this._imageElement);
-      this._imageElement.src = evt.target.getAttribute(`src`);
-    }
-
-    this.updateData(); // TODO
-  }
-
-  _commentSubmitHandler(evt) {
-    evt.preventDefault();
-    // this._callback.formSubmit(); // TODO
-  }
-
   _commentInputHandler() {
     // evt.preventDefault();
     // this.updateData({
@@ -106,12 +101,34 @@ export default class NewCommentView extends Smart {
     // console.log(evt.target.value);
   }
 
+  _commentSubmitHandler(evt) {
+    evt.preventDefault();
+    // this._callback.formSubmit(); // TODO
+  }
+
   _setInnerHandlers() {
     this.getElement(`.film-details__emoji-list`)
-      .addEventListener(`click`, this._emotionClickHandler);
+      .addEventListener(`click`, this._emojiClickHandler);
 
     this.getElement(`.film-details__comment-input`)
       .addEventListener(`input`, this._commentInputHandler);
+  }
+
+  _emojiClickHandler(evt) {
+    evt.preventDefault();
+
+    const chosenEmotionContainer = this.getElement(`.film-details__add-emoji-label`);
+
+    if (chosenEmotionContainer.contains(this._imageElement)) {
+      this._imageElement.src = evt.target.getAttribute(`src`);
+    } else {
+      this._imageElement.width = 55;
+      this._imageElement.height = 55;
+      chosenEmotionContainer.appendChild(this._imageElement);
+      this._imageElement.src = evt.target.getAttribute(`src`);
+    }
+
+    this.updateData(); // TODO
   }
 
   setCommentSubmitHandler(callback) {
