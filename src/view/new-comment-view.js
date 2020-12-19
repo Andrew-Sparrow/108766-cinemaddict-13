@@ -52,7 +52,7 @@ const getNewCommentTemplate = (checkedEmoji) => {
           </div>`;
 };
 
-export default class newCommentView extends Smart {
+export default class NewCommentView extends Smart {
   constructor(checkedEmoji) {
     super();
     this._checkedEmoji = checkedEmoji;
