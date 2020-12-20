@@ -9,7 +9,7 @@ export default class NewCommentPresenter {
   }
 
   init() {
-    this._newCommentComponent = new NewCommentView(); // TODO add argument
+    this._newCommentComponent = new NewCommentView();
     render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
   }
 
