@@ -19,8 +19,9 @@ const getNewCommentTemplate = (comment) => {
               ${emotion ? `<img src="images/emoji/${emotion}.png" width="55" height="55" alt="emoji-smile">` : ``}
             </div>
 
-            <label class="film-details__comment-label">
+            <label class="film-details__comment-label tooltip">
               <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${text}</textarea>
+              <span class="tooltiptext">Please, write comment</span>
             </label>
 
             <div class="film-details__emoji-list">
@@ -88,14 +89,15 @@ export default class NewCommentView extends Smart {
     this.setCommentSubmitHandler(this._callback.formSubmit);
   }
 
-  reset(film) {
-    // this.updateData(
-    //   TaskEdit.parseTaskToData(task)
-    // );
-  }
+  // reset(film) {
+  //   this.updateData(
+  //   TaskEdit.parseTaskToData(task)
+  //  );
+  // }
 
   _commentInputHandler(evt) {
     evt.preventDefault();
+
     this.updateData({
       text: evt.target.value
     }, true);
@@ -103,7 +105,19 @@ export default class NewCommentView extends Smart {
 
   _commentSubmitHandler(evt) {
     // evt.preventDefault();
-    // this._callback.formSubmit(); // TODO
+    // здесь с preventDefault() не работает ввод в поле textarea, так оставить ?
+
+    const textAreaElement = this.getElement(`.film-details__comment-input`);
+
+    if (evt.ctrlKey && evt.keyCode === 13) {
+      if (this._data.emotion && this._data.text) {
+        // console.log(evt.keyCode);
+        // this._callback.formSubmit(); // TODO
+      } else {
+        textAreaElement.style.border = `2px solid #ff0000`;
+        this.getElement(`.tooltiptext`).style.visibility = `visible`;
+      }
+    }
   }
 
   _setInnerHandlers() {
@@ -131,7 +145,11 @@ export default class NewCommentView extends Smart {
 
   setCommentSubmitHandler(callback) {
     this._callback.formSubmit = callback;
-    this.getElement().querySelector(`.film-details__comment-input`)
-     .addEventListener(`keydown`, this._commentSubmitHandler);
+
+    // this.getElement()
+    //   .querySelector(`.film-details__comment-input`)
+    //   .addEventListener(`keypress`, this._commentSubmitHandler);
+
+    document.addEventListener(`keydown`, this._commentSubmitHandler);
   }
 }
