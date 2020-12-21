@@ -131,6 +131,8 @@ export default class NewCommentView extends Smart {
   _emojiClickHandler(evt) {
     evt.preventDefault();
 
+    this._isEmojiChosen = true;
+
     if (evt.target.tagName === `IMG`) {
       this.updateData({emotion: evt.target.dataset.emoji});
     }
@@ -145,10 +147,6 @@ export default class NewCommentView extends Smart {
 
   setCommentSubmitHandler(callback) {
     this._callback.formSubmit = callback;
-
-    // this.getElement()
-    //   .querySelector(`.film-details__comment-input`)
-    //   .addEventListener(`keypress`, this._commentSubmitHandler);
 
     document.addEventListener(`keydown`, this._commentSubmitHandler);
   }

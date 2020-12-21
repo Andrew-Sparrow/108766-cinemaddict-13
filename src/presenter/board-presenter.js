@@ -138,6 +138,10 @@ export default class BoardPresenter {
     if (this._listRenderedPresentersMostCommentedBlock.has(updatedFilm.id)) {
       this._listRenderedPresentersMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
     }
+
+    if (this._isPopupRendered) {
+      this._popupPresenter.init(updatedFilm);
+    }
   }
 
   _handleShowMoreButtonClick() {

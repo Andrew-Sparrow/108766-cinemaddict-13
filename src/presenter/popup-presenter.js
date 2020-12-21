@@ -30,6 +30,7 @@ export default class PopupPresenter {
     this._popupComponent = new PopupView(this._film);
 
     document.addEventListener(`keydown`, this._handleEscKeyDown);
+
     this._popupComponent.setPopupCloseClickHandler(this._handlePopupCloseClick);
 
     this._popupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
@@ -57,8 +58,8 @@ export default class PopupPresenter {
   }
 
   _renderNewCommentBlock() {
-    const newComment = new NewCommentPresenter(this._popupComponent.getCommentsWrapElement());
-    newComment.init();
+    this._newCommentPresenter = new NewCommentPresenter(this._popupComponent.getCommentsWrapElement());
+    this._newCommentPresenter.init();
   }
 
   _handleFeaturesClick(updatedData) {

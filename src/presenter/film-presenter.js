@@ -14,6 +14,7 @@ export default class FilmCardPresenter {
     this._filmListContainerElement = filmListContainerElement;
     this._handleChangeData = handleChangeData;
     this._popupPresenter = popupPresenter;
+    this._isPopupOpened = false;
 
     this._filmCardComponent = null;
 
@@ -57,30 +58,39 @@ export default class FilmCardPresenter {
   _handlePopupOpen() {
     document.body.classList.add(`hide-overflow`);
     this._popupPresenter.init(this._film);
+    this._isPopupOpened = true;
   }
 
   _handleFavoriteClick() {
-    this._handleChangeData(
-        Object.assign(
-            {},
-            this._film,
-            {
-              isFavorite: !this._film.isFavorite
-            }
-        )
+    const newData = Object.assign(
+        {},
+        this._film,
+        {
+          isFavorite: !this._film.isFavorite
+        }
     );
+
+    this._handleChangeData(newData);
+
+    if (this._isPopupOpened) {
+      this._popupPresenter.init(newData);
+    }
   }
 
   _handleWatchlistClick() {
-    this._handleChangeData(
-        Object.assign(
-            {},
-            this._film,
-            {
-              isInWatchlist: !this._film.isInWatchlist
-            }
-        )
+    const newData = Object.assign(
+        {},
+        this._film,
+        {
+          isInWatchlist: !this._film.isInWatchlist
+        }
     );
+
+    this._handleChangeData(newData);
+
+    if (this._isPopupOpened) {
+      this._popupPresenter.init(newData);
+    }
   }
 
   _handleWatchedClick() {
