@@ -10,11 +10,14 @@ import CommentsPresenter from "./comments-presenter";
 import NewCommentPresenter from "./new-comment-presenter";
 
 export default class PopupPresenter {
-  constructor(handleChangeData) {
+  constructor(handleChangeData, popupState) {
     this._popupContainerElement = document.body;
     this._handleChangeData = handleChangeData;
     this._popupComponent = null;
     this._prevPopupComponent = null;
+    this._newCommentPresenter = null;
+    this._isNewCommentRendered = false;
+    this._popupState = popupState;
 
     this._handlePopupCloseClick = this._handlePopupCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
@@ -24,8 +27,10 @@ export default class PopupPresenter {
     this._handleWatchList = this._handleWatchList.bind(this);
   }
 
+  // init(film, isFeaturesRerender) {
   init(film) {
     this._film = film;
+    this._popupState.open = true;
 
     this._popupComponent = new PopupView(this._film);
 
@@ -40,11 +45,15 @@ export default class PopupPresenter {
     if (this._prevPopupComponent === null) {
       render(this._popupContainerElement, this._popupComponent, RenderPosition.BEFOREEND);
       this._renderCommentsBlock(this._film);
+
       this._renderNewCommentBlock();
       this._prevPopupComponent = this._popupComponent;
+    // } else if (isFeaturesRerender) {
+    //   console.log(`asdf`);
     } else {
       remove(this._prevPopupComponent);
       render(this._popupContainerElement, this._popupComponent, RenderPosition.BEFOREEND);
+
       this._renderCommentsBlock(this._film);
       this._renderNewCommentBlock();
       this._prevPopupComponent = this._popupComponent;
@@ -58,14 +67,16 @@ export default class PopupPresenter {
   }
 
   _renderNewCommentBlock() {
-    this._newCommentPresenter = new NewCommentPresenter(this._popupComponent.getCommentsWrapElement());
+    if (!this._isNewCommentRendered) {
+      this._newCommentPresenter = new NewCommentPresenter(this._popupComponent.getCommentsWrapElement());
+    }
     this._newCommentPresenter.init();
   }
 
   _handleFeaturesClick(updatedData) {
     const newData = Object.assign({}, this._film, updatedData);
     this._handleChangeData(newData);
-    this.init(newData);
+    this.init(newData, true);
   }
 
   _handleFavoriteClick() {
@@ -84,6 +95,7 @@ export default class PopupPresenter {
     document.removeEventListener(`keydown`, this._handleEscKeyDown);
     document.body.classList.remove(`hide-overflow`);
     remove(this._popupComponent);
+    this._popupState.open = false;
   }
 
   _handleEscKeyDown(evt) {
@@ -92,6 +104,7 @@ export default class PopupPresenter {
       document.body.classList.remove(`hide-overflow`);
       // this._popupComponent.reset(this._data);
       remove(this._popupComponent);
+      this._popupState.open = false;
       document.removeEventListener(`keydown`, this._handleEscKeyDown);
     }
   }

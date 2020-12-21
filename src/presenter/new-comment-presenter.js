@@ -10,6 +10,7 @@ export default class NewCommentPresenter {
 
   init() {
     this._newCommentComponent = new NewCommentView();
+
     render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
     this._newCommentComponent.setCommentSubmitHandler();
   }

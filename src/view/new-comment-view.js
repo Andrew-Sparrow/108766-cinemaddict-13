@@ -131,8 +131,6 @@ export default class NewCommentView extends Smart {
   _emojiClickHandler(evt) {
     evt.preventDefault();
 
-    this._isEmojiChosen = true;
-
     if (evt.target.tagName === `IMG`) {
       this.updateData({emotion: evt.target.dataset.emoji});
     }

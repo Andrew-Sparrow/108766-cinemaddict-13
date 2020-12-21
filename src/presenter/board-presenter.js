@@ -8,7 +8,7 @@ import PopupPresenter from "./popup-presenter";
 
 import {SortType} from "../utils/consts";
 
-import {render, RenderPosition, updateItem} from "../utils/render-utils";
+import {render, RenderPosition, updateItems} from "../utils/render-utils";
 
 import {getMostValuedFilms, remove, sortByComments, sortByDate, sortByRating} from "../utils/utils";
 
@@ -50,12 +50,19 @@ export default class BoardPresenter {
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._popupPresenter = new PopupPresenter(this._handleFilmChange);
+    this._getIsPopupRendered = this._getIsPopupRendered.bind(this);
+
+    this._popupState = {open: false};
+    this._popupPresenter = new PopupPresenter(this._handleFilmChange, this._popupState);
   }
 
   init() {
     this._renderBoard();
     render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
+  }
+
+  _getIsPopupRendered() {
+    return this._popupState;
   }
 
   _sortFilms(sortType) {
@@ -121,7 +128,7 @@ export default class BoardPresenter {
   }
 
   _handleFilmChange(updatedFilm) {
-    this._films = updateItem(this._films, updatedFilm);
+    this._films = updateItems(this._films, updatedFilm);
 
     // verifying if rendered FilmCard exists in basic Map,
     // this was made for synchronizing of clicking on favorites and etc. in Basic Block and Extra Blocks
@@ -139,7 +146,7 @@ export default class BoardPresenter {
       this._listRenderedPresentersMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
     }
 
-    if (this._isPopupRendered) {
+    if (this._popupState.open) {
       this._popupPresenter.init(updatedFilm);
     }
   }
