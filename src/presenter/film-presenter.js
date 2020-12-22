@@ -2,7 +2,6 @@ import FilmCardView from "../view/film-card-view";
 
 import {
   render,
-  renderPopup,
   replace,
   RenderPosition
 } from "../utils/render-utils";
@@ -10,10 +9,11 @@ import {
 import {remove} from "../utils/utils";
 
 export default class FilmCardPresenter {
-  constructor(filmListContainerElement, handleChangeData) {
+  constructor(filmListContainerElement, handleChangeData, popupPresenter) {
 
     this._filmListContainerElement = filmListContainerElement;
     this._handleChangeData = handleChangeData;
+    this._popupPresenter = popupPresenter;
 
     this._filmCardComponent = null;
 
@@ -56,42 +56,41 @@ export default class FilmCardPresenter {
 
   _handlePopupOpen() {
     document.body.classList.add(`hide-overflow`);
-    renderPopup(this._film);
+    this._popupPresenter.init(this._film);
   }
 
   _handleFavoriteClick() {
-    this._handleChangeData(
-        Object.assign(
-            {},
-            this._film,
-            {
-              isFavorite: !this._film.isFavorite
-            }
-        )
+    const newData = Object.assign(
+        {},
+        this._film,
+        {
+          isFavorite: !this._film.isFavorite
+        }
     );
+
+    this._handleChangeData(newData);
   }
 
   _handleWatchlistClick() {
-    this._handleChangeData(
-        Object.assign(
-            {},
-            this._film,
-            {
-              isInWatchlist: !this._film.isInWatchlist
-            }
-        )
+    const newData = Object.assign(
+        {},
+        this._film,
+        {
+          isInWatchlist: !this._film.isInWatchlist
+        }
     );
+
+    this._handleChangeData(newData);
   }
 
   _handleWatchedClick() {
-    this._handleChangeData(
-        Object.assign(
-            {},
-            this._film,
-            {
-              isWatched: !this._film.isWatched
-            }
-        )
+    const newData = Object.assign(
+        {},
+        this._film,
+        {
+          isWatched: !this._film.isWatched
+        }
     );
+    this._handleChangeData(newData);
   }
 }

@@ -4,24 +4,17 @@ import NoFilmsView from "../view/no-films";
 import ShowMoreView from "../view/show-more-view";
 import FilmsListView from "../view/films-list-view";
 import FilmCardPresenter from "./film-presenter";
+import PopupPresenter from "./popup-presenter";
 
 import {SortType} from "../utils/consts";
 
-import {
-  render,
-  updateItem,
-  RenderPosition
-} from "../utils/render-utils";
+import {render, RenderPosition, updateItems} from "../utils/render-utils";
 
-import {
-  remove,
-  sortByDate,
-  sortByRating,
-  sortByComments,
-  getMostValuedFilms
-} from "../utils/utils";
+import {getMostValuedFilms, remove, sortByComments, sortByDate, sortByRating} from "../utils/utils";
 
 const FILMS_COUNT_PER_STEP = 5;
+
+export const collectionOfComments = new Map();
 
 export default class BoardPresenter {
   constructor(boardContainer, films) {
@@ -30,8 +23,9 @@ export default class BoardPresenter {
     this._films = films.slice();
     this._sourcedFilms = films.slice();
 
-    this._listRenderedPresentersInBasicBlock = new Map();
-    this._listRenderedPresentersInExtraBlock = new Map();
+    this._listRenderedPresentersBasicBlock = new Map();
+    this._listRenderedPresentersTopRatedBlock = new Map();
+    this._listRenderedPresentersMostCommentedBlock = new Map();
 
     this._currentSortType = SortType.DEFAULT;
 
@@ -45,6 +39,7 @@ export default class BoardPresenter {
 
     this._sortComponent = new SortMenuView();
     this._noFilmsComponent = new NoFilmsView();
+
     this._filmListComponentTopRated = null;
     this._filmListComponentMostCommented = null;
 
@@ -54,11 +49,19 @@ export default class BoardPresenter {
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+
+    this._getIsPopupRendered = this._getIsPopupRendered.bind(this);
+
+    this._popupPresenter = new PopupPresenter(this._handleFilmChange);
   }
 
   init() {
     this._renderBoard();
     render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
+  }
+
+  _getIsPopupRendered() {
+    return this._popupState;
   }
 
   _sortFilms(sortType) {
@@ -82,10 +85,14 @@ export default class BoardPresenter {
   }
 
   _renderFilmCardInBasicBlock(film) {
-    const filmCardPresenter = new FilmCardPresenter(this._mainFilmListContainerComponent, this._handleFilmChange);
+    const filmCardPresenter = new FilmCardPresenter(
+        this._mainFilmListContainerComponent,
+        this._handleFilmChange,
+        this._popupPresenter
+    );
 
     filmCardPresenter.init(film, this._mainFilmListContainerComponent);
-    this._listRenderedPresentersInBasicBlock.set(film.id, filmCardPresenter);
+    this._listRenderedPresentersBasicBlock.set(film.id, filmCardPresenter);
   }
 
   _renderFilmCards(from, to) {
@@ -105,11 +112,11 @@ export default class BoardPresenter {
   }
 
   _clearFilmListInBasicBlock() {
-    this._listRenderedPresentersInBasicBlock.forEach((presenter) => {
+    this._listRenderedPresentersBasicBlock.forEach((presenter) => {
       presenter.destroy();
     });
 
-    this._listRenderedPresentersInBasicBlock = new Map();
+    this._listRenderedPresentersBasicBlock = new Map();
 
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
     remove(this._showMoreButtonComponent);
@@ -120,14 +127,23 @@ export default class BoardPresenter {
   }
 
   _handleFilmChange(updatedFilm) {
-    this._films = updateItem(this._films, updatedFilm);
+    this._films = updateItems(this._films, updatedFilm);
 
     // verifying if rendered FilmCard exists in basic Map,
     // this was made for synchronizing of clicking on favorites and etc. in Basic Block and Extra Blocks
-    if (this._listRenderedPresentersInBasicBlock.has(updatedFilm.id)) {
-      this._listRenderedPresentersInBasicBlock.get(updatedFilm.id).init(updatedFilm);
+    if (this._listRenderedPresentersBasicBlock.has(updatedFilm.id)) {
+      this._listRenderedPresentersBasicBlock.get(updatedFilm.id).init(updatedFilm);
     }
-    this._listRenderedPresentersInExtraBlock.get(updatedFilm.id).init(updatedFilm);
+
+    // verifying if rendered FilmCard exists in basic Map,
+    // this was made for synchronizing of clicking on favorites and etc. in Popup and Extra Blocks
+    if (this._listRenderedPresentersTopRatedBlock.has(updatedFilm.id)) {
+      this._listRenderedPresentersTopRatedBlock.get(updatedFilm.id).init(updatedFilm);
+    }
+
+    if (this._listRenderedPresentersMostCommentedBlock.has(updatedFilm.id)) {
+      this._listRenderedPresentersMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
+    }
   }
 
   _handleShowMoreButtonClick() {
@@ -158,14 +174,25 @@ export default class BoardPresenter {
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
 
-  _renderFilmCardPresenterForExtraBlock(filmListContainerComponent, film) {
-    const filmCardPresenter = new FilmCardPresenter(filmListContainerComponent, this._handleFilmChange);
+  _renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, blockTitle) {
+    const filmCardPresenter = new FilmCardPresenter(
+        filmListContainerComponent,
+        this._handleFilmChange,
+        this._popupPresenter
+    );
 
     filmCardPresenter.init(film);
-    this._listRenderedPresentersInExtraBlock.set(film.id, filmCardPresenter);
+
+    if (blockTitle === `Top rated`) {
+      this._listRenderedPresentersTopRatedBlock.set(film.id, filmCardPresenter);
+    }
+
+    if (blockTitle === `Most commented`) {
+      this._listRenderedPresentersMostCommentedBlock.set(film.id, filmCardPresenter);
+    }
   }
 
-  _renderExtraBlock(title, mostRatedFilms) {
+  _renderExtraBlock(blockTitle, mostValuedFilms) {
     const filmListComponent = new FilmsListView();
     const filmListContainerComponent = filmListComponent.getFilmListContainerComponent();
 
@@ -173,10 +200,10 @@ export default class BoardPresenter {
 
     filmListComponent.addClassExtra();
 
-    filmListComponent.addTitleForFilmListBlock(title);
+    filmListComponent.addTitleForFilmListBlock(blockTitle);
 
-    for (let film of mostRatedFilms) {
-      this._renderFilmCardPresenterForExtraBlock(filmListContainerComponent, film);
+    for (let film of mostValuedFilms) {
+      this._renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, blockTitle);
     }
 
     return filmListComponent;
@@ -193,6 +220,17 @@ export default class BoardPresenter {
   }
 
   _clearExtraBlocks() {
+    this._listRenderedPresentersTopRatedBlock.forEach((presenter) => {
+      presenter.destroy();
+    });
+
+    this._listRenderedPresentersMostCommentedBlock.forEach((presenter) => {
+      presenter.destroy();
+    });
+
+    this._listRenderedPresentersTopRatedBlock = new Map();
+    this._listRenderedPresentersMostCommentedBlock = new Map();
+
     remove(this._filmListComponentTopRated);
     remove(this._filmListComponentMostCommented);
   }

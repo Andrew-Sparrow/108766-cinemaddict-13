@@ -1,4 +1,4 @@
-import Abstract from "./abstract";
+import Smart from "./smart";
 import {truncateText} from "../utils/common-utils";
 
 const createFilmCardTemplate = (film) => {
@@ -35,10 +35,11 @@ const createFilmCardTemplate = (film) => {
         </article>`;
 };
 
-export default class FilmCardView extends Abstract {
+export default class FilmCardView extends Smart {
   constructor(film) {
     super();
     this._film = film;
+
     this._posterClickHandler = this._posterClickHandler.bind(this);
     this._titleClickHandler = this._titleClickHandler.bind(this);
     this._commentsClickHandler = this._commentsClickHandler.bind(this);

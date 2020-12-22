@@ -24,3 +24,5 @@ export const truncateText = (text) => {
   }
   return text;
 };
+
+// export const createImageElement
