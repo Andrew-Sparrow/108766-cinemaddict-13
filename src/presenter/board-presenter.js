@@ -52,8 +52,7 @@ export default class BoardPresenter {
 
     this._getIsPopupRendered = this._getIsPopupRendered.bind(this);
 
-    this._popupState = {open: false};
-    this._popupPresenter = new PopupPresenter(this._popupState, this._handleFilmChange);
+    this._popupPresenter = new PopupPresenter(this._handleFilmChange);
   }
 
   init() {
@@ -144,10 +143,6 @@ export default class BoardPresenter {
 
     if (this._listRenderedPresentersMostCommentedBlock.has(updatedFilm.id)) {
       this._listRenderedPresentersMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
-    }
-
-    if (this._popupState.open) {
-      this._popupPresenter.init(updatedFilm, true);
     }
   }
 
