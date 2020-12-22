@@ -7,7 +7,7 @@ import {
   RenderPosition
 } from "../utils/render-utils";
 
-export default class CommentPresenter {
+export default class PopupCommentPresenter {
   constructor(commentContainer) {
     this._commentContainer = commentContainer.getElement();
   }

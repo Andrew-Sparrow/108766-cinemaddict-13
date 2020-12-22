@@ -147,7 +147,7 @@ export default class BoardPresenter {
     }
 
     if (this._popupState.open) {
-      this._popupPresenter.init(updatedFilm);
+      this._popupPresenter.init(updatedFilm, true);
     }
   }
 

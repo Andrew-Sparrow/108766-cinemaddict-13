@@ -7,8 +7,8 @@ import {
 } from "../utils/render-utils";
 
 import PopupFeaturesPresenter from "./popup-features-presenter";
-import CommentsPresenter from "./comments-presenter";
-import NewCommentPresenter from "./new-comment-presenter";
+import PopupCommentsPresenter from "./popup-comments-presenter";
+import PopupNewCommentPresenter from "./popup-new-comment-presenter";
 
 export default class PopupPresenter {
   constructor(popupState, handleChangeData) {
@@ -25,7 +25,7 @@ export default class PopupPresenter {
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
   }
 
-  init(film) {
+  init(film, isRerenderFeatures) {
     this._film = film;
     this._popupState.open = true;
 
@@ -39,12 +39,21 @@ export default class PopupPresenter {
 
       render(this._popupContainerElement, this._popupComponent, RenderPosition.BEFOREEND);
 
+      this._featuresPresenter = new PopupFeaturesPresenter(
+          this._popupComponent.getFeaturesContainerElement(),
+          this._handleChangeData
+      );
+
       this._renderFeaturesBlock();
       this._renderCommentsBlock();
       this._renderNewCommentBlock();
       this._prevPopupComponent = this._popupComponent;
 
     } else {
+      if (isRerenderFeatures) {
+        this._renderFeaturesBlock();
+        return;
+      }
       remove(this._prevPopupComponent);
       render(this._popupContainerElement, this._popupComponent, RenderPosition.BEFOREEND);
 
@@ -56,22 +65,17 @@ export default class PopupPresenter {
   }
 
   _renderFeaturesBlock() {
-    const featuresPresenter = new PopupFeaturesPresenter(
-        this._popupComponent.getFeaturesContainerElement(),
-        this._handleChangeData
-    );
-
-    featuresPresenter.init(this._film);
+    this._featuresPresenter.init(this._film);
   }
 
   _renderCommentsBlock() {
-    const commentsPresenter = new CommentsPresenter(this._popupComponent.getCommentsTitleElement());
+    const commentsPresenter = new PopupCommentsPresenter(this._popupComponent.getCommentsTitleElement());
 
     commentsPresenter.init(this._film);
   }
 
   _renderNewCommentBlock() {
-    this._newCommentPresenter = new NewCommentPresenter(this._popupComponent.getCommentsWrapElement());
+    this._newCommentPresenter = new PopupNewCommentPresenter(this._popupComponent.getCommentsWrapElement());
     this._newCommentPresenter.init();
   }
 

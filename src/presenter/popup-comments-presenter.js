@@ -1,9 +1,9 @@
 import CommentsView from "../view/comments-view";
 import {remove} from "../utils/utils";
-import CommentPresenter from "./comment-presenter";
+import PopupCommentPresenter from "./popup-comment-presenter";
 import {render, RenderPosition} from "../utils/render-utils";
 
-export default class CommentsPresenter {
+export default class PopupCommentsPresenter {
   constructor(commentsContainer) {
     this._commentsContainer = commentsContainer;
     this._listRenderedComments = [];
@@ -28,7 +28,7 @@ export default class CommentsPresenter {
   }
 
   _renderComment(commentID) {
-    this._commentPresenter = new CommentPresenter(this._filmCommentsComponent);
+    this._commentPresenter = new PopupCommentPresenter(this._filmCommentsComponent);
     this._commentPresenter.init(commentID);
     this._listRenderedComments.push(this._commentPresenter);
   }

@@ -3,7 +3,7 @@ import NewCommentView from "../view/new-comment-view";
 import {render, RenderPosition} from "../utils/render-utils";
 import {remove} from "../utils/utils";
 
-export default class NewCommentPresenter {
+export default class PopupNewCommentPresenter {
   constructor(newCommentContainer) {
     this._newCommentContainer = newCommentContainer;
   }
