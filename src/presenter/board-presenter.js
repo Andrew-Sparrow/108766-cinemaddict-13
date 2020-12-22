@@ -53,7 +53,7 @@ export default class BoardPresenter {
     this._getIsPopupRendered = this._getIsPopupRendered.bind(this);
 
     this._popupState = {open: false};
-    this._popupPresenter = new PopupPresenter(this._handleFilmChange, this._popupState);
+    this._popupPresenter = new PopupPresenter(this._popupState, this._handleFilmChange);
   }
 
   init() {
