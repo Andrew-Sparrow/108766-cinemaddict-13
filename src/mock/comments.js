@@ -24,7 +24,6 @@ export const generateComment = () => {
   return comment;
 };
 
-
 export const generateComments = () => {
   const commentsID = [];
 
