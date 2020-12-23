@@ -17,11 +17,9 @@ const FILMS_COUNT_PER_STEP = 5;
 export const collectionOfComments = new Map();
 
 export default class BoardPresenter {
-  constructor(boardContainer, films) {
+  constructor(boardContainer, filmModel) {
     this._boardContainer = boardContainer;
-
-    this._films = films.slice();
-    this._sourcedFilms = films.slice();
+    this._filmModel = filmModel;
 
     this._listRenderedPresentersBasicBlock = new Map();
     this._listRenderedPresentersTopRatedBlock = new Map();
@@ -43,9 +41,6 @@ export default class BoardPresenter {
     this._filmListComponentTopRated = null;
     this._filmListComponentMostCommented = null;
 
-    this._topRatedFilms = getMostValuedFilms(this._films, sortByRating);
-    this._mostCommentedFilms = getMostValuedFilms(this._films, sortByComments);
-
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
@@ -55,9 +50,19 @@ export default class BoardPresenter {
     this._popupPresenter = new PopupPresenter(this._handleFilmChange);
   }
 
-  init() {
+  init(films) {
+    this._films = films.slice();
+    this._sourcedFilms = films.slice();
+
+    this._topRatedFilms = getMostValuedFilms(this._films, sortByRating);
+    this._mostCommentedFilms = getMostValuedFilms(this._films, sortByComments);
+
     this._renderBoard();
     render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
+  }
+
+  _getFilms() {
+    return this._filmModel.getFilms();
   }
 
   _getIsPopupRendered() {
