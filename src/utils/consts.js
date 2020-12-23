@@ -31,3 +31,13 @@ export const SortType = {
   BY_DATE: `by-date`,
   BY_RATING: `by-rating`
 };
+
+export const UserAction = {
+  ADD_COMMENT: `ADD_COMMENT`,
+  DELETE_COMMENT: `DELETE_COMMENT`
+};
+
+export const UpdateType = {
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`
+};

@@ -115,6 +115,7 @@ export default class BoardPresenter {
     this._listRenderedPresentersBasicBlock = new Map();
 
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
+
     remove(this._showMoreButtonComponent);
   }
 
