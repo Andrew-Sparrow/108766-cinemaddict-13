@@ -31,4 +31,4 @@ render(siteMainElement, new MainNavigationView(filters), RenderPosition.BEFOREEN
 
 render(footer, new FooterStatisticsView(films.length), RenderPosition.BEFOREEND);
 
-boardPresenter.init(films);
+boardPresenter.init();
