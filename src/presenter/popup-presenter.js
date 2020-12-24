@@ -1,7 +1,7 @@
 import PopupView from "../view/popup-view";
-import {remove} from "../utils/utils";
 
 import {
+  remove,
   render,
   RenderPosition,
 } from "../utils/render-utils";

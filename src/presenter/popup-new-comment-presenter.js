@@ -1,7 +1,6 @@
 import NewCommentView from "../view/new-comment-view";
 
-import {render, RenderPosition} from "../utils/render-utils";
-import {remove} from "../utils/utils";
+import {remove, render, RenderPosition} from "../utils/render-utils";
 
 export default class PopupNewCommentPresenter {
   constructor(newCommentContainer) {

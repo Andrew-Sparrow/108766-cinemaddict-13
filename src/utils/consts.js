@@ -32,13 +32,13 @@ export const SortType = {
   BY_RATING: `by-rating`
 };
 
-export const UserAction = {
+export const UserActionForModel = {
   ADD_COMMENT: `ADD_COMMENT`,
   DELETE_COMMENT: `DELETE_COMMENT`,
   UPDATE_ITEM: `UPDATE_ITEM`
 };
 
-export const UpdateType = {
+export const UpdateTypeForRerender = {
   PATCH: `PATCH`,
   MINOR: `MINOR`,
   MAJOR: `MAJOR`

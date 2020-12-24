@@ -15,3 +15,4 @@ export default class Observer {
     this._obsevers.forEach((observer) => observer(event, payload));
   }
 }
+

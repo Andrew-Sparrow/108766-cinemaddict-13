@@ -1,6 +1,5 @@
 import PopupFeaturesView from "../view/popup-features-view";
-import {remove} from "../utils/utils";
-import {render, RenderPosition, replace} from "../utils/render-utils";
+import {remove, render, RenderPosition, replace} from "../utils/render-utils";
 
 export default class PopupFeaturesPresenter {
   constructor(popupFeaturesContainerElement, handleChangeData) {

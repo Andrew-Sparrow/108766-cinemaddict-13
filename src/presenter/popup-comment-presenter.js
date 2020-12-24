@@ -1,10 +1,9 @@
 import CommentView from "../view/comment-view";
 
-import {remove} from "../utils/utils";
-
 import {
+  remove,
   render,
-  RenderPosition
+  RenderPosition,
 } from "../utils/render-utils";
 
 export default class PopupCommentPresenter {

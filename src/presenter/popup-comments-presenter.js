@@ -1,7 +1,11 @@
 import CommentsView from "../view/comments-view";
-import {remove} from "../utils/utils";
 import PopupCommentPresenter from "./popup-comment-presenter";
-import {render, RenderPosition} from "../utils/render-utils";
+
+import {
+  remove,
+  render,
+  RenderPosition
+} from "../utils/render-utils";
 
 export default class PopupCommentsPresenter {
   constructor(commentsContainer) {

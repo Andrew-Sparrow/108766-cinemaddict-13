@@ -8,18 +8,18 @@ import PopupPresenter from "./popup-presenter";
 
 import {
   SortType,
-  UpdateType,
-  UserAction
+  UpdateTypeForRerender,
+  UserActionForModel
 } from "../utils/consts";
 
 import {
+  remove,
   render,
-  RenderPosition
+  RenderPosition,
 } from "../utils/render-utils";
 
 import {
   getMostValuedFilms,
-  remove,
   sortByComments,
   sortByDate,
   sortByRating
@@ -46,9 +46,13 @@ export default class BoardPresenter {
     this._filmListComponent = new FilmsListView();
     this._mainFilmListContainerComponent = this._filmListComponent.getFilmListContainerComponent();
 
-    this._showMoreButtonComponent = new ShowMoreView();
 
-    this._sortComponent = new SortMenuView();
+    // this._sortComponent = new SortMenuView();
+    // this._showMoreButtonComponent = new ShowMoreView();
+
+    this._sortComponent = null;
+    this._showMoreButtonComponent = null;
+
     this._noFilmsComponent = new NoFilmsView();
 
     this._filmListComponentTopRated = null;
@@ -84,8 +88,14 @@ export default class BoardPresenter {
   }
 
   _renderSort() {
-    render(this._boardContainer, this._sortComponent, RenderPosition.BEFOREEND);
+    if (this._sortComponent !== null) {
+      this._sortComponent = null;
+    }
+
+    this._sortComponent = new SortMenuView(this._currentSortType);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+
+    render(this._boardContainer, this._sortComponent, RenderPosition.BEFOREEND);
   }
 
   _renderFilmCardInBasicBlock(film) {
@@ -130,10 +140,6 @@ export default class BoardPresenter {
     });
 
     this._listRenderedPresentersBasicBlock = new Map();
-
-    this._renderedFilmCount = FILMS_COUNT_PER_STEP;
-
-    remove(this._showMoreButtonComponent);
   }
 
   _renderNoFilms() {
@@ -162,14 +168,15 @@ export default class BoardPresenter {
 
   _handleViewActionForModel(actionTypeForModel, updateTypeRerender, updatedItem) {
     switch (actionTypeForModel) {
-      case UserAction.UPDATE_ITEM:
+      case UserActionForModel.UPDATE_ITEM:
         this._filmsModel.updateItems(updateTypeRerender, updatedItem);
+        break;
     }
   }
 
   _handleModelEventForRerender(updateTypeRerender, updatedFilm) {
     switch (updateTypeRerender) {
-      case UpdateType.PATCH:
+      case UpdateTypeForRerender.PATCH:
         // - обновить часть списка (например, когда поменялось описание)
 
         // verifying if rendered FilmCard exists in basic Map,
@@ -188,11 +195,13 @@ export default class BoardPresenter {
           this._listRenderedPresentersMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
         }
         break;
-      case UpdateType.MINOR:
-        // - обновить список (например, когда задача ушла в архив)
+      case UpdateTypeForRerender.MINOR:
+        this._clearBoard();
+        this._renderBoard();
         break;
-      case UpdateType.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
+      case UpdateTypeForRerender.MAJOR:
+        this._clearBoard({resetRenderedTaskCount: true, resetSortType: true});
+        this._renderBoard();
         break;
     }
   }
@@ -217,16 +226,38 @@ export default class BoardPresenter {
     }
 
     this._currentSortType = sortType;
-    this._clearFilmListInBasicBlock();
+    this._clearFilmListInBasicBlock({resetRenderedFilmCount: true});
     this._renderBasicFilmList();
 
     this._clearExtraBlocks();
     this._renderExtraBlocks();
   }
 
+  _clearBoard({resetRenderedFilmCount = false, resetSortType = false} = {}) {
+    this._clearFilmListInBasicBlock();
+
+    remove(this._sortComponent);
+    remove(this._noFilmsComponent);
+    remove(this._showMoreButtonComponent);
+
+    if (resetRenderedFilmCount) {
+      this._renderedFilmCount = FILMS_COUNT_PER_STEP;
+    }
+
+    if (resetSortType) {
+      this._currentSortType = SortType.DEFAULT;
+    }
+  }
+
   _renderShowMoreButton() {
-    render(this._filmListComponent, this._showMoreButtonComponent, RenderPosition.BEFOREEND);
+    if (this._showMoreButtonComponent !== null) {
+      this._showMoreButtonComponent = null;
+    }
+
+    this._showMoreButtonComponent = new ShowMoreView();
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
+
+    render(this._filmListComponent, this._showMoreButtonComponent, RenderPosition.BEFOREEND);
   }
 
   _renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, blockTitle) {

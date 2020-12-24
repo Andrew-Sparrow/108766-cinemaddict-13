@@ -3,15 +3,14 @@ import FilmCardView from "../view/film-card-view";
 import {
   render,
   replace,
-  RenderPosition
+  remove,
+  RenderPosition,
 } from "../utils/render-utils";
 
 import {
-  UserAction,
-  UpdateType
+  UserActionForModel,
+  UpdateTypeForRerender
 } from "../utils/consts";
-
-import {remove} from "../utils/utils";
 
 export default class FilmCardPresenter {
   constructor(filmListContainerElement, handleChangeData, popupPresenter) {
@@ -74,8 +73,8 @@ export default class FilmCardPresenter {
     );
 
     this._handleChangeData(
-        UserAction.UPDATE_ITEM,
-        UpdateType.MAJOR,
+        UserActionForModel.UPDATE_ITEM,
+        UpdateTypeForRerender.MAJOR,
         newData
     );
   }
@@ -90,8 +89,8 @@ export default class FilmCardPresenter {
     );
 
     this._handleChangeData(
-        UserAction.UPDATE_ITEM,
-        UpdateType.MAJOR,
+        UserActionForModel.UPDATE_ITEM,
+        UpdateTypeForRerender.MAJOR,
         newData
     );
   }
@@ -106,8 +105,8 @@ export default class FilmCardPresenter {
     );
 
     this._handleChangeData(
-        UserAction.UPDATE_ITEM,
-        UpdateType.MAJOR,
+        UserActionForModel.UPDATE_ITEM,
+        UpdateTypeForRerender.MAJOR,
         newData
     );
   }

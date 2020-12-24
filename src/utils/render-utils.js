@@ -68,3 +68,16 @@ export const replace = (newChild, oldChild) => {
 //     ...items.slice(index + 1)
 //   ];
 // };
+
+export const remove = (component) => {
+  if (component === null) {
+    return;
+  }
+
+  if (!(component instanceof Abstract)) {
+    throw new Error(`Only components can be removed`);
+  }
+
+  component.getElement().remove();
+  component.removeElement();
+};
