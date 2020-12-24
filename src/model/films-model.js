@@ -4,30 +4,54 @@ export default class FilmsModel extends Observer {
   constructor() {
     super();
 
-    this._films = [];
+    this._items = [];
   }
 
-  setFilms(films) {
-    this._films = films.slice();
+  setItems(item) {
+    this._items = item.slice();
   }
 
-  getFilms() {
-    return this._films;
+  getItems() {
+    return this._items;
   }
 
-  updateFilm(updateType, updatedItem) {
-    const index = this._films.findIndex((film) => film.id === updatedItem.id);
+  updateItems(updateType, updatedItem) {
+    const index = this._items.findIndex((item) => item.id === updatedItem.id);
 
     if (index === -1) {
-      throw new Error(`Cant't update nonexistent film`);
+      throw new Error(`Cant't update nonexistent item`);
     }
 
-    this._films = [
-      ...this._films.slice(0, index),
+    this._items = [
+      ...this._items.slice(0, index),
       updatedItem,
-      ...this._films.slice(index + 1)
+      ...this._items.slice(index + 1)
     ];
 
     this._notify(updateType, updatedItem);
+  }
+
+  addItem(updateType, updatedItem) {
+    this._item = [
+      updatedItem,
+      ...this._item
+    ];
+
+    this._notify(updateType, updatedItem);
+  }
+
+  deleteItem(updateType, updatedItem) {
+    const index = this._items.findIndex((task) => task.id === updatedItem.id);
+
+    if (index === -1) {
+      throw new Error(`Cant't delete nonexistent item`);
+    }
+
+    this._items = [
+      ...this._items.slice(0, index),
+      ...this._items.slice(index + 1)
+    ];
+
+    this._notify(updateType);
   }
 }

@@ -34,7 +34,8 @@ export const SortType = {
 
 export const UserAction = {
   ADD_COMMENT: `ADD_COMMENT`,
-  DELETE_COMMENT: `DELETE_COMMENT`
+  DELETE_COMMENT: `DELETE_COMMENT`,
+  UPDATE_ITEM: `UPDATE_ITEM`
 };
 
 export const UpdateType = {

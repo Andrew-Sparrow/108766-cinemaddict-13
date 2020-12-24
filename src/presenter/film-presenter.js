@@ -6,6 +6,11 @@ import {
   RenderPosition
 } from "../utils/render-utils";
 
+import {
+  UserAction,
+  UpdateType
+} from "../utils/consts";
+
 import {remove} from "../utils/utils";
 
 export default class FilmCardPresenter {
@@ -68,7 +73,11 @@ export default class FilmCardPresenter {
         }
     );
 
-    this._handleChangeData(newData);
+    this._handleChangeData(
+        UserAction.UPDATE_ITEM,
+        UpdateType.MAJOR,
+        newData
+    );
   }
 
   _handleWatchlistClick() {
@@ -80,7 +89,11 @@ export default class FilmCardPresenter {
         }
     );
 
-    this._handleChangeData(newData);
+    this._handleChangeData(
+        UserAction.UPDATE_ITEM,
+        UpdateType.MAJOR,
+        newData
+    );
   }
 
   _handleWatchedClick() {
@@ -91,6 +104,11 @@ export default class FilmCardPresenter {
           isWatched: !this._film.isWatched
         }
     );
-    this._handleChangeData(newData);
+
+    this._handleChangeData(
+        UserAction.UPDATE_ITEM,
+        UpdateType.MAJOR,
+        newData
+    );
   }
 }

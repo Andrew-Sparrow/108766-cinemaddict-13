@@ -18,7 +18,7 @@ const films = new Array(FILMS_COUNT).fill().map(generateFilm);
 const filters = calculateFilmsInFilter(films);
 
 const filmsModel = new FilmsModel();
-filmsModel.setFilms(films);
+filmsModel.setItems(films);
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
