@@ -6,11 +6,24 @@ import FilmsListView from "../view/films-list-view";
 import FilmCardPresenter from "./film-presenter";
 import PopupPresenter from "./popup-presenter";
 
-import {SortType} from "../utils/consts";
+import {
+  SortType,
+  UpdateType,
+  UserAction
+} from "../utils/consts";
 
-import {render, RenderPosition, updateItems} from "../utils/render-utils";
+import {
+  render,
+  RenderPosition
+} from "../utils/render-utils";
 
-import {getMostValuedFilms, remove, sortByComments, sortByDate, sortByRating} from "../utils/utils";
+import {
+  getMostValuedFilms,
+  remove,
+  sortByComments,
+  sortByDate,
+  sortByRating
+} from "../utils/utils";
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -147,20 +160,41 @@ export default class BoardPresenter {
   //   }
   // }
 
-  _handleViewActionForModel(actionTypeModel, updateTypeRerender, update) {
-    console.log(actionTypeModel, updateTypeRerender, update);
-    // Здесь будем вызывать обновление модели.
-    // actionTypeModel - действие пользователя, нужно чтобы понять, какой метод модели вызвать
-    // updateTypeRerender - тип изменений, нужно чтобы понять, что после нужно обновить
-    // update - обновленные данные
+  _handleViewActionForModel(actionTypeForModel, updateTypeRerender, updatedItem) {
+    switch (actionTypeForModel) {
+      case UserAction.UPDATE_ITEM:
+        this._filmsModel.updateItems(updateTypeRerender, updatedItem);
+    }
   }
 
-  _handleModelEventForRerender(updateTypeRerender, data) {
-    console.log(updateTypeRerender, data);
-    // В зависимости от типа изменений решаем, что делать:
-    // - обновить часть списка (например, когда поменялось описание)
-    // - обновить список (например, когда задача ушла в архив)
-    // - обновить всю доску (например, при переключении фильтра)
+  _handleModelEventForRerender(updateTypeRerender, updatedFilm) {
+    switch (updateTypeRerender) {
+      case UpdateType.PATCH:
+        // - обновить часть списка (например, когда поменялось описание)
+
+        // verifying if rendered FilmCard exists in basic Map,
+        // this was made for synchronizing of clicking on favorites and etc. in Basic Block and Extra Blocks
+        if (this._listRenderedPresentersBasicBlock.has(updatedFilm.id)) {
+          this._listRenderedPresentersBasicBlock.get(updatedFilm.id).init(updatedFilm);
+        }
+
+        // verifying if rendered FilmCard exists in basic Map,
+        // this was made for synchronizing of clicking on favorites and etc. in Popup and Extra Blocks
+        if (this._listRenderedPresentersTopRatedBlock.has(updatedFilm.id)) {
+          this._listRenderedPresentersTopRatedBlock.get(updatedFilm.id).init(updatedFilm);
+        }
+
+        if (this._listRenderedPresentersMostCommentedBlock.has(updatedFilm.id)) {
+          this._listRenderedPresentersMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
+        }
+        break;
+      case UpdateType.MINOR:
+        // - обновить список (например, когда задача ушла в архив)
+        break;
+      case UpdateType.MAJOR:
+        // - обновить всю доску (например, при переключении фильтра)
+        break;
+    }
   }
 
   _handleShowMoreButtonClick() {
