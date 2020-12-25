@@ -61,6 +61,7 @@ export default class BoardPresenter {
     // this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleModelEventForRerender = this._handleModelEventForRerender.bind(this);
     this._handleViewActionForModel = this._handleViewActionForModel.bind(this);
+
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
@@ -80,11 +81,11 @@ export default class BoardPresenter {
   _getFilms() {
     switch (this._currentSortType) {
       case SortType.BY_DATE:
-        return this._filmsModel.getFilms().slice().sort(sortByDate);
+        return this._filmsModel.getItems().slice().sort(sortByDate);
       case SortType.BY_RATING:
-        return this._filmsModel.getFilms().slice().sort(sortByRating);
+        return this._filmsModel.getItems().slice().sort(sortByRating);
     }
-    return this._filmsModel.getFilms();
+    return this._filmsModel.getItems();
   }
 
   _renderSort() {
@@ -116,13 +117,6 @@ export default class BoardPresenter {
 
   _renderBasicFilmList() {
     render(this._filmsBoardComponent, this._filmListComponent, RenderPosition.BEFOREEND);
-
-    this._renderFilmCards(0, Math.min(this._films.length, FILMS_COUNT_PER_STEP));
-
-    if (this._films.length > FILMS_COUNT_PER_STEP) {
-      this._renderShowMoreButton();
-    }
-
 
     const filmCount = this._getFilms().length;
     const films = this._getFilms().slice(0, Math.min(filmCount, FILMS_COUNT_PER_STEP));
@@ -166,12 +160,9 @@ export default class BoardPresenter {
   //   }
   // }
 
-  _handleViewActionForModel(actionTypeForModel, updateTypeRerender, updatedItem) {
-    switch (actionTypeForModel) {
-      case UserActionForModel.UPDATE_ITEM:
-        this._filmsModel.updateItems(updateTypeRerender, updatedItem);
-        break;
-    }
+  _handleViewActionForModel(updateTypeRerender, updatedItem) {
+    // for films we can only updateItems films
+    this._filmsModel.updateItems(updateTypeRerender, updatedItem);
   }
 
   _handleModelEventForRerender(updateTypeRerender, updatedFilm) {
@@ -209,7 +200,7 @@ export default class BoardPresenter {
   _handleShowMoreButtonClick() {
 
     const filmsCount = this._getFilms().length;
-    const newRenderedFilmsCount = Math.min(filmsCount, this._renderedFilmCount + FILMS_COUNT_PER_STEP)
+    const newRenderedFilmsCount = Math.min(filmsCount, this._renderedFilmCount + FILMS_COUNT_PER_STEP);
     const films = this._getFilms().slice(this._renderedFilmCount, newRenderedFilmsCount);
 
     this._renderFilmCards(films);
@@ -226,6 +217,7 @@ export default class BoardPresenter {
     }
 
     this._currentSortType = sortType;
+
     this._clearFilmListInBasicBlock({resetRenderedFilmCount: true});
     this._renderBasicFilmList();
 
@@ -322,7 +314,7 @@ export default class BoardPresenter {
   }
 
   _renderBoard() {
-    if (this._films.length === 0) {
+    if (this._filmsModel.getItems().length === 0) {
       this._renderNoFilms();
       return;
     }
