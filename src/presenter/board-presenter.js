@@ -9,7 +9,6 @@ import PopupPresenter from "./popup-presenter";
 import {
   SortType,
   UpdateTypeForRerender,
-  UserActionForModel
 } from "../utils/consts";
 
 import {
@@ -46,10 +45,6 @@ export default class BoardPresenter {
     this._filmListComponent = new FilmsListView();
     this._mainFilmListContainerComponent = this._filmListComponent.getFilmListContainerComponent();
 
-
-    // this._sortComponent = new SortMenuView();
-    // this._showMoreButtonComponent = new ShowMoreView();
-
     this._sortComponent = null;
     this._showMoreButtonComponent = null;
 
@@ -58,7 +53,6 @@ export default class BoardPresenter {
     this._filmListComponentTopRated = null;
     this._filmListComponentMostCommented = null;
 
-    // this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleModelEventForRerender = this._handleModelEventForRerender.bind(this);
     this._handleViewActionForModel = this._handleViewActionForModel.bind(this);
 
@@ -75,7 +69,6 @@ export default class BoardPresenter {
     this._mostCommentedFilms = getMostValuedFilms(this._filmsModel.getItems(), sortByComments);
 
     this._renderBoard();
-    render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
   }
 
   _getFilms() {
@@ -116,59 +109,33 @@ export default class BoardPresenter {
   }
 
   _renderBasicFilmList() {
+    render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
     render(this._filmsBoardComponent, this._filmListComponent, RenderPosition.BEFOREEND);
 
     const filmCount = this._getFilms().length;
-    const films = this._getFilms().slice(0, Math.min(filmCount, FILMS_COUNT_PER_STEP));
+    const films = this._getFilms().slice(0, Math.min(filmCount, this._renderedFilmCount));
 
     this._renderFilmCards(films);
 
-    if (filmCount > FILMS_COUNT_PER_STEP) {
+    if (filmCount > this._renderedFilmCount) {
       this._renderShowMoreButton();
     }
   }
 
-  _clearFilmListInBasicBlock() {
-    this._listRenderedPresentersBasicBlock.forEach((presenter) => {
-      presenter.destroy();
-    });
-
-    this._listRenderedPresentersBasicBlock = new Map();
-  }
-
   _renderNoFilms() {
-    render(this._filmListComponent, this._noFilmsComponent, RenderPosition.BEFOREEND);
+    remove(this._sortComponent);
+    render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
+    render(this._filmsBoardComponent, this._noFilmsComponent, RenderPosition.BEFOREEND);
   }
-
-  // _handleFilmChange(updatedFilm) {
-  //   this._films = updateItems(this._films, updatedFilm);
-  //
-  //   // verifying if rendered FilmCard exists in basic Map,
-  //   // this was made for synchronizing of clicking on favorites and etc. in Basic Block and Extra Blocks
-  //   if (this._listRenderedPresentersBasicBlock.has(updatedFilm.id)) {
-  //     this._listRenderedPresentersBasicBlock.get(updatedFilm.id).init(updatedFilm);
-  //   }
-  //
-  //   // verifying if rendered FilmCard exists in basic Map,
-  //   // this was made for synchronizing of clicking on favorites and etc. in Popup and Extra Blocks
-  //   if (this._listRenderedPresentersTopRatedBlock.has(updatedFilm.id)) {
-  //     this._listRenderedPresentersTopRatedBlock.get(updatedFilm.id).init(updatedFilm);
-  //   }
-  //
-  //   if (this._listRenderedPresentersMostCommentedBlock.has(updatedFilm.id)) {
-  //     this._listRenderedPresentersMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
-  //   }
-  // }
 
   _handleViewActionForModel(updateTypeRerender, updatedItem) {
-    // for films we can only updateItems films
+    // for films we only can update items
     this._filmsModel.updateItems(updateTypeRerender, updatedItem);
   }
 
   _handleModelEventForRerender(updateTypeRerender, updatedFilm) {
     switch (updateTypeRerender) {
       case UpdateTypeForRerender.PATCH:
-        // - обновить часть списка (например, когда поменялось описание)
 
         // verifying if rendered FilmCard exists in basic Map,
         // this was made for synchronizing of clicking on favorites and etc. in Basic Block and Extra Blocks
@@ -218,19 +185,30 @@ export default class BoardPresenter {
 
     this._currentSortType = sortType;
 
-    this._clearFilmListInBasicBlock({resetRenderedFilmCount: true});
-    this._renderBasicFilmList();
-
+    this._clearFilmListInBasicBlock();
     this._clearExtraBlocks();
+
+    this._renderBasicFilmList();
     this._renderExtraBlocks();
   }
 
+  _clearFilmListInBasicBlock() {
+    this._listRenderedPresentersBasicBlock.forEach((presenter) => {
+      presenter.destroy();
+    });
+
+    this._listRenderedPresentersBasicBlock = new Map();
+
+    remove(this._showMoreButtonComponent);
+  }
+
   _clearBoard({resetRenderedFilmCount = false, resetSortType = false} = {}) {
+
     this._clearFilmListInBasicBlock();
+    this._clearExtraBlocks();
 
     remove(this._sortComponent);
     remove(this._noFilmsComponent);
-    remove(this._showMoreButtonComponent);
 
     if (resetRenderedFilmCount) {
       this._renderedFilmCount = FILMS_COUNT_PER_STEP;
@@ -314,13 +292,12 @@ export default class BoardPresenter {
   }
 
   _renderBoard() {
-    if (this._filmsModel.getItems().length === 0) {
+    if (this._getFilms().length === 0) {
       this._renderNoFilms();
       return;
     }
 
     this._renderSort();
-
     this._renderBasicFilmList();
     this._renderExtraBlocks();
   }

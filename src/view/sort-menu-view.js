@@ -12,14 +12,14 @@ const createSortMenuTemplate = (currentSortType) => {
             </li>
             <li>
               <a href="#"
-                 class="sort__button ${currentSortType === SortType.DEFAULT ? `sort__button--active` : ``}"
+                 class="sort__button ${currentSortType === SortType.BY_DATE ? `sort__button--active` : ``}"
                  data-sort-type="${SortType.BY_DATE}">
                  Sort by date
               </a>
             </li>
             <li>
               <a href="#"
-                 class="sort__button ${currentSortType === SortType.DEFAULT ? `sort__button--active` : ``}"
+                 class="sort__button ${currentSortType === SortType.BY_RATING ? `sort__button--active` : ``}"
                  data-sort-type="${SortType.BY_RATING}">
                  Sort by rating
               </a>

@@ -33,8 +33,8 @@ export const SortType = {
 };
 
 export const UserActionForModel = {
-  ADD_COMMENT: `ADD_COMMENT`,
-  DELETE_COMMENT: `DELETE_COMMENT`,
+  ADD_ITEM: `ADD_ITEM`,
+  DELETE_ITEM: `DELETE_ITEM`,
   UPDATE_ITEM: `UPDATE_ITEM`
 };
 
