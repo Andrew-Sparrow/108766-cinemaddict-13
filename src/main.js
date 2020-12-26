@@ -3,6 +3,7 @@ import UserProfileView from "./view/user-profile-view";
 import MainNavigationView from "./view/main-navigation-view";
 import FooterStatisticsView from "./view/footer-statistics-view";
 import BoardPresenter from "./presenter/board-presenter";
+import FilterModel from "./model/filter";
 
 import {generateFilm} from "./mock/film";
 import {calculateFilmsInFilter} from "./mock/filter";
@@ -19,6 +20,8 @@ const filters = calculateFilmsInFilter(films);
 
 const filmsModel = new FilmsModel();
 filmsModel.setItems(films);
+
+const filterModel = new FilterModel();
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);

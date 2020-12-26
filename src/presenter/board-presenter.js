@@ -65,9 +65,6 @@ export default class BoardPresenter {
   }
 
   init() {
-    // this._topRatedFilms = getMostValuedFilms(this._filmsModel.getItems(), sortByRating);
-    // this._mostCommentedFilms = getMostValuedFilms(this._filmsModel.getItems(), sortByComments);
-
     this._renderBoard();
   }
 
