@@ -13,19 +13,19 @@ const createMainNavigationTemplate = (filters, currentFilterType) => {
       <a href="#all"
          data-filter-type="${FilterType.ALL}"
          class="main-navigation__item ${currentFilterType === FilterType.ALL ? `main-navigation__item--active` : ``}">
-         All movies
+           All movies
       </a>
       <a href="#watchlist"
          data-filter-type="${FilterType.WATCHLIST}"
          class="main-navigation__item ${currentFilterType === FilterType.WATCHLIST ? `main-navigation__item--active` : ``}">
-          Watchlist
+           Watchlist
          <span class="main-navigation__item-count">
            ${watchlist}
          </span>
       </a>
       <a href="#history"
          data-filter-type="${FilterType.HISTORY}"
-         class="main-navigation__item" ${currentFilterType === FilterType.HISTORY ? `main-navigation__item--active` : ``}>
+         class="main-navigation__item ${currentFilterType === FilterType.HISTORY ? `main-navigation__item--active` : ``}">
            History
         <span class="main-navigation__item-count">
           ${history}
