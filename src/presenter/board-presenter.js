@@ -65,8 +65,8 @@ export default class BoardPresenter {
   }
 
   init() {
-    this._topRatedFilms = getMostValuedFilms(this._filmsModel.getItems(), sortByRating);
-    this._mostCommentedFilms = getMostValuedFilms(this._filmsModel.getItems(), sortByComments);
+    // this._topRatedFilms = getMostValuedFilms(this._filmsModel.getItems(), sortByRating);
+    // this._mostCommentedFilms = getMostValuedFilms(this._filmsModel.getItems(), sortByComments);
 
     this._renderBoard();
   }
@@ -99,7 +99,7 @@ export default class BoardPresenter {
         this._popupPresenter
     );
 
-    filmCardPresenter.init(film, this._mainFilmListContainerComponent);
+    filmCardPresenter.init(film);
     this._listRenderedPresentersBasicBlock.set(film.id, filmCardPresenter);
   }
 
@@ -266,6 +266,9 @@ export default class BoardPresenter {
   }
 
   _renderExtraBlocks() {
+    this._topRatedFilms = getMostValuedFilms(this._filmsModel.getItems(), sortByRating);
+    this._mostCommentedFilms = getMostValuedFilms(this._filmsModel.getItems(), sortByComments);
+
     if (this._topRatedFilms.length !== 0 && parseInt(this._topRatedFilms[0].rating, 10) !== 0) {
       this._filmListComponentTopRated = this._renderExtraBlock(`Top rated`, this._topRatedFilms);
     }
