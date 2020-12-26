@@ -89,16 +89,15 @@ export default class BoardPresenter {
       case SortType.BY_DATE:
         return filteredFilms.sort(sortByDate);
       case SortType.BY_RATING:
-        // return this._filmsModel.getItems().slice().sort(sortByRating);
         return filteredFilms.sort(sortByRating);
     }
-    // return this._filmsModel.getItems();
 
     return filteredFilms;
   }
 
   _renderSort() {
     if (this._sortComponent !== null) {
+      remove(this._sortComponent);
       this._sortComponent = null;
     }
 
@@ -204,6 +203,7 @@ export default class BoardPresenter {
     this._clearFilmListInBasicBlock();
     this._clearExtraBlocks();
 
+    this._renderSort();
     this._renderBasicFilmList();
     this._renderExtraBlocks();
   }
