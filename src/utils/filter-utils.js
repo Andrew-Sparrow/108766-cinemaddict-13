@@ -1,14 +1,16 @@
+import {FilterType} from "./consts";
+
 const filmToFilterMap = {
-  watchlist: (films) => films.filter((film) => film.isInWatchlist).length,
-  history: (films) => films.filter((film) => film.isWatched).length,
-  favorites: (films) => films.filter((film) => film.isFavorite).length,
+  [FilterType.WATCHLIST]: (films) => films.filter((film) => film.isInWatchlist),
+  [FilterType.HISTORY]: (films) => films.filter((film) => film.isWatched),
+  [FilterType.FAVORITES]: (films) => films.filter((film) => film.isFavorite),
 };
 
 export const calculateFilmsInFilter = (films) => {
   const filterToCount = {};
 
-  for (let [filterName, countFilms] of Object.entries(filmToFilterMap)) {
-    filterToCount[filterName] = countFilms(films);
+  for (let [filterName, filteredFilms] of Object.entries(filmToFilterMap)) {
+    filterToCount[filterName] = filteredFilms(films);
   }
 
   return filterToCount;

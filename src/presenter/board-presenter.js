@@ -7,6 +7,7 @@ import FilmCardPresenter from "./film-presenter";
 import PopupPresenter from "./popup-presenter";
 
 import {
+  FilterType,
   SortType,
   UpdateTypeForRerender,
 } from "../utils/consts";
@@ -24,14 +25,17 @@ import {
   sortByRating
 } from "../utils/utils";
 
+import {calculateFilmsInFilter} from "../utils/filter-utils";
+
 const FILMS_COUNT_PER_STEP = 5;
 
 export const collectionOfComments = new Map();
 
 export default class BoardPresenter {
-  constructor(boardContainer, filmModel) {
+  constructor(boardContainer, filmModel, filterModel) {
     this._boardContainer = boardContainer;
     this._filmsModel = filmModel;
+    this._filterModel = filterModel;
 
     this._listRenderedPresentersBasicBlock = new Map();
     this._listRenderedPresentersTopRatedBlock = new Map();
@@ -62,6 +66,7 @@ export default class BoardPresenter {
     this._popupPresenter = new PopupPresenter(this._handleViewActionForModel);
 
     this._filmsModel.addObserver(this._handleModelEventForRerender);
+    this._filterModel.addObserver(this._handleModelEventForRerender);
   }
 
   init() {
@@ -69,13 +74,27 @@ export default class BoardPresenter {
   }
 
   _getFilms() {
+
+    const filterType = this._filterModel.getFilter();
+    const films = this._filmsModel.getItems();
+    let filteredFilms = [];
+
+    if (filterType === FilterType.ALL) {
+      filteredFilms = films;
+    } else {
+      filteredFilms = calculateFilmsInFilter(films)[filterType];
+    }
+
     switch (this._currentSortType) {
       case SortType.BY_DATE:
-        return this._filmsModel.getItems().slice().sort(sortByDate);
+        return filteredFilms.sort(sortByDate);
       case SortType.BY_RATING:
-        return this._filmsModel.getItems().slice().sort(sortByRating);
+        // return this._filmsModel.getItems().slice().sort(sortByRating);
+        return filteredFilms.sort(sortByRating);
     }
-    return this._filmsModel.getItems();
+    // return this._filmsModel.getItems();
+
+    return filteredFilms;
   }
 
   _renderSort() {

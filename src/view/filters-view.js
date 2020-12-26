@@ -1,12 +1,12 @@
 import Abstract from "./abstract";
 import {FilterType} from "../utils/consts";
 
-const createMainNavigationTemplate = (filters, currentFilterType) => {
+const createMainNavigationTemplate = (filteredFilms, currentFilterType) => {
   const {
-    watchlist,
-    history,
-    favorites
-  } = filters;
+    WATCHLIST,
+    HISTORY,
+    FAVORITES
+  } = filteredFilms;
 
   return `<nav class="main-navigation">
     <div class="main-navigation__items">
@@ -20,7 +20,7 @@ const createMainNavigationTemplate = (filters, currentFilterType) => {
          class="main-navigation__item ${currentFilterType === FilterType.WATCHLIST ? `main-navigation__item--active` : ``}">
            Watchlist
          <span class="main-navigation__item-count">
-           ${watchlist}
+           ${WATCHLIST.length}
          </span>
       </a>
       <a href="#history"
@@ -28,7 +28,7 @@ const createMainNavigationTemplate = (filters, currentFilterType) => {
          class="main-navigation__item ${currentFilterType === FilterType.HISTORY ? `main-navigation__item--active` : ``}">
            History
         <span class="main-navigation__item-count">
-          ${history}
+          ${HISTORY.length}
         </span>
       </a>
       <a href="#favorites"
@@ -36,7 +36,7 @@ const createMainNavigationTemplate = (filters, currentFilterType) => {
          class="main-navigation__item ${currentFilterType === FilterType.FAVORITES ? `main-navigation__item--active` : ``}">
            Favorites
         <span class="main-navigation__item-count">
-          ${favorites}
+          ${FAVORITES.length}
         </span>
       </a>
     </div>
