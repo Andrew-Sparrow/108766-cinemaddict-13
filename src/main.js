@@ -1,6 +1,5 @@
 import FilmsModel from "./model/films-model";
 import UserProfileView from "./view/user-profile-view";
-// import FiltersView from "./view/filters-view";
 import FooterStatisticsView from "./view/footer-statistics-view";
 import BoardPresenter from "./presenter/board-presenter";
 import FilterModel from "./model/filter-model";
@@ -12,12 +11,10 @@ import {
   render,
   RenderPosition,
 } from "./utils/render-utils";
-// import {calculateFilmsInFilter} from "./utils/filter-utils";
 
-const FILMS_COUNT = 8;
+const FILMS_COUNT = 18;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilm);
-// const calculatedFilters = calculateFilmsInFilter(films);
 
 const filmsModel = new FilmsModel();
 filmsModel.setItems(films);
@@ -32,7 +29,6 @@ const boardPresenter = new BoardPresenter(siteMainElement, filmsModel, filterMod
 const filterPresenter = new FilterPresenter(siteMainElement, filterModel, filmsModel);
 
 render(siteHeaderElement, new UserProfileView(), RenderPosition.BEFOREEND);
-// render(siteMainElement, new FiltersView(calculatedFilters), RenderPosition.BEFOREEND);
 
 render(footer, new FooterStatisticsView(films.length), RenderPosition.BEFOREEND);
 
