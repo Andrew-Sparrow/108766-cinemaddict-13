@@ -1,13 +1,10 @@
 import Smart from "./smart";
 import he from "he";
 
-const BLANK_COMMENT = {
-  id: null,
-  text: ``,
-  emotion: null,
-  author: null,
-  date: null,
-};
+import {nanoid} from 'nanoid';
+
+import {collectionOfComments} from "../presenter/board-presenter";
+import {BLANK_COMMENT} from "../presenter/popup-presenter";
 
 const getNewCommentTemplate = (comment) => {
   const {
@@ -21,7 +18,10 @@ const getNewCommentTemplate = (comment) => {
             </div>
 
             <label class="film-details__comment-label tooltip">
-              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(text)}</textarea>
+              <textarea
+                class="film-details__comment-input"
+                placeholder="Select reaction below and write comment here"
+                name="comment">${he.encode(text)}</textarea>
               <span class="tooltiptext">Please, write comment and choose emoji</span>
             </label>
 
@@ -70,7 +70,7 @@ const getNewCommentTemplate = (comment) => {
 };
 
 export default class NewCommentView extends Smart {
-  constructor(comment = BLANK_COMMENT) {
+  constructor(comment) {
     super();
     this._data = comment;
 
@@ -101,7 +101,7 @@ export default class NewCommentView extends Smart {
 
     if (evt.target.tagName === `IMG`) {
       this._data.emotion = evt.target.dataset.emoji;
-      this.updateData({emotion: evt.target.dataset.emoji});
+      this.updateElement();
     }
 
     const textAreaElement = this.getElement(`.film-details__comment-input`);
@@ -111,7 +111,6 @@ export default class NewCommentView extends Smart {
     const lengthTextArea = textAreaElement.value.trim().length;
     textAreaElement.setSelectionRange(lengthTextArea, lengthTextArea);
   }
-
 
   _setInnerHandlers() {
 
@@ -128,8 +127,16 @@ export default class NewCommentView extends Smart {
 
     if (evt.ctrlKey && evt.keyCode === 13) {
       if (this._data.emotion && this._data.text) {
-        // console.log(evt.keyCode);
-        // this._callback.formSubmit(); // TODO
+
+        this._data.id = nanoid();
+        this._data.date = new Date();
+
+        collectionOfComments.set(this._data.id, this._data);
+
+        this._callback.formSubmit(this._data.id);
+
+        this._data = Object.assign({}, BLANK_COMMENT);
+
       } else {
         textAreaElement.style.border = `2px solid #ff0000`;
         this.getElement(`.tooltiptext`).style.visibility = `visible`;

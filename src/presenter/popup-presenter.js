@@ -1,10 +1,5 @@
 import PopupView from "../view/popup-view";
-
-import {
-  remove,
-  render,
-  RenderPosition,
-} from "../utils/render-utils";
+import CommentsModel from "../model/comments-model";
 
 import PopupFeaturesPresenter from "./popup-features-presenter";
 import PopupCommentsPresenter from "./popup-comments-presenter";
@@ -12,10 +7,22 @@ import PopupNewCommentPresenter from "./popup-new-comment-presenter";
 
 import {
   UpdateTypeForRerender,
-  UserActionForModel,
+  UserActionForModel
 } from "../utils/consts";
 
-import CommentsModel from "../model/comments-model";
+import {
+  remove,
+  render,
+  RenderPosition
+} from "../utils/render-utils";
+
+export const BLANK_COMMENT = {
+  id: null,
+  text: ``,
+  emotion: null,
+  author: `Tim Macoveev`,
+  date: null,
+};
 
 export default class PopupPresenter {
   constructor(handleChangeData) {
@@ -27,18 +34,13 @@ export default class PopupPresenter {
 
     this._newCommentPresenter = null;
 
-    this._temporaryNewCommentData = {
-      text: ``,
-      emotion: null,
-    };
+    this._temporaryNewCommentData = Object.assign({}, BLANK_COMMENT);
 
     this._handlePopupCloseClick = this._handlePopupCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
 
     this._handleViewActionForCommentsModel = this._handleViewActionForCommentsModel.bind(this);
     this._handleCommentsModelEventForPopupRerender = this._handleCommentsModelEventForPopupRerender.bind(this);
-
-    // this._getTemporaryNewCommentData = this._getTemporaryNewCommentData.bind(this);
   }
 
   init(film) {
@@ -105,15 +107,17 @@ export default class PopupPresenter {
   _renderCommentsBlock() {
     const commentsPresenter = new PopupCommentsPresenter(
         this._popupComponent.getCommentsTitleElement(),
-        this._handleViewActionForCommentsModel,
-        this._handleChangeData
+        this._handleViewActionForCommentsModel
     );
 
     commentsPresenter.init(this._film);
   }
 
   _renderNewCommentBlock() {
-    this._newCommentPresenter = new PopupNewCommentPresenter(this._popupComponent.getCommentsWrapElement());
+    this._newCommentPresenter = new PopupNewCommentPresenter(
+        this._popupComponent.getCommentsWrapElement(),
+        this._handleViewActionForCommentsModel
+    );
     this._newCommentPresenter.init(this._temporaryNewCommentData);
   }
 

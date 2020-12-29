@@ -15,13 +15,13 @@ export default class CommentsModel extends Observer {
     return this._items;
   }
 
-  addItem(updateType, updatedItem) {
+  addItem(updatedItem) {
     this._items = [
       updatedItem,
       ...this._items
     ];
 
-    this._notify(updateType, updatedItem);
+    this._notify();
   }
 
   deleteItem(updatedItem) {
