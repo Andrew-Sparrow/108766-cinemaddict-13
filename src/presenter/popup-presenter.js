@@ -27,11 +27,18 @@ export default class PopupPresenter {
 
     this._newCommentPresenter = null;
 
+    this._temporaryNewCommentData = {
+      text: ``,
+      emotion: null,
+    };
+
     this._handlePopupCloseClick = this._handlePopupCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
 
     this._handleViewActionForCommentsModel = this._handleViewActionForCommentsModel.bind(this);
     this._handleCommentsModelEventForPopupRerender = this._handleCommentsModelEventForPopupRerender.bind(this);
+
+    // this._getTemporaryNewCommentData = this._getTemporaryNewCommentData.bind(this);
   }
 
   init(film) {
@@ -107,7 +114,12 @@ export default class PopupPresenter {
 
   _renderNewCommentBlock() {
     this._newCommentPresenter = new PopupNewCommentPresenter(this._popupComponent.getCommentsWrapElement());
-    this._newCommentPresenter.init();
+    this._newCommentPresenter.init(this._temporaryNewCommentData);
+  }
+
+  _clearTemporaryNewCommentData() {
+    this._temporaryNewCommentData.emotion = null;
+    this._temporaryNewCommentData.text = ``;
   }
 
   _handlePopupCloseClick() {
@@ -115,6 +127,7 @@ export default class PopupPresenter {
     remove(this._popupComponent);
     document.removeEventListener(`keydown`, this._handleEscKeyDown);
     this._featuresPresenter.destroy();
+    this._clearTemporaryNewCommentData();
   }
 
   _handleEscKeyDown(evt) {
@@ -124,6 +137,7 @@ export default class PopupPresenter {
       remove(this._popupComponent);
       document.removeEventListener(`keydown`, this._handleEscKeyDown);
       this._featuresPresenter.destroy();
+      this._clearTemporaryNewCommentData();
     }
   }
 }

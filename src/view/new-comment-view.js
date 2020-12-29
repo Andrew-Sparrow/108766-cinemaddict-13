@@ -21,7 +21,7 @@ const getNewCommentTemplate = (comment) => {
 
             <label class="film-details__comment-label tooltip">
               <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${text}</textarea>
-              <span class="tooltiptext">Please, write comment</span>
+              <span class="tooltiptext">Please, write comment and choose emoji</span>
             </label>
 
             <div class="film-details__emoji-list">
@@ -89,23 +89,39 @@ export default class NewCommentView extends Smart {
     this.setCommentSubmitHandler(this._callback.formSubmit);
   }
 
-  // reset(film) {
-  //   this.updateData(
-  //   TaskEdit.parseTaskToData(task)
-  //  );
-  // }
-
   _commentInputHandler(evt) {
     evt.preventDefault();
 
-    this.updateData({
-      text: evt.target.value
-    }, true);
+    this._data.text = evt.target.value;
+  }
+
+  _emojiClickHandler(evt) {
+    evt.preventDefault();
+
+    if (evt.target.tagName === `IMG`) {
+      this._data.emotion = evt.target.dataset.emoji;
+      this.updateData({emotion: evt.target.dataset.emoji});
+    }
+
+    const textAreaElement = this.getElement(`.film-details__comment-input`);
+    textAreaElement.focus({preventScroll: false});
+
+    // set cursor in the end of the line
+    const lengthTextArea = textAreaElement.value.trim().length;
+    textAreaElement.setSelectionRange(lengthTextArea, lengthTextArea);
+  }
+
+
+  _setInnerHandlers() {
+
+    this.getElement(`.film-details__emoji-list`)
+      .addEventListener(`click`, this._emojiClickHandler);
+
+    this.getElement(`.film-details__comment-input`)
+      .addEventListener(`input`, this._commentInputHandler);
   }
 
   _commentSubmitHandler(evt) {
-    // evt.preventDefault();
-    // здесь с preventDefault() не работает ввод в поле textarea, так оставить ?
 
     const textAreaElement = this.getElement(`.film-details__comment-input`);
 
@@ -118,29 +134,6 @@ export default class NewCommentView extends Smart {
         this.getElement(`.tooltiptext`).style.visibility = `visible`;
       }
     }
-  }
-
-  _setInnerHandlers() {
-    this.getElement(`.film-details__emoji-list`)
-      .addEventListener(`click`, this._emojiClickHandler);
-
-    this.getElement(`.film-details__comment-input`)
-      .addEventListener(`input`, this._commentInputHandler);
-  }
-
-  _emojiClickHandler(evt) {
-    evt.preventDefault();
-
-    if (evt.target.tagName === `IMG`) {
-      this.updateData({emotion: evt.target.dataset.emoji});
-    }
-
-    const textAreaElement = this.getElement(`.film-details__comment-input`);
-    textAreaElement.focus({preventScroll: false});
-
-    // set cursor in the end of line
-    const lengthTextArea = textAreaElement.value.trim().length;
-    textAreaElement.setSelectionRange(lengthTextArea, lengthTextArea);
   }
 
   setCommentSubmitHandler(callback) {

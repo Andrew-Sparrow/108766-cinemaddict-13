@@ -1127,7 +1127,7 @@ button {
   z-index: 1;
   bottom: 150%;
   left: 0;
-  top: -90px;
+  top: -105px;
   margin-left: -60px;
 }
 
@@ -1141,8 +1141,3 @@ button {
   border-style: solid;
   border-color: #ff0000 transparent transparent transparent;
 }
-
-/*.tooltip:hover .tooltiptext {*/
-/*  visibility: visible;*/
-/*}*/
-
