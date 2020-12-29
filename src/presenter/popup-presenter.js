@@ -11,7 +11,8 @@ import PopupCommentsPresenter from "./popup-comments-presenter";
 import PopupNewCommentPresenter from "./popup-new-comment-presenter";
 
 import {
-  UserActionForModel
+  UpdateTypeForRerender,
+  UserActionForModel,
 } from "../utils/consts";
 
 import CommentsModel from "../model/comments-model";
@@ -87,6 +88,7 @@ export default class PopupPresenter {
   _handleCommentsModelEventForPopupRerender() {
     this._film.comments = this._commentsModel.getItems();
     this.init(this._film);
+    this._handleChangeData(UpdateTypeForRerender.MINOR, Object.assign({}, this._film));
   }
 
   _renderFeaturesBlock() {
@@ -96,7 +98,8 @@ export default class PopupPresenter {
   _renderCommentsBlock() {
     const commentsPresenter = new PopupCommentsPresenter(
         this._popupComponent.getCommentsTitleElement(),
-        this._handleViewActionForCommentsModel
+        this._handleViewActionForCommentsModel,
+        this._handleChangeData
     );
 
     commentsPresenter.init(this._film);
