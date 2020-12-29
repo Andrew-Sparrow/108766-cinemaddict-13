@@ -1,4 +1,5 @@
 import Smart from "./smart";
+import he from "he";
 
 const BLANK_COMMENT = {
   id: null,
@@ -20,7 +21,7 @@ const getNewCommentTemplate = (comment) => {
             </div>
 
             <label class="film-details__comment-label tooltip">
-              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${text}</textarea>
+              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(text)}</textarea>
               <span class="tooltiptext">Please, write comment and choose emoji</span>
             </label>
 
