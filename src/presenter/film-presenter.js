@@ -1,4 +1,5 @@
 import FilmCardView from "../view/film-card-view";
+import CommentsModel from "../model/comments-model";
 
 import {
   render,
@@ -8,7 +9,8 @@ import {
 } from "../utils/render-utils";
 
 import {
-  UpdateTypeForRerender
+  UpdateTypeForRerender,
+  UserActionForModel
 } from "../utils/consts";
 
 export default class FilmCardPresenter {

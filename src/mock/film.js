@@ -11,7 +11,7 @@ import {
   getRandomInteger,
 } from "../utils/common-utils";
 
-import {generateComments} from "./comments";
+import {generateCommentsID} from "./comments";
 
 const MIN_RATING = `1`;
 const MAX_RATING = `10`;
@@ -54,7 +54,7 @@ export const generateFilm = () => {
   film.genres = GENRES;
   film.description = getRandomDescriptions();
   film.ageRating = `18+`;
-  film.comments = generateComments();
+  film.comments = generateCommentsID();
   film.isInWatchlist = Boolean(getRandomInteger(0, 1));
   film.isWatched = Boolean(getRandomInteger(0, 1));
   film.isFavorite = Boolean(getRandomInteger(0, 1));

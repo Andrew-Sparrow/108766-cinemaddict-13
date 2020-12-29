@@ -57,13 +57,13 @@ export default class BoardPresenter {
     this._filmListComponentTopRated = null;
     this._filmListComponentMostCommented = null;
 
+    this._handleViewActionForFilmModel = this._handleViewActionForFilmModel.bind(this);
     this._handleModelEventForRerender = this._handleModelEventForRerender.bind(this);
-    this._handleViewActionForModel = this._handleViewActionForModel.bind(this);
 
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._popupPresenter = new PopupPresenter(this._handleViewActionForModel);
+    this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel);
 
     this._filmsModel.addObserver(this._handleModelEventForRerender);
     this._filterModel.addObserver(this._handleModelEventForRerender);
@@ -110,7 +110,7 @@ export default class BoardPresenter {
   _renderFilmCardInBasicBlock(film) {
     const filmCardPresenter = new FilmCardPresenter(
         this._mainFilmListContainerComponent,
-        this._handleViewActionForModel,
+        this._handleViewActionForFilmModel,
         this._popupPresenter
     );
 
@@ -143,7 +143,7 @@ export default class BoardPresenter {
     render(this._filmsBoardComponent, this._noFilmsComponent, RenderPosition.BEFOREEND);
   }
 
-  _handleViewActionForModel(updateTypeRerender, updatedItem) {
+  _handleViewActionForFilmModel(updateTypeRerender, updatedItem) {
     // for films we only can update items
     this._filmsModel.updateItems(updateTypeRerender, updatedItem);
   }
@@ -249,7 +249,7 @@ export default class BoardPresenter {
   _renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, blockTitle) {
     const filmCardPresenter = new FilmCardPresenter(
         filmListContainerComponent,
-        this._handleViewActionForModel,
+        this._handleViewActionForFilmModel,
         this._popupPresenter
     );
 

@@ -15,7 +15,7 @@ const getCommentTemplate = (commentID) => {
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${comment.author}</span>
                 <span class="film-details__comment-day">${formatCommentDate(comment.date)}</span>
-                <button class="film-details__comment-delete">Delete</button>
+                <button class="film-details__comment-delete" data-comment-id="${commentID}">Delete</button>
               </p>
             </div>
           </li>`;
@@ -25,6 +25,8 @@ export default class CommentView extends Smart {
   constructor(commentID) {
     super();
     this._commentID = commentID;
+
+    this._deleteCommentClickHandler = this._deleteCommentClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -33,7 +35,7 @@ export default class CommentView extends Smart {
 
   _deleteCommentClickHandler(evt) {
     evt.preventDefault();
-    this.callback.commentDeleteClick();
+    this._callback.commentDeleteClick(evt.target.dataset.commentId);
   }
 
   setDeleteCommentClick(callback) {

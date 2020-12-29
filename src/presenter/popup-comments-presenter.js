@@ -7,30 +7,25 @@ import {
   RenderPosition,
 } from "../utils/render-utils";
 
+import {UserActionForModel} from "../utils/consts";
+
 export default class PopupCommentsPresenter {
-  constructor(commentsContainer) {
+  constructor(commentsContainer, handleCommentsChange) {
     this._commentsContainer = commentsContainer;
+    this._handleCommentsChange = handleCommentsChange;
+
     this._listRenderedComments = [];
 
-    this._popupCommentsComponent = null;
+    this._handleDeleteCommentClick = this._handleDeleteCommentClick.bind(this);
   }
 
   init(film) {
-    this._commentsID = film.comments;
-    const prevPopupCommentsComponent = this._popupCommentsComponent;
+    this._filmCommentsID = film.comments;
 
     this._popupCommentsComponent = new CommentsView();
 
-    if (prevPopupCommentsComponent === null) {
-      render(this._commentsContainer, this._popupCommentsComponent, RenderPosition.AFTEREND);
-      this._renderComments(this._commentsID);
-    }
-
-    if (this._commentsContainer.contains(prevPopupCommentsComponent)) {
-      this._clearComments();
-      this._renderComments(this._commentsID);
-    }
-    remove(prevPopupCommentsComponent);
+    render(this._commentsContainer, this._popupCommentsComponent, RenderPosition.AFTEREND);
+    this._renderComments(this._filmCommentsID);
   }
 
   destroy() {
@@ -44,12 +39,16 @@ export default class PopupCommentsPresenter {
   }
 
   _renderComment(commentID) {
-    this._commentPresenter = new PopupCommentPresenter(this._popupCommentsComponent);
+    this._commentPresenter = new PopupCommentPresenter(this._popupCommentsComponent, this._handleDeleteCommentClick);
     this._commentPresenter.init(commentID);
     this._listRenderedComments.push(this._commentPresenter);
   }
 
   _renderComments(commentsID) {
     commentsID.forEach((commentID) => this._renderComment(commentID));
+  }
+
+  _handleDeleteCommentClick(deletedCommentID) {
+    this._handleCommentsChange(UserActionForModel.DELETE_ITEM, deletedCommentID);
   }
 }
