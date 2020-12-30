@@ -50,3 +50,10 @@ export const FilterType = {
   HISTORY: `HISTORY`,
   FAVORITES: `FAVORITES`
 };
+export const BLANK_COMMENT = {
+  id: null,
+  text: ``,
+  emotion: null,
+  author: ``,
+  date: null,
+};

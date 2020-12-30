@@ -4,7 +4,6 @@ import he from "he";
 import {nanoid} from 'nanoid';
 
 import {collectionOfComments} from "../presenter/board-presenter";
-import {BLANK_COMMENT} from "../presenter/popup-presenter";
 
 const getNewCommentTemplate = (comment) => {
   const {
@@ -130,12 +129,11 @@ export default class NewCommentView extends Smart {
 
         this._data.id = nanoid();
         this._data.date = new Date();
+        this._data.author = `Tim Macoveev`;
 
         collectionOfComments.set(this._data.id, this._data);
 
         this._callback.formSubmit(this._data.id);
-
-        this._data = Object.assign({}, BLANK_COMMENT);
 
       } else {
         textAreaElement.style.border = `2px solid #ff0000`;

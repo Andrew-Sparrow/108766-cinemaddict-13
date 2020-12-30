@@ -9,9 +9,14 @@ import {
 import {UserActionForModel} from "../utils/consts";
 
 export default class PopupNewCommentPresenter {
-  constructor(newCommentContainer, handleViewActionForModel) {
+  constructor(
+      newCommentContainer,
+      handleViewActionForModel,
+      clearCommentData
+  ) {
     this._newCommentContainer = newCommentContainer;
     this._handleViewActionForModel = handleViewActionForModel;
+    this._clearCommentData = clearCommentData;
 
     this._handleAddNewComment = this._handleAddNewComment.bind(this);
   }
@@ -28,6 +33,7 @@ export default class PopupNewCommentPresenter {
   }
 
   _handleAddNewComment(newCommentID) {
+    this._clearCommentData();
     this._handleViewActionForModel(UserActionForModel.ADD_ITEM, newCommentID);
   }
 }
