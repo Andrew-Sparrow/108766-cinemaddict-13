@@ -3,7 +3,7 @@ import NewCommentView from "../view/new-comment-view";
 import {
   remove,
   render,
-  RenderPosition
+  RenderPosition,
 } from "../utils/render-utils";
 
 import {UserActionForModel} from "../utils/consts";
@@ -11,12 +11,12 @@ import {UserActionForModel} from "../utils/consts";
 export default class PopupNewCommentPresenter {
   constructor(
       newCommentContainer,
-      handleViewActionForModel,
-      clearCommentData
+      handleViewActionForCommentsModel,
+      clearTemporaryCommentData
   ) {
     this._newCommentContainer = newCommentContainer;
-    this._handleViewActionForModel = handleViewActionForModel;
-    this._clearCommentData = clearCommentData;
+    this._handleViewActionForCommentsModel = handleViewActionForCommentsModel;
+    this._clearTemporaryCommentData = clearTemporaryCommentData;
 
     this._handleAddNewComment = this._handleAddNewComment.bind(this);
   }
@@ -33,7 +33,7 @@ export default class PopupNewCommentPresenter {
   }
 
   _handleAddNewComment(newCommentID) {
-    this._clearCommentData();
-    this._handleViewActionForModel(UserActionForModel.ADD_ITEM, newCommentID);
+    this._handleViewActionForCommentsModel(UserActionForModel.ADD_ITEM, newCommentID);
+    this._clearTemporaryCommentData();
   }
 }

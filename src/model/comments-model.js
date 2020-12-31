@@ -1,4 +1,5 @@
 import Observer from "./observer";
+
 import {collectionOfComments} from "../presenter/board-presenter";
 
 export default class CommentsModel extends Observer {
@@ -17,8 +18,8 @@ export default class CommentsModel extends Observer {
 
   addItem(updatedItem) {
     this._items = [
-      updatedItem,
-      ...this._items
+      ...this._items,
+      updatedItem
     ];
 
     this._notify();

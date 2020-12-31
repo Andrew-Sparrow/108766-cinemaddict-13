@@ -14,29 +14,20 @@ export default class PopupCommentsPresenter {
     this._commentsContainer = commentsContainer;
     this._handleCommentsChange = handleCommentsChange;
 
-    this._listRenderedComments = [];
-
     this._handleDeleteCommentClick = this._handleDeleteCommentClick.bind(this);
   }
 
-  init(film) {
-    this._film = film;
-    this._filmCommentsID = this._film.comments;
+  init(filmCommentsID) {
+    this._filmCommentsID = filmCommentsID;
 
     this._popupCommentsComponent = new CommentsView();
 
-    render(this._commentsContainer, this._popupCommentsComponent, RenderPosition.AFTEREND);
+    render(this._commentsContainer, this._popupCommentsComponent, RenderPosition.BEFOREEND);
     this._renderComments(this._filmCommentsID);
   }
 
   destroy() {
-    this._clearComments();
     remove(this._popupCommentsComponent);
-  }
-
-  _clearComments() {
-    this._listRenderedComments.forEach((commentPresenter) => commentPresenter.destroy());
-    this._listRenderedComments = [];
   }
 
   _renderComment(commentID) {
@@ -45,7 +36,6 @@ export default class PopupCommentsPresenter {
         this._handleDeleteCommentClick
     );
     this._commentPresenter.init(commentID);
-    this._listRenderedComments.push(this._commentPresenter);
   }
 
   _renderComments(commentsID) {

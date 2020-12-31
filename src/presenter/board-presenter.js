@@ -63,10 +63,10 @@ export default class BoardPresenter {
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel);
-
     this._filmsModel.addObserver(this._handleModelEventForRerender);
     this._filterModel.addObserver(this._handleModelEventForRerender);
+
+    this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel, this._filmsModel);
   }
 
   init() {
@@ -167,6 +167,9 @@ export default class BoardPresenter {
         if (this._listRenderedPresentersMostCommentedBlock.has(updatedFilm.id)) {
           this._listRenderedPresentersMostCommentedBlock.get(updatedFilm.id).init(updatedFilm);
         }
+
+        this._clearExtraBlocks();
+        this._renderExtraBlocks();
         break;
       case UpdateTypeForRerender.MINOR:
         this._clearBoard();

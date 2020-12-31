@@ -5,6 +5,8 @@ import {nanoid} from 'nanoid';
 
 import {collectionOfComments} from "../presenter/board-presenter";
 
+import {BLANK_COMMENT} from "../utils/consts";
+
 const getNewCommentTemplate = (comment) => {
   const {
     text,
@@ -121,12 +123,10 @@ export default class NewCommentView extends Smart {
   }
 
   _commentSubmitHandler(evt) {
-
     const textAreaElement = this.getElement(`.film-details__comment-input`);
 
     if (evt.ctrlKey && evt.keyCode === 13) {
       if (this._data.emotion && this._data.text) {
-
         this._data.id = nanoid();
         this._data.date = new Date();
         this._data.author = `Tim Macoveev`;
@@ -135,6 +135,8 @@ export default class NewCommentView extends Smart {
 
         this._callback.formSubmit(this._data.id);
 
+        this._data = BLANK_COMMENT;
+        this.updateElement();
       } else {
         textAreaElement.style.border = `2px solid #ff0000`;
         this.getElement(`.tooltiptext`).style.visibility = `visible`;
