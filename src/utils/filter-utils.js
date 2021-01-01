@@ -1,9 +1,9 @@
-import {FilterType} from "./consts";
+import {MenuItem} from "./consts";
 
 const filmToFilterMap = {
-  [FilterType.WATCHLIST]: (films) => films.filter((film) => film.isInWatchlist),
-  [FilterType.HISTORY]: (films) => films.filter((film) => film.isWatched),
-  [FilterType.FAVORITES]: (films) => films.filter((film) => film.isFavorite),
+  [MenuItem.WATCHLIST]: (films) => films.filter((film) => film.isInWatchlist),
+  [MenuItem.HISTORY]: (films) => films.filter((film) => film.isWatched),
+  [MenuItem.FAVORITES]: (films) => films.filter((film) => film.isFavorite),
 };
 
 export const calculateFilmsInFilter = (films) => {

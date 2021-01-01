@@ -44,12 +44,14 @@ export const UpdateTypeForRerender = {
   MAJOR: `MAJOR`
 };
 
-export const FilterType = {
+export const MenuItem = {
   ALL: `ALL`,
   WATCHLIST: `WATCHLIST`,
   HISTORY: `HISTORY`,
-  FAVORITES: `FAVORITES`
+  FAVORITES: `FAVORITES`,
+  STATS: `STATS`
 };
+
 export const BLANK_COMMENT = {
   id: null,
   text: ``,

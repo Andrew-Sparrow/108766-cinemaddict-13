@@ -7,7 +7,7 @@ import FilmCardPresenter from "./film-presenter";
 import PopupPresenter from "./popup-presenter";
 
 import {
-  FilterType,
+  MenuItem,
   SortType,
   UpdateTypeForRerender,
 } from "../utils/consts";
@@ -79,7 +79,7 @@ export default class BoardPresenter {
     const films = this._filmsModel.getItems();
     let filteredFilms = [];
 
-    if (filterType === FilterType.ALL) {
+    if (filterType === MenuItem.ALL) {
       filteredFilms = films;
     } else {
       filteredFilms = calculateFilmsInFilter(films)[filterType];
@@ -178,6 +178,9 @@ export default class BoardPresenter {
       case UpdateTypeForRerender.MAJOR:
         this._clearBoard({resetRenderedTaskCount: true, resetSortType: true});
         this._renderBoard();
+        break;
+      case UpdateTypeForRerender.STATS:
+        console.log(`stats`);
         break;
     }
   }

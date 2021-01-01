@@ -1,10 +1,10 @@
 import Observer from "./observer";
-import {FilterType} from "../utils/consts";
+import {MenuItem} from "../utils/consts";
 
 export default class FilterModel extends Observer {
   constructor() {
     super();
-    this._activeFilter = FilterType.ALL;
+    this._activeFilter = MenuItem.ALL;
   }
 
   setFilter(updateTypeForRerender, filter) {

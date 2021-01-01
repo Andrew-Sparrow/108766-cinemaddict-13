@@ -9,7 +9,7 @@ import {
 
 import {calculateFilmsInFilter} from "../utils/filter-utils";
 
-import {UpdateTypeForRerender} from "../utils/consts";
+import {MenuItem, UpdateTypeForRerender} from "../utils/consts";
 
 export default class FilterPresenter {
   constructor(filterContainer, filterModel, filmsModel) {
@@ -21,11 +21,11 @@ export default class FilterPresenter {
 
     this._filterComponent = null;
 
-    this._handleModelEvent = this._handleModelEvent.bind(this);
+    this._handleFilterModelEvent = this._handleFilterModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
 
-    this._filmsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
+    this._filmsModel.addObserver(this._handleFilterModelEvent);
+    this._filterModel.addObserver(this._handleFilterModelEvent);
   }
 
   init() {
@@ -46,7 +46,7 @@ export default class FilterPresenter {
     remove(prevFilterComponent);
   }
 
-  _handleModelEvent() {
+  _handleFilterModelEvent() {
     this.init();
   }
 
@@ -55,7 +55,27 @@ export default class FilterPresenter {
       return;
     }
 
-    this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
+    switch (filterType) {
+      case MenuItem.ALL :
+        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
+        break;
+
+      case MenuItem.WATCHLIST :
+        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
+        break;
+
+      case MenuItem.HISTORY :
+        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
+        break;
+
+      case MenuItem.FAVORITES :
+        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
+        break;
+
+      case MenuItem.STATS :
+        this._filterModel.setFilter(UpdateTypeForRerender.STATS, filterType);
+        break;
+    }
   }
 
   _getFilters() {
