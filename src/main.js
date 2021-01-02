@@ -5,6 +5,8 @@ import BoardPresenter from "./presenter/board-presenter";
 import FilterModel from "./model/filter-model";
 import FilterPresenter from "./presenter/filter-presenter";
 
+import StatisticsView from "./view/statistics-view";
+
 import {generateFilm} from "./mock/film";
 
 import {
@@ -33,4 +35,6 @@ render(siteHeaderElement, new UserProfileView(), RenderPosition.BEFOREEND);
 render(footer, new FooterStatisticsView(films.length), RenderPosition.BEFOREEND);
 
 filterPresenter.init();
-boardPresenter.init();
+// boardPresenter.init();
+
+render(siteMainElement, new StatisticsView(filmsModel.getItems()), RenderPosition.BEFOREEND);
