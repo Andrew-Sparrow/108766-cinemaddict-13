@@ -193,7 +193,6 @@ export default class BoardPresenter {
         break;
       case UpdateTypeForRerender.STATS:
         this._destroyBoard();
-        console.log(`stats`);
         break;
     }
   }
