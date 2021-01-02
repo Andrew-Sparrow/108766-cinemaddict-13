@@ -37,7 +37,8 @@ export const generateFilm = () => {
     comments: [],
     isFavorite: false,
     isInWatchlist: false,
-    isWatched: false
+    isWatched: false,
+    watchingDate: `2019-04-12T16:12:32.554Z`,
   };
 
   film.id = nanoid();
@@ -55,9 +56,9 @@ export const generateFilm = () => {
   film.description = getRandomDescriptions();
   film.ageRating = `18+`;
   film.comments = generateCommentsID();
+  film.isFavorite = Boolean(getRandomInteger(0, 1));
   film.isInWatchlist = Boolean(getRandomInteger(0, 1));
   film.isWatched = Boolean(getRandomInteger(0, 1));
-  film.isFavorite = Boolean(getRandomInteger(0, 1));
 
   return film;
 };

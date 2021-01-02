@@ -125,7 +125,7 @@ export default class NewCommentView extends Smart {
   _commentSubmitHandler(evt) {
     const textAreaElement = this.getElement(`.film-details__comment-input`);
 
-    if (evt.ctrlKey && evt.keyCode === 13) {
+    if (evt.ctrlKey && evt.keyCode === 13 && evt.metaKey) {
       if (this._data.emotion && this._data.text) {
         this._data.id = nanoid();
         this._data.date = new Date();
