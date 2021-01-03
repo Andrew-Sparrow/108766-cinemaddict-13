@@ -9,6 +9,7 @@ import {
 
 import {
   getRandomInteger,
+  getRandomDate
 } from "../utils/common-utils";
 
 import {generateCommentsID} from "./comments";
@@ -59,6 +60,7 @@ export const generateFilm = () => {
   film.isFavorite = Boolean(getRandomInteger(0, 1));
   film.isInWatchlist = Boolean(getRandomInteger(0, 1));
   film.isWatched = Boolean(getRandomInteger(0, 1));
+  film.watchingDate = getRandomDate();
 
   return film;
 };

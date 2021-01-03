@@ -6,16 +6,17 @@
 // import {countWatchedFilmsInDateRange} from "../utils/statistics-utils";
 //
 // import dayjs from "dayjs";
-
-// const renderColorsChart = (colorsCtx, films) => {
+//
+// const statisticCtx = document.querySelector(`.statistic__chart-wrap`);
+//
+// const renderFilmsChart = (filmsCtx, films, dateFrom, dateTo) => {
 //
 //   const BAR_HEIGHT = 50;
-//   const statisticCtx = document.querySelector(`.statistic__chart`);
 //
 //   statisticCtx.height = BAR_HEIGHT * 5;
 //
 //   // Функция для отрисовки графика по цветам
-//   return new Chart(statisticCtx, {
+//   return new Chart(filmsCtx, {
 //     plugins: [ChartDataLabels],
 //     type: `horizontalBar`,
 //     data: {
@@ -72,7 +73,7 @@
 //     }
 //   });
 // };
-
+//
 // const createStatisticsTemplate = (data) => {
 //   const {
 //     films,
@@ -80,7 +81,7 @@
 //     dateTo
 //   } = data;
 //
-//   const completedTaskCount = countWatchedFilmsInDateRange(films, dateFrom, dateTo);
+//   const watchedFilmsInDateRange = countWatchedFilmsInDateRange(films, dateFrom, dateTo);
 //
 //   return `<section class="statistic">
 //     <p class="statistic__rank">
@@ -129,22 +130,21 @@
 //
 //   </section>`;
 // };
-
+//
 // export default class StatisticsView extends Smart {
 //   constructor(films) {
 //     super();
 //
 //     this._data = {
 //       films,
-//       dateFrom: (() => {
-//         const daysToFullWeek = 6;
-//         return dayjs().subtract(daysToFullWeek, `day`).toDate();
-//       })(),
-//       dateTo: dayjs().toDate()
+//       dateFrom: dayjs().toDate(),
+//       dateTo: (() => {
+//         const daysToFullWeek = 15;
+//         return dayjs().add(daysToFullWeek, `day`).toDate();
+//       })()
 //     };
 //
-//     this._colorsCart = null;
-//     this._daysChart = null;
+//     this._filmsChart = null;
 //
 //     this._dateChangeHandler = this._dateChangeHandler.bind(this);
 //
@@ -152,7 +152,7 @@
 //   }
 //
 //   getTemplate() {
-//     return createStatisticsTemplate();
+//     return createStatisticsTemplate(this._data);
 //   }
 //
 //   restoreHandlers() {
@@ -162,9 +162,8 @@
 //   removeElement() {
 //     super.removeElement();
 //
-//     if (this._colorsCart !== null || this._daysChart !== null) {
-//       this._colorsCart = null;
-//       this._daysChart = null;
+//     if (this._filmsChart !== null) {
+//       this._filmsChart = null;
 //     }
 //   }
 //
@@ -180,16 +179,18 @@
 //   }
 //
 //   _setCharts() {
-//     if (this._colorsCart !== null || this._daysChart !== null) {
-//       this._colorsCart = null;
-//       this._daysChart = null;
+//     if (this._filmsChart !== null) {
+//       this._filmsChart = null;
 //     }
 //
-//     const {tasks, dateFrom, dateTo} = this._data;
-//     const colorsCtx = this.getElement().querySelector(`.statistic__colors`);
-//     const daysCtx = this.getElement().querySelector(`.statistic__days`);
+//     const {
+//       films,
+//       dateFrom,
+//       dateTo
+//     } = this._data;
 //
-//     this._colorsCart = renderColorsChart(colorsCtx, tasks);
-//     this._daysChart = renderDaysChart(daysCtx, tasks, dateFrom, dateTo);
+//     const filmsCtx = this.getElement().querySelector(`.statistic__chart`);
+//
+//     this._filmsChart = renderFilmsChart(filmsCtx, films, dateFrom, dateTo);
 //   }
 // }

@@ -5,16 +5,16 @@ dayjs.extend(isBetween);
 
 export const countWatchedFilmsInDateRange = (films, dateFrom, dateTo) => {
   return films.reduce((counter, film) => {
-    if (film.isWatched === null) {
+    if (film.isWatched === false) {
       return counter;
     }
 
     // С помощью day.js проверям, сколько фильмов
     // попадают в диапазон дат
     if (
-      dayjs(film.isWatched).isSame(dateFrom) ||
-      dayjs(film.isWatched).isBetween(dateFrom, dateTo) ||
-      dayjs(film.isWatched).isSame(dateTo)
+      dayjs(film.watchingDate).isSame(dateFrom) ||
+      dayjs(film.watchingDate).isBetween(dateFrom, dateTo) ||
+      dayjs(film.watchingDate).isSame(dateTo)
     ) {
       return counter + 1;
     }
