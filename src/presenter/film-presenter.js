@@ -3,10 +3,13 @@ import FilmCardView from "../view/film-card-view";
 import {
   render,
   replace,
-  RenderPosition
+  remove,
+  RenderPosition,
 } from "../utils/render-utils";
 
-import {remove} from "../utils/utils";
+import {
+  UpdateTypeForRerender,
+} from "../utils/consts";
 
 export default class FilmCardPresenter {
   constructor(filmListContainerElement, handleChangeData, popupPresenter) {
@@ -68,7 +71,10 @@ export default class FilmCardPresenter {
         }
     );
 
-    this._handleChangeData(newData);
+    this._handleChangeData(
+        UpdateTypeForRerender.MINOR,
+        newData
+    );
   }
 
   _handleWatchlistClick() {
@@ -80,7 +86,10 @@ export default class FilmCardPresenter {
         }
     );
 
-    this._handleChangeData(newData);
+    this._handleChangeData(
+        UpdateTypeForRerender.MINOR,
+        newData
+    );
   }
 
   _handleWatchedClick() {
@@ -91,6 +100,10 @@ export default class FilmCardPresenter {
           isWatched: !this._film.isWatched
         }
     );
-    this._handleChangeData(newData);
+
+    this._handleChangeData(
+        UpdateTypeForRerender.MINOR,
+        newData
+    );
   }
 }

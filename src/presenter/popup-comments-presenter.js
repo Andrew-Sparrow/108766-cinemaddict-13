@@ -1,39 +1,48 @@
 import CommentsView from "../view/comments-view";
-import {remove} from "../utils/utils";
 import PopupCommentPresenter from "./popup-comment-presenter";
-import {render, RenderPosition} from "../utils/render-utils";
+
+import {
+  remove,
+  render,
+  RenderPosition,
+} from "../utils/render-utils";
+
+import {UserActionForModel} from "../utils/consts";
 
 export default class PopupCommentsPresenter {
-  constructor(commentsContainer) {
+  constructor(commentsContainer, handleCommentsChange) {
     this._commentsContainer = commentsContainer;
-    this._listRenderedComments = [];
+    this._handleCommentsChange = handleCommentsChange;
+
+    this._handleDeleteCommentClick = this._handleDeleteCommentClick.bind(this);
   }
 
-  init(film) {
-    this._commentsID = film.comments;
-    this._filmCommentsComponent = new CommentsView();
+  init(filmCommentsID) {
+    this._filmCommentsID = filmCommentsID;
 
-    render(this._commentsContainer, this._filmCommentsComponent, RenderPosition.AFTEREND);
+    this._popupCommentsComponent = new CommentsView();
 
-    this._renderComments(this._commentsID);
+    render(this._commentsContainer, this._popupCommentsComponent, RenderPosition.BEFOREEND);
+    this._renderComments(this._filmCommentsID);
   }
 
   destroy() {
-    this._clearComments();
-    remove(this._filmCommentsComponent);
-  }
-
-  _clearComments() {
-    this._listRenderedComments.forEach((commentPresenter) => commentPresenter.destroy());
+    remove(this._popupCommentsComponent);
   }
 
   _renderComment(commentID) {
-    this._commentPresenter = new PopupCommentPresenter(this._filmCommentsComponent);
+    this._commentPresenter = new PopupCommentPresenter(
+        this._popupCommentsComponent,
+        this._handleDeleteCommentClick
+    );
     this._commentPresenter.init(commentID);
-    this._listRenderedComments.push(this._commentPresenter);
   }
 
   _renderComments(commentsID) {
     commentsID.forEach((commentID) => this._renderComment(commentID));
+  }
+
+  _handleDeleteCommentClick(deletedCommentID) {
+    this._handleCommentsChange(UserActionForModel.DELETE_ITEM, deletedCommentID);
   }
 }

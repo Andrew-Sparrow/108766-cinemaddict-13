@@ -25,4 +25,12 @@ export const truncateText = (text) => {
   return text;
 };
 
-// export const createImageElement
+export const getRandomDate = () => {
+  const randomInteger = getRandomInteger(-7, 7);
+  const newDate = new Date();
+  newDate.setDate(newDate.getDate() + randomInteger);
+  newDate.setHours(newDate.getHours() + getRandomInteger(0, 24));
+  newDate.setMinutes(newDate.getMinutes() + getRandomInteger(0, 60));
+
+  return newDate;
+};

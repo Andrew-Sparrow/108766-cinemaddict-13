@@ -1,15 +1,8 @@
 import dayjs from "dayjs";
-import Abstract from "../view/abstract";
 
-import {
-  DESCRIPTIONS,
-  pictureTitles
-} from "./consts";
+import {DESCRIPTIONS, pictureTitles} from "./consts";
 
-import {
-  getRandomIndexOfList,
-  getRandomInteger
-} from "./common-utils.js";
+import {getRandomIndexOfList, getRandomInteger} from "./common-utils.js";
 
 
 const MIN_AMOUNT_PHRASES = 1;
@@ -55,15 +48,6 @@ export const formatCommentDate = (date) => {
 
 export const formatReleaseDate = (date) => {
   return dayjs(date).format(`DD MMMM YYYY`);
-};
-
-export const remove = (component) => {
-  if (!(component instanceof Abstract)) {
-    throw new Error(`Only components can be removed`);
-  }
-
-  component.getElement().remove();
-  component.removeElement();
 };
 
 export const sortByDate = (filmA, filmB) => {

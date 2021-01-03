@@ -1,21 +1,39 @@
 import NewCommentView from "../view/new-comment-view";
 
-import {render, RenderPosition} from "../utils/render-utils";
-import {remove} from "../utils/utils";
+import {
+  remove,
+  render,
+  RenderPosition,
+} from "../utils/render-utils";
+
+import {UserActionForModel} from "../utils/consts";
 
 export default class PopupNewCommentPresenter {
-  constructor(newCommentContainer) {
+  constructor(
+      newCommentContainer,
+      handleViewActionForCommentsModel,
+      clearTemporaryCommentData
+  ) {
     this._newCommentContainer = newCommentContainer;
+    this._handleViewActionForCommentsModel = handleViewActionForCommentsModel;
+    this._clearTemporaryCommentData = clearTemporaryCommentData;
+
+    this._handleAddNewComment = this._handleAddNewComment.bind(this);
   }
 
-  init() {
-    this._newCommentComponent = new NewCommentView();
+  init(newCommentData) {
+    this._newCommentComponent = new NewCommentView(newCommentData);
 
     render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
-    this._newCommentComponent.setCommentSubmitHandler();
+    this._newCommentComponent.setCommentSubmitHandler(this._handleAddNewComment);
   }
 
   destroy() {
     remove(this._newCommentComponent);
+  }
+
+  _handleAddNewComment(newCommentID) {
+    this._handleViewActionForCommentsModel(UserActionForModel.ADD_ITEM, newCommentID);
+    this._clearTemporaryCommentData();
   }
 }

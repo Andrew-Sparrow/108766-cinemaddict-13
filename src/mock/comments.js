@@ -24,7 +24,7 @@ export const generateComment = () => {
   return comment;
 };
 
-export const generateComments = () => {
+export const generateCommentsID = () => {
   const commentsID = [];
 
   const numberOfCycles = getRandomInteger(MIN_AMOUNT_OF_COMMENTS, MAX__AMOUNT_OF_COMMENTS);

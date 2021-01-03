@@ -1,24 +1,24 @@
 import CommentView from "../view/comment-view";
 
-import {remove} from "../utils/utils";
-
 import {
   render,
-  RenderPosition
+  RenderPosition,
 } from "../utils/render-utils";
 
 export default class PopupCommentPresenter {
-  constructor(commentContainer) {
+  constructor(
+      commentContainer,
+      handleDeleteComment
+  ) {
     this._commentContainer = commentContainer.getElement();
+    this._handleDeleteComment = handleDeleteComment;
   }
 
   init(commentID) {
     this._commentID = commentID;
     this._filmCommentComponent = new CommentView(this._commentID);
-    render(this._commentContainer, this._filmCommentComponent, RenderPosition.BEFOREEND);
-  }
+    this._filmCommentComponent.setDeleteCommentClick(this._handleDeleteComment);
 
-  destroy() {
-    remove(this._filmCommentComponent);
+    render(this._commentContainer, this._filmCommentComponent, RenderPosition.BEFOREEND);
   }
 }

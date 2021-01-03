@@ -31,3 +31,31 @@ export const SortType = {
   BY_DATE: `by-date`,
   BY_RATING: `by-rating`
 };
+
+export const UserActionForModel = {
+  ADD_ITEM: `ADD_ITEM`,
+  DELETE_ITEM: `DELETE_ITEM`,
+  UPDATE_ITEM: `UPDATE_ITEM`
+};
+
+export const UpdateTypeForRerender = {
+  PATCH: `PATCH`,
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`
+};
+
+export const MenuItem = {
+  ALL: `ALL`,
+  WATCHLIST: `WATCHLIST`,
+  HISTORY: `HISTORY`,
+  FAVORITES: `FAVORITES`,
+  STATS: `STATS`
+};
+
+export const BLANK_COMMENT = {
+  id: null,
+  text: ``,
+  emotion: null,
+  author: ``,
+  date: null,
+};

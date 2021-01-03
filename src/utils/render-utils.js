@@ -55,16 +55,15 @@ export const replace = (newChild, oldChild) => {
   parent.replaceChild(newChild, oldChild);
 };
 
-export const updateItems = (items, updatedItem) => {
-  const index = items.findIndex((item) => item.id === updatedItem.id);
-
-  if (index === -1) {
-    return items;
+export const remove = (component) => {
+  if (component === null) {
+    return;
   }
 
-  return [
-    ...items.slice(0, index),
-    updatedItem,
-    ...items.slice(index + 1)
-  ];
+  if (!(component instanceof Abstract)) {
+    throw new Error(`Only components can be removed`);
+  }
+
+  component.getElement().remove();
+  component.removeElement();
 };

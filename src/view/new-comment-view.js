@@ -1,12 +1,11 @@
 import Smart from "./smart";
+import he from "he";
 
-const BLANK_COMMENT = {
-  id: null,
-  text: ``,
-  emotion: null,
-  author: null,
-  date: null,
-};
+import {nanoid} from 'nanoid';
+
+import {collectionOfComments} from "../presenter/board-presenter";
+
+import {BLANK_COMMENT} from "../utils/consts";
 
 const getNewCommentTemplate = (comment) => {
   const {
@@ -20,8 +19,11 @@ const getNewCommentTemplate = (comment) => {
             </div>
 
             <label class="film-details__comment-label tooltip">
-              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${text}</textarea>
-              <span class="tooltiptext">Please, write comment</span>
+              <textarea
+                class="film-details__comment-input"
+                placeholder="Select reaction below and write comment here"
+                name="comment">${he.encode(text)}</textarea>
+              <span class="tooltiptext">Please, write comment and choose emoji</span>
             </label>
 
             <div class="film-details__emoji-list">
@@ -69,7 +71,7 @@ const getNewCommentTemplate = (comment) => {
 };
 
 export default class NewCommentView extends Smart {
-  constructor(comment = BLANK_COMMENT) {
+  constructor(comment) {
     super();
     this._data = comment;
 
@@ -89,38 +91,30 @@ export default class NewCommentView extends Smart {
     this.setCommentSubmitHandler(this._callback.formSubmit);
   }
 
-  // reset(film) {
-  //   this.updateData(
-  //   TaskEdit.parseTaskToData(task)
-  //  );
-  // }
-
   _commentInputHandler(evt) {
     evt.preventDefault();
 
-    this.updateData({
-      text: evt.target.value
-    }, true);
+    this._data.text = evt.target.value;
   }
 
-  _commentSubmitHandler(evt) {
-    // evt.preventDefault();
-    // здесь с preventDefault() не работает ввод в поле textarea, так оставить ?
+  _emojiClickHandler(evt) {
+    evt.preventDefault();
+
+    if (evt.target.tagName === `IMG`) {
+      this._data.emotion = evt.target.dataset.emoji;
+      this.updateElement();
+    }
 
     const textAreaElement = this.getElement(`.film-details__comment-input`);
+    textAreaElement.focus({preventScroll: false});
 
-    if (evt.ctrlKey && evt.keyCode === 13) {
-      if (this._data.emotion && this._data.text) {
-        // console.log(evt.keyCode);
-        // this._callback.formSubmit(); // TODO
-      } else {
-        textAreaElement.style.border = `2px solid #ff0000`;
-        this.getElement(`.tooltiptext`).style.visibility = `visible`;
-      }
-    }
+    // set cursor in the end of the line
+    const lengthTextArea = textAreaElement.value.trim().length;
+    textAreaElement.setSelectionRange(lengthTextArea, lengthTextArea);
   }
 
   _setInnerHandlers() {
+
     this.getElement(`.film-details__emoji-list`)
       .addEventListener(`click`, this._emojiClickHandler);
 
@@ -128,19 +122,26 @@ export default class NewCommentView extends Smart {
       .addEventListener(`input`, this._commentInputHandler);
   }
 
-  _emojiClickHandler(evt) {
-    evt.preventDefault();
-
-    if (evt.target.tagName === `IMG`) {
-      this.updateData({emotion: evt.target.dataset.emoji});
-    }
-
+  _commentSubmitHandler(evt) {
     const textAreaElement = this.getElement(`.film-details__comment-input`);
-    textAreaElement.focus({preventScroll: false});
 
-    // set cursor in the end of line
-    const lengthTextArea = textAreaElement.value.trim().length;
-    textAreaElement.setSelectionRange(lengthTextArea, lengthTextArea);
+    if ((evt.ctrlKey || evt.metaKey) && evt.keyCode === 13) {
+      if (this._data.emotion && this._data.text) {
+        this._data.id = nanoid();
+        this._data.date = new Date();
+        this._data.author = `Tim Macoveev`;
+
+        collectionOfComments.set(this._data.id, this._data);
+
+        this._callback.formSubmit(this._data.id);
+
+        this._data = BLANK_COMMENT;
+        this.updateElement();
+      } else {
+        textAreaElement.style.border = `2px solid #ff0000`;
+        this.getElement(`.tooltiptext`).style.visibility = `visible`;
+      }
+    }
   }
 
   setCommentSubmitHandler(callback) {

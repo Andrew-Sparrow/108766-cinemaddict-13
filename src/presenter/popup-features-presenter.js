@@ -1,6 +1,6 @@
 import PopupFeaturesView from "../view/popup-features-view";
-import {remove} from "../utils/utils";
-import {render, RenderPosition, replace} from "../utils/render-utils";
+import {remove, render, RenderPosition, replace} from "../utils/render-utils";
+import {UpdateTypeForRerender} from "../utils/consts";
 
 export default class PopupFeaturesPresenter {
   constructor(popupFeaturesContainerElement, handleChangeData) {
@@ -43,7 +43,7 @@ export default class PopupFeaturesPresenter {
 
   _handleFeaturesClick(updatedData) {
     const newData = Object.assign({}, this._film, updatedData);
-    this._handleChangeData(newData);
+    this._handleChangeData(UpdateTypeForRerender.MINOR, newData);
     this.init(newData, true);
   }
 
