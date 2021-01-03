@@ -51,7 +51,7 @@ export const generateFilm = () => {
   film.screenwriters = [`Billy Wilder`, `Robert Towne`, `Quentin Tarantino`];
   film.actors = [`Tom Hanks`, `Jack Nicholson`, `Cate Blanchett`];
   film.releaseDate = generateDate();
-  film.duration = `1h 55m`;
+  film.duration = 77;
   film.country = `New Zealand`;
   film.genres = GENRES;
   film.description = getRandomDescriptions();

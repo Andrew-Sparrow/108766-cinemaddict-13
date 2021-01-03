@@ -1,6 +1,13 @@
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+
+dayjs.extend(duration);
+
 import {
   AMOUNT_OF_LETTERS
 } from "./consts";
+
+import {USER_RANKS} from "./consts";
 
 // Функция из интернета по генерации случайного числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
@@ -33,4 +40,49 @@ export const getRandomDate = () => {
   newDate.setMinutes(newDate.getMinutes() + getRandomInteger(0, 60));
 
   return newDate;
+};
+
+export const getUserRank = (films) => {
+  let userRank = ``;
+  let watchValue = 0;
+
+  const watchedFilms = films.reduce((accumulator, currentFilm) => {
+    if (currentFilm.isWatched) {
+      watchValue = 1;
+    } else {
+      watchValue = 0;
+    }
+    return accumulator + watchValue;
+  }, 0);
+
+  if (watchedFilms === 0) {
+    userRank = USER_RANKS.NO_RANK;
+  } else if (watchedFilms > 0 && watchedFilms < 11) {
+    userRank = USER_RANKS.NOVICE;
+  } else if (watchedFilms > 10 && watchedFilms < 21) {
+    userRank = USER_RANKS.FAN;
+  } else if (watchedFilms > 20) {
+    userRank = USER_RANKS.MOVIE_BUFF;
+  }
+  return userRank;
+};
+
+export const getPropertiesOfFilmDuration = (timeOfDuration) => {
+
+  const hoursFilmDuration = Math.floor(dayjs.duration(timeOfDuration, `minutes`).asHours());
+  const minutesFilmDuration = timeOfDuration - (hoursFilmDuration * 60);
+  const propertiesOfFilmDuration = {};
+
+  propertiesOfFilmDuration.hours = hoursFilmDuration;
+  propertiesOfFilmDuration.minutes = minutesFilmDuration;
+
+  return propertiesOfFilmDuration;
+};
+
+export const getTotalFilmDuration = (films) => {
+  const totalDuration = films.reduce((accumulator, currentFilm) => {
+    return accumulator + parseInt(currentFilm.duration, 10);
+  }, 0);
+
+  return totalDuration;
 };

@@ -59,3 +59,10 @@ export const BLANK_COMMENT = {
   author: ``,
   date: null,
 };
+
+export const USER_RANKS = {
+  NO_RANK: `No rank`,
+  NOVICE: `Novice`,
+  FAN: `Fan`,
+  MOVIE_BUFF: `Movie Buff`
+};
