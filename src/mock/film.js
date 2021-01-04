@@ -1,5 +1,6 @@
 import {GENRES} from "../utils/consts";
 import {nanoid} from 'nanoid';
+import {getRandomAmountOfItems} from "../utils/random-utils";
 
 import {
   generateDate,
@@ -53,7 +54,7 @@ export const generateFilm = () => {
   film.releaseDate = generateDate();
   film.duration = 77;
   film.country = `New Zealand`;
-  film.genres = GENRES;
+  film.genres = getRandomAmountOfItems(GENRES);
   film.description = getRandomDescriptions();
   film.ageRating = `18+`;
   film.comments = generateCommentsID();

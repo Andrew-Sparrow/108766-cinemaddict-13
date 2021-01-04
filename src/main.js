@@ -17,7 +17,7 @@ import {
 const FILMS_COUNT = 8;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilm);
-
+console.log(films);
 const filmsModel = new FilmsModel();
 filmsModel.setItems(films);
 

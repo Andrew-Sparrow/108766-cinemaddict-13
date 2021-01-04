@@ -4,11 +4,15 @@ import dayjs from "dayjs";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import {countWatchedFilmsInDateRange} from "../utils/statistics-utils";
+import {
+  countWatchedFilmsInDateRange,
+  countFilmsByGenres,
+  getTopGenre
+  } from "../utils/statistics-utils";
 
 import {
   getUserRank,
-  getPropertiesOfFilmDuration,
+  getPropertiesOfTotalFilmsDuration,
   getTotalFilmDuration
 } from "../utils/common-utils";
 
@@ -78,7 +82,7 @@ const renderFilmsChart = (filmsCtx, films, dateFrom, dateTo) => {
   });
 };
 
-const createStatisticsTemplate = (data, propertiesFilmDuration) => {
+const createStatisticsTemplate = (data, propertiesTotalFilmsDuration, topGenre) => {
   const {
     films,
     dateFrom,
@@ -88,7 +92,7 @@ const createStatisticsTemplate = (data, propertiesFilmDuration) => {
   const {
     hours,
     minutes
-  } = propertiesFilmDuration;
+  } = propertiesTotalFilmsDuration;
 
   const watchedFilmsInDateRange = countWatchedFilmsInDateRange(films, dateFrom, dateTo);
   const userRank = getUserRank(films);
@@ -130,7 +134,7 @@ const createStatisticsTemplate = (data, propertiesFilmDuration) => {
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
-        <p class="statistic__item-text">Sci-Fi</p>
+        <p class="statistic__item-text">${topGenre}</p>
       </li>
     </ul>
 
@@ -157,7 +161,7 @@ export default class StatisticsView extends Smart {
     this._filmsChart = null;
 
     this._totalFilmsDuration = getTotalFilmDuration(this._data.films);
-    this._propertiesFilmDuration = getPropertiesOfFilmDuration(this._totalFilmsDuration);
+    this._propertiesFilmDuration = getPropertiesOfTotalFilmsDuration(this._totalFilmsDuration);
 
     this._dateChangeHandler = this._dateChangeHandler.bind(this);
 
@@ -165,7 +169,11 @@ export default class StatisticsView extends Smart {
   }
 
   getTemplate() {
-    return createStatisticsTemplate(this._data, this._propertiesFilmDuration);
+    return createStatisticsTemplate(
+        this._data,
+        this._propertiesFilmDuration,
+        this._getTopGenre()
+    );
   }
 
   restoreHandlers() {
@@ -178,6 +186,10 @@ export default class StatisticsView extends Smart {
     if (this._filmsChart !== null) {
       this._filmsChart = null;
     }
+  }
+
+  _getTopGenre() {
+    return getTopGenre(countFilmsByGenres(this._data.films));
   }
 
   _dateChangeHandler([dateFrom, dateTo]) {

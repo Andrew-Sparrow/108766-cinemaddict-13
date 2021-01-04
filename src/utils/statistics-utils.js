@@ -22,3 +22,31 @@ export const countWatchedFilmsInDateRange = (films, dateFrom, dateTo) => {
     return counter;
   }, 0);
 };
+
+export const countFilmsByGenres = (films) => {
+  const filmsGenres = {};
+
+  films.forEach((film) => {
+    film.genres.forEach((genre) => {
+      if (genre in filmsGenres) {
+        filmsGenres[genre] = filmsGenres[genre] + 1;
+      } else {
+        filmsGenres[genre] = 1;
+      }
+    });
+  });
+  console.log(filmsGenres);
+  return filmsGenres;
+};
+
+export const getTopGenre = (countedFilmsByGenres) => {
+  let topGenre = ``;
+  let maxCountedGenre = 0;
+
+  for (let property in countedFilmsByGenres) {
+    if (countedFilmsByGenres[property] > maxCountedGenre) {
+      topGenre = property;
+    }
+  }
+  return topGenre;
+};

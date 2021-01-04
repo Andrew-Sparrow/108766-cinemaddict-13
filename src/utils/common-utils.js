@@ -67,7 +67,7 @@ export const getUserRank = (films) => {
   return userRank;
 };
 
-export const getPropertiesOfFilmDuration = (timeOfDuration) => {
+export const getPropertiesOfTotalFilmsDuration = (timeOfDuration) => {
 
   const hoursFilmDuration = Math.floor(dayjs.duration(timeOfDuration, `minutes`).asHours());
   const minutesFilmDuration = timeOfDuration - (hoursFilmDuration * 60);
