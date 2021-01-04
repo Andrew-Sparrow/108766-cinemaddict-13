@@ -8,18 +8,26 @@ import {
   countWatchedFilmsInDateRange,
   countFilmsByGenres,
   getTopGenre
-  } from "../utils/statistics-utils";
+} from "../utils/statistics-utils";
 
 import {
   getUserRank,
-  getPropertiesOfTotalFilmsDuration,
-  getTotalFilmDuration
+  getTimePropertiesOfTotalFilmsDuration,
+  getTotalFilmDuration,
+  getWatchedFilms
 } from "../utils/common-utils";
 
 
-const renderFilmsChart = (filmsCtx, films, dateFrom, dateTo) => {
+const renderFilmsChart = (filmsCtx, watchedFilms, dateFrom, dateTo) => {
 
   const BAR_HEIGHT = 50;
+
+  const propertiesWatchedFilmGenres = countFilmsByGenres(watchedFilms);
+  console.log(propertiesWatchedFilmGenres);
+  const watchedGenres = Object.keys(propertiesWatchedFilmGenres);
+  console.log(watchedGenres);
+  const countedWatchedGenres = Object.values(propertiesWatchedFilmGenres);
+  console.log(countedWatchedGenres);
 
   filmsCtx.height = BAR_HEIGHT * 5;
 
@@ -28,9 +36,9 @@ const renderFilmsChart = (filmsCtx, films, dateFrom, dateTo) => {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
-      labels: [`Sci-Fi`, `Animation`, `Fantasy`, `Comedy`, `TV Series`],
+      labels: watchedGenres,
       datasets: [{
-        data: [11, 8, 7, 4, 3],
+        data: countedWatchedGenres,
         backgroundColor: `#ffe800`,
         hoverBackgroundColor: `#ffe800`,
         anchor: `start`
@@ -84,7 +92,7 @@ const renderFilmsChart = (filmsCtx, films, dateFrom, dateTo) => {
 
 const createStatisticsTemplate = (data, propertiesTotalFilmsDuration, topGenre) => {
   const {
-    films,
+    watchedFilms,
     dateFrom,
     dateTo
   } = data;
@@ -94,8 +102,11 @@ const createStatisticsTemplate = (data, propertiesTotalFilmsDuration, topGenre) 
     minutes
   } = propertiesTotalFilmsDuration;
 
-  const watchedFilmsInDateRange = countWatchedFilmsInDateRange(films, dateFrom, dateTo);
-  const userRank = getUserRank(films);
+  // const watchedFilmsInDateRange = countWatchedFilmsInDateRange(films, dateFrom, dateTo);
+
+  const userRank = getUserRank(watchedFilms);
+
+  const amountOfWatchedFilms = watchedFilms.length;
 
   return `<section class="statistic">
     <p class="statistic__rank">
@@ -126,7 +137,7 @@ const createStatisticsTemplate = (data, propertiesTotalFilmsDuration, topGenre) 
     <ul class="statistic__text-list">
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">You watched</h4>
-        <p class="statistic__item-text">${films.length} <span class="statistic__item-description">movies</span></p>
+        <p class="statistic__item-text">${amountOfWatchedFilms} <span class="statistic__item-description">movies</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
@@ -148,9 +159,10 @@ const createStatisticsTemplate = (data, propertiesTotalFilmsDuration, topGenre) 
 export default class StatisticsView extends Smart {
   constructor(films) {
     super();
+    const watchedFilms = getWatchedFilms(films);
 
     this._data = {
-      films,
+      watchedFilms,
       dateFrom: dayjs().toDate(),
       dateTo: (() => {
         const daysToFullWeek = 15;
@@ -160,8 +172,8 @@ export default class StatisticsView extends Smart {
 
     this._filmsChart = null;
 
-    this._totalFilmsDuration = getTotalFilmDuration(this._data.films);
-    this._propertiesFilmDuration = getPropertiesOfTotalFilmsDuration(this._totalFilmsDuration);
+    this._totalFilmsDuration = getTotalFilmDuration(this._data.watchedFilms);
+    this._propertiesFilmDuration = getTimePropertiesOfTotalFilmsDuration(this._totalFilmsDuration);
 
     this._dateChangeHandler = this._dateChangeHandler.bind(this);
 
@@ -189,7 +201,7 @@ export default class StatisticsView extends Smart {
   }
 
   _getTopGenre() {
-    return getTopGenre(countFilmsByGenres(this._data.films));
+    return getTopGenre(countFilmsByGenres(this._data.watchedFilms));
   }
 
   _dateChangeHandler([dateFrom, dateTo]) {
@@ -209,13 +221,13 @@ export default class StatisticsView extends Smart {
     }
 
     const {
-      films,
+      watchedFilms,
       dateFrom,
       dateTo
     } = this._data;
 
     const filmsCtx = this.getElement().querySelector(`.statistic__chart`);
 
-    this._filmsChart = renderFilmsChart(filmsCtx, films, dateFrom, dateTo);
+    this._filmsChart = renderFilmsChart(filmsCtx, watchedFilms, dateFrom, dateTo);
   }
 }

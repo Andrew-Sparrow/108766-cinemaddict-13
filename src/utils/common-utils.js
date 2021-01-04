@@ -44,30 +44,23 @@ export const getRandomDate = () => {
 
 export const getUserRank = (films) => {
   let userRank = ``;
-  let watchValue = 0;
 
-  const watchedFilms = films.reduce((accumulator, currentFilm) => {
-    if (currentFilm.isWatched) {
-      watchValue = 1;
-    } else {
-      watchValue = 0;
-    }
-    return accumulator + watchValue;
-  }, 0);
+  const amountWatchedFilms = getWatchedFilms(films).length;
 
-  if (watchedFilms === 0) {
+  if (amountWatchedFilms === 0) {
     userRank = USER_RANKS.NO_RANK;
-  } else if (watchedFilms > 0 && watchedFilms < 11) {
+  } else if (amountWatchedFilms > 0 && amountWatchedFilms < 11) {
     userRank = USER_RANKS.NOVICE;
-  } else if (watchedFilms > 10 && watchedFilms < 21) {
+  } else if (amountWatchedFilms > 10 && amountWatchedFilms < 21) {
     userRank = USER_RANKS.FAN;
-  } else if (watchedFilms > 20) {
+  } else if (amountWatchedFilms > 20) {
     userRank = USER_RANKS.MOVIE_BUFF;
   }
+
   return userRank;
 };
 
-export const getPropertiesOfTotalFilmsDuration = (timeOfDuration) => {
+export const getTimePropertiesOfTotalFilmsDuration = (timeOfDuration) => {
 
   const hoursFilmDuration = Math.floor(dayjs.duration(timeOfDuration, `minutes`).asHours());
   const minutesFilmDuration = timeOfDuration - (hoursFilmDuration * 60);
@@ -80,9 +73,14 @@ export const getPropertiesOfTotalFilmsDuration = (timeOfDuration) => {
 };
 
 export const getTotalFilmDuration = (films) => {
+  console.log(films);
   const totalDuration = films.reduce((accumulator, currentFilm) => {
     return accumulator + parseInt(currentFilm.duration, 10);
   }, 0);
 
   return totalDuration;
+};
+
+export const getWatchedFilms = (films) => {
+  return films.filter((film) => film.isWatched);
 };

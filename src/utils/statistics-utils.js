@@ -35,7 +35,7 @@ export const countFilmsByGenres = (films) => {
       }
     });
   });
-  console.log(filmsGenres);
+
   return filmsGenres;
 };
 
@@ -46,6 +46,7 @@ export const getTopGenre = (countedFilmsByGenres) => {
   for (let property in countedFilmsByGenres) {
     if (countedFilmsByGenres[property] > maxCountedGenre) {
       topGenre = property;
+      maxCountedGenre = countedFilmsByGenres[property];
     }
   }
   return topGenre;
