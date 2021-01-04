@@ -17,17 +17,17 @@ import {
   getWatchedFilms
 } from "../utils/common-utils";
 
+import {USER_RANKS} from "../utils/consts";
 
 const renderFilmsChart = (filmsCtx, watchedFilms, dateFrom, dateTo) => {
 
   const BAR_HEIGHT = 50;
 
   const propertiesWatchedFilmGenres = countFilmsByGenres(watchedFilms);
-  console.log(propertiesWatchedFilmGenres);
+
   const watchedGenres = Object.keys(propertiesWatchedFilmGenres);
-  console.log(watchedGenres);
+
   const countedWatchedGenres = Object.values(propertiesWatchedFilmGenres);
-  console.log(countedWatchedGenres);
 
   filmsCtx.height = BAR_HEIGHT * 5;
 
@@ -112,7 +112,7 @@ const createStatisticsTemplate = (data, propertiesTotalFilmsDuration, topGenre) 
     <p class="statistic__rank">
       Your rank
       <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-      <span class="statistic__rank-label">${userRank}</span>
+      ${userRank === USER_RANKS.NO_RANK ? `` : `<span class="statistic__rank-label">${userRank}</span>`}
     </p>
 
     <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">

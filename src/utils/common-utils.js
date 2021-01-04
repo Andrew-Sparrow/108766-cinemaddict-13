@@ -73,7 +73,6 @@ export const getTimePropertiesOfTotalFilmsDuration = (timeOfDuration) => {
 };
 
 export const getTotalFilmDuration = (films) => {
-  console.log(films);
   const totalDuration = films.reduce((accumulator, currentFilm) => {
     return accumulator + parseInt(currentFilm.duration, 10);
   }, 0);
