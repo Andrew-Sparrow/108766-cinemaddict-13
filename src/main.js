@@ -6,6 +6,8 @@ import FilterModel from "./model/filter-model";
 import FilterPresenter from "./presenter/filter-presenter";
 
 import StatisticsView from "./view/statistics-view";
+import StatisticsDiagramView from "./view/statistics-diagram-view";
+import StatisticsInfoView from "./view/statistics-info-view";
 
 import {generateFilm} from "./mock/film";
 
@@ -14,7 +16,7 @@ import {
   RenderPosition,
 } from "./utils/render-utils";
 
-const FILMS_COUNT = 0;
+const FILMS_COUNT = 5;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilm);
 const filmsModel = new FilmsModel();
@@ -37,5 +39,9 @@ render(footer, new FooterStatisticsView(films.length), RenderPosition.BEFOREEND)
 
 filterPresenter.init();
 // boardPresenter.init();
+const statisticsView = new StatisticsView(filmsModel.getItems());
 
-render(siteMainElement, new StatisticsView(filmsModel.getItems()), RenderPosition.BEFOREEND);
+render(siteMainElement, statisticsView, RenderPosition.BEFOREEND);
+
+render(statisticsView, new StatisticsInfoView(filmsModel.getItems()), RenderPosition.BEFOREEND);
+render(statisticsView, new StatisticsDiagramView(filmsModel.getItems()), RenderPosition.BEFOREEND);
