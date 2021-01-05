@@ -55,27 +55,7 @@ export default class FilterPresenter {
       return;
     }
 
-    switch (filterType) {
-      case MenuItem.ALL :
-        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
-        break;
-
-      case MenuItem.WATCHLIST :
-        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
-        break;
-
-      case MenuItem.HISTORY :
-        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
-        break;
-
-      case MenuItem.FAVORITES :
-        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
-        break;
-
-      case MenuItem.STATS :
-        this._filterModel.setFilter(UpdateTypeForRerender.STATS, filterType);
-        break;
-    }
+    this._filterModel.setFilter(UpdateTypeForRerender.STATS, filterType);
   }
 
   _getFilters() {

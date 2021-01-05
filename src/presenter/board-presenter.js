@@ -5,6 +5,7 @@ import ShowMoreView from "../view/show-more-view";
 import FilmsListView from "../view/films-list-view";
 import FilmCardPresenter from "./film-presenter";
 import PopupPresenter from "./popup-presenter";
+import StatisticsView from "../view/statistics-view";
 
 import {
   MenuItem,
@@ -26,6 +27,8 @@ import {
 } from "../utils/utils";
 
 import {calculateFilmsInFilter} from "../utils/filter-utils";
+import StatisticsInfoView from "../view/statistics-info-view";
+import StatisticsDiagramView from "../view/statistics-diagram-view";
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -53,6 +56,7 @@ export default class BoardPresenter {
     this._showMoreButtonComponent = null;
 
     this._noFilmsComponent = new NoFilmsView();
+    this._statisticsComponent = null;
 
     this._filmListComponentTopRated = null;
     this._filmListComponentMostCommented = null;
@@ -188,11 +192,17 @@ export default class BoardPresenter {
         this._renderBoard();
         break;
       case UpdateTypeForRerender.MAJOR:
+        remove(this._statisticsComponent);
         this._clearBoard({resetRenderedTaskCount: true, resetSortType: true});
         this._renderBoard();
         break;
       case UpdateTypeForRerender.STATS:
         this._destroyBoard();
+        this._statisticsComponent = new StatisticsView(this._filmsModel.getItems());
+
+        render(this._boardContainer, this._statisticsComponent, RenderPosition.BEFOREEND);
+        render(this._statisticsComponent, new StatisticsInfoView(this._filmsModel.getItems()), RenderPosition.BEFOREEND);
+        render(this._statisticsComponent, new StatisticsDiagramView(this._filmsModel.getItems()), RenderPosition.BEFOREEND);
         break;
     }
   }

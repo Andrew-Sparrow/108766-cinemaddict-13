@@ -20,7 +20,7 @@ const createMainNavigationTemplate = (filteredFilms, currentFilterType) => {
          class="main-navigation__item ${currentFilterType === MenuItem.WATCHLIST ? `main-navigation__item--active` : ``}">
            Watchlist
          <span class="main-navigation__item-count">
-           ${WATCHLIST.length}
+           ${WATCHLIST.length === 0 ? `disabled` : ``}
          </span>
       </a>
       <a href="#history"
@@ -28,7 +28,7 @@ const createMainNavigationTemplate = (filteredFilms, currentFilterType) => {
          class="main-navigation__item ${currentFilterType === MenuItem.HISTORY ? `main-navigation__item--active` : ``}">
            History
         <span class="main-navigation__item-count">
-          ${HISTORY.length}
+          ${HISTORY.length === 0 ? `disabled` : ``}
         </span>
       </a>
       <a href="#favorites"
@@ -36,7 +36,7 @@ const createMainNavigationTemplate = (filteredFilms, currentFilterType) => {
          class="main-navigation__item ${currentFilterType === MenuItem.FAVORITES ? `main-navigation__item--active` : ``}">
            Favorites
         <span class="main-navigation__item-count">
-          ${FAVORITES.length}
+          ${FAVORITES.length === 0 ? `disabled` : ``}
         </span>
       </a>
     </div>
