@@ -68,11 +68,12 @@ export default class BoardPresenter {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
     this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel, this._filmsModel);
+
+    this._filmsModel.addObserver(this._handleModelEventForRerender);
+    this._filterModel.addObserver(this._handleModelEventForRerender);
   }
 
   init() {
-    this._filmsModel.addObserver(this._handleModelEventForRerender);
-    this._filterModel.addObserver(this._handleModelEventForRerender);
 
     this._renderBoard();
   }
@@ -81,8 +82,8 @@ export default class BoardPresenter {
     this._clearSort();
     this._clearBoard({resetRenderedFilmCount: true, resetSortType: true});
 
-    this._filmsModel.removeObserver(this._handleModelEventForRerender);
-    this._filterModel.removeObserver(this._handleModelEventForRerender);
+    // this._filmsModel.removeObserver(this._handleModelEventForRerender);
+    // this._filterModel.removeObserver(this._handleModelEventForRerender);
   }
 
   _getFilms() {
@@ -188,15 +189,19 @@ export default class BoardPresenter {
         this._renderExtraBlocks();
         break;
       case UpdateTypeForRerender.MINOR:
+        remove(this._statisticsComponent);
         this._clearBoard();
         this._renderBoard();
         break;
       case UpdateTypeForRerender.MAJOR:
+        console.log(`UpdateTypeForRerender.MAJOR`);
         remove(this._statisticsComponent);
-        this._clearBoard({resetRenderedTaskCount: true, resetSortType: true});
-        this._renderBoard();
+        this._destroyBoard();
+        // this._clearBoard({resetRenderedTaskCount: true, resetSortType: true});
+        this.init();
         break;
       case UpdateTypeForRerender.STATS:
+        console.log(`UpdateTypeForRerender.STATS`);
         this._destroyBoard();
         this._statisticsComponent = new StatisticsView(this._filmsModel.getItems());
 
@@ -228,8 +233,7 @@ export default class BoardPresenter {
 
     this._currentSortType = sortType;
 
-    this._clearFilmListInBasicBlock();
-    this._clearExtraBlocks();
+    this._clearBoard({resetRenderedFilmCount: true});
 
     this._renderSort();
     this._renderBasicFilmList();

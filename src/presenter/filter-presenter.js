@@ -9,7 +9,10 @@ import {
 
 import {calculateFilmsInFilter} from "../utils/filter-utils";
 
-import {MenuItem, UpdateTypeForRerender} from "../utils/consts";
+import {
+  MenuItem,
+  UpdateTypeForRerender
+} from "../utils/consts";
 
 export default class FilterPresenter {
   constructor(filterContainer, filterModel, filmsModel) {
@@ -55,7 +58,13 @@ export default class FilterPresenter {
       return;
     }
 
-    this._filterModel.setFilter(UpdateTypeForRerender.STATS, filterType);
+    if (filterType === MenuItem.STATS) {
+      console.log(filterType);
+      this._filterModel.setFilter(UpdateTypeForRerender.STATS, filterType);
+    } else {
+      console.log(filterType);
+      this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
+    }
   }
 
   _getFilters() {
