@@ -8,7 +8,7 @@ import {
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
-const renderFilmsChart = (filmsCtx, watchedFilms, dateFrom, dateTo) => {
+const renderFilmsChart = (filmsCtx, watchedFilms) => {
 
   const BAR_HEIGHT = 50;
 
