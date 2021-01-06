@@ -40,7 +40,7 @@ export const generateFilm = () => {
     isFavorite: false,
     isInWatchlist: false,
     isWatched: false,
-    watchingDate: `2019-04-12T16:12:32.554Z`,
+    watchingDate: ``,
   };
 
   film.id = nanoid();
@@ -62,7 +62,7 @@ export const generateFilm = () => {
   film.isInWatchlist = Boolean(getRandomInteger(0, 1));
   film.isWatched = Boolean(getRandomInteger(0, 1));
   // film.watchingDate = getRandomDate();
-  film.watchingDate = `2019-04-12T16:12:32.554Z`;
+  film.watchingDate = `2020-11-20T16:12:32.554Z`;
 
   return film;
 };

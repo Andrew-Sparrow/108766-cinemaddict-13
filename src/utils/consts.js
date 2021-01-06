@@ -74,3 +74,9 @@ export const StatisticsMenuItem = {
   MONTH: `statistic-month`,
   YEAR: `statistic-year`
 };
+
+export const StatisticsAmountDays = {
+  WEEK: 6,
+  MONTH: 30,
+  YEAR: 365
+};

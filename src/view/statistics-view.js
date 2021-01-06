@@ -47,23 +47,11 @@ export default class StatisticsView extends Smart {
     super();
     this._watchedFilms = getWatchedFilms(films);
 
-    this._dateChangeHandler = this._dateChangeHandler.bind(this);
     this._timePeriodClickHandler = this._timePeriodClickHandler.bind(this);
   }
 
   getTemplate() {
     return createStatisticsTemplate(this._watchedFilms);
-  }
-
-  _dateChangeHandler([dateFrom, dateTo]) {
-    if (!dateFrom || !dateTo) {
-      return;
-    }
-
-    this.updateData({
-      dateFrom,
-      dateTo
-    });
   }
 
   _timePeriodClickHandler(evt) {

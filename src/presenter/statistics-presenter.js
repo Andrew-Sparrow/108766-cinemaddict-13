@@ -11,10 +11,14 @@ import StatisticsDiagramView from "../view/statistics-diagram-view";
 
 import {
   getWatchedFilms,
-  getTodayWatchedFilms
+  getTodayWatchedFilms,
+  getWatchedFilmsInDateRange
 } from "../utils/statistics-utils";
 
-import {StatisticsMenuItem} from "../utils/consts";
+import {
+  StatisticsMenuItem,
+  StatisticsAmountDays
+} from "../utils/consts";
 
 export default class StatisticsPresenter {
   constructor(statisticsContainer) {
@@ -27,6 +31,9 @@ export default class StatisticsPresenter {
     this._films = films;
 
     this._watchedFilms = getWatchedFilms(this._films);
+    this._weekWatchedFilms = null;
+    this._monthWatchedFilms = null;
+    this._yearWatchedFilms = null;
 
     this._statisticsComponent = new StatisticsView(this._watchedFilms);
     this._statisticsInfoView = null;
@@ -55,7 +62,10 @@ export default class StatisticsPresenter {
     this._statisticsDiagramView = new StatisticsDiagramView(filteredWatchedFilms);
 
     render(this._statisticsComponent, this._statisticsInfoView, RenderPosition.BEFOREEND);
-    render(this._statisticsComponent, this._statisticsDiagramView, RenderPosition.BEFOREEND);
+
+    if (filteredWatchedFilms.length !== 0) {
+      render(this._statisticsComponent, this._statisticsDiagramView, RenderPosition.BEFOREEND);
+    }
   }
 
   _handleTimePeriodClick(menuItemValue) {
@@ -65,14 +75,28 @@ export default class StatisticsPresenter {
         this._renderInfoStatistics(this._watchedFilms);
         break;
       case StatisticsMenuItem.TODAY:
+        const todayWatchedFilms = getTodayWatchedFilms(this._watchedFilms);
+
         this._removeInfoStatistics();
-        this._renderInfoStatistics(getTodayWatchedFilms(this._watchedFilms));
+        this._renderInfoStatistics(todayWatchedFilms);
         break;
       case StatisticsMenuItem.WEEK:
-        console.log(`WEEK`);
+        this._weekWatchedFilms = getWatchedFilmsInDateRange(this._watchedFilms, StatisticsAmountDays.WEEK);
+
+        this._removeInfoStatistics();
+        this._renderInfoStatistics(this._weekWatchedFilms);
+        break;
+      case StatisticsMenuItem.MONTH:
+        this._monthWatchedFilms = getWatchedFilmsInDateRange(this._watchedFilms, StatisticsAmountDays.MONTH);
+
+        this._removeInfoStatistics();
+        this._renderInfoStatistics(this._monthWatchedFilms);
         break;
       case StatisticsMenuItem.YEAR:
-        console.log(`YEAR`);
+        this._yearWatchedFilms = getWatchedFilmsInDateRange(this._watchedFilms, StatisticsAmountDays.YEAR);
+
+        this._removeInfoStatistics();
+        this._renderInfoStatistics(this._yearWatchedFilms);
         break;
     }
   }
