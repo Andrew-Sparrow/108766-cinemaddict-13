@@ -1,14 +1,14 @@
-import Smart from "./smart";
+import Smart from "../smart";
 
 import {
   countFilmsByGenres,
   getTopGenre, getWatchedFilms,
-} from "../utils/statistics-utils";
+} from "../../utils/statistics-utils";
 
 import {
   getTimePropertiesOfTotalFilmsDuration,
   getTotalFilmDuration
-} from "../utils/common-utils";
+} from "../../utils/common-utils";
 
 const createStatisticsInfoTemplate = (watchedFilms, propertiesTotalFilmsDuration, topGenre) => {
   const amountOfWatchedFilms = watchedFilms.length;

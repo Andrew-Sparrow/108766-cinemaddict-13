@@ -1,11 +1,11 @@
-import Smart from "./smart";
+import Smart from "../smart";
 import he from "he";
 
 import {nanoid} from 'nanoid';
 
-import {collectionOfComments} from "../presenter/board-presenter";
+import {collectionOfComments} from "../../presenter/board-presenter";
 
-import {BLANK_COMMENT} from "../utils/consts";
+import {BLANK_COMMENT} from "../../utils/consts";
 
 const getNewCommentTemplate = (comment) => {
   const {

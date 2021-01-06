@@ -1,4 +1,4 @@
-import Smart from "./smart";
+import Smart from "../smart";
 
 const getPopupFeatures = (film) => {
   const {

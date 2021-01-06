@@ -1,8 +1,8 @@
-import FilmsBoardView from "../view/films-board-view";
+import FilmsBoardView from "../view/films/films-board-view";
 import SortMenuView from "../view/sort-menu-view";
 import NoFilmsView from "../view/no-films";
 import ShowMoreView from "../view/show-more-view";
-import FilmsListView from "../view/films-list-view";
+import FilmsListView from "../view/films/films-list-view";
 import FilmCardPresenter from "./film-presenter";
 import PopupPresenter from "./popup-presenter";
 

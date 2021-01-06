@@ -1,4 +1,4 @@
-import FilmCardView from "../view/film-card-view";
+import FilmCardView from "../view/films/film-card-view";
 
 import {
   render,

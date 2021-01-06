@@ -1,4 +1,4 @@
-import StatisticsView from "../view/statistics-view";
+import StatisticsView from "../view/statistics/statistics-view";
 
 import {
   remove,
@@ -6,8 +6,8 @@ import {
   RenderPosition
 } from "../utils/render-utils";
 
-import StatisticsInfoView from "../view/statistics-info-view";
-import StatisticsDiagramView from "../view/statistics-diagram-view";
+import StatisticsInfoView from "../view/statistics/statistics-info-view";
+import StatisticsDiagramView from "../view/statistics/statistics-diagram-view";
 
 import {
   getWatchedFilms,

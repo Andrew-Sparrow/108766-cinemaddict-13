@@ -1,4 +1,4 @@
-import PopupFeaturesView from "../view/popup-features-view";
+import PopupFeaturesView from "../view/popup/popup-features-view";
 import {remove, render, RenderPosition, replace} from "../utils/render-utils";
 import {UpdateTypeForRerender} from "../utils/consts";
 

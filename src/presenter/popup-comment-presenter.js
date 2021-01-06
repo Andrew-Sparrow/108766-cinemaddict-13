@@ -1,4 +1,4 @@
-import CommentView from "../view/comment-view";
+import CommentView from "../view/comments/comment-view";
 
 import {
   render,

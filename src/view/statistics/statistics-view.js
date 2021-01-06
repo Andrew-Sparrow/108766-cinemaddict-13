@@ -1,11 +1,11 @@
-import Smart from "./smart";
+import Smart from "../smart";
 
 import {
   getUserRank
-} from "../utils/common-utils";
+} from "../../utils/common-utils";
 
-import {UserRanks} from "../utils/consts";
-import {getWatchedFilms} from "../utils/statistics-utils";
+import {UserRanks} from "../../utils/consts";
+import {getWatchedFilms} from "../../utils/statistics-utils";
 
 const createStatisticsTemplate = (watchedFilms) => {
 

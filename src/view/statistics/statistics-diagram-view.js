@@ -1,9 +1,9 @@
-import Smart from "./smart";
+import Smart from "../smart";
 import dayjs from "dayjs";
 
 import {
   countFilmsByGenres, getWatchedFilms,
-} from "../utils/statistics-utils";
+} from "../../utils/statistics-utils";
 
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
