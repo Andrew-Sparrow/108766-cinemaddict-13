@@ -194,14 +194,11 @@ export default class BoardPresenter {
         this._renderBoard();
         break;
       case UpdateTypeForRerender.MAJOR:
-        console.log(`UpdateTypeForRerender.MAJOR`);
         remove(this._statisticsComponent);
         this._destroyBoard();
-        // this._clearBoard({resetRenderedTaskCount: true, resetSortType: true});
         this.init();
         break;
       case UpdateTypeForRerender.STATS:
-        console.log(`UpdateTypeForRerender.STATS`);
         this._destroyBoard();
         this._statisticsComponent = new StatisticsView(this._filmsModel.getItems());
 

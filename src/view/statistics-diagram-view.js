@@ -12,7 +12,6 @@ import {
   getWatchedFilms
 } from "../utils/common-utils";
 
-
 const renderFilmsChart = (filmsCtx, watchedFilms, dateFrom, dateTo) => {
 
   const BAR_HEIGHT = 50;

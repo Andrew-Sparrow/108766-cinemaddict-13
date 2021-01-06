@@ -59,10 +59,8 @@ export default class FilterPresenter {
     }
 
     if (filterType === MenuItem.STATS) {
-      console.log(filterType);
       this._filterModel.setFilter(UpdateTypeForRerender.STATS, filterType);
     } else {
-      console.log(filterType);
       this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
     }
   }
