@@ -9,7 +9,11 @@ import {
 import StatisticsInfoView from "../view/statistics-info-view";
 import StatisticsDiagramView from "../view/statistics-diagram-view";
 
-import {getWatchedFilms} from "../utils/statistics-utils";
+import {
+  getWatchedFilms,
+  getTodayWatchedFilms
+} from "../utils/statistics-utils";
+
 import {StatisticsMenuItem} from "../utils/consts";
 
 export default class StatisticsPresenter {
@@ -22,17 +26,17 @@ export default class StatisticsPresenter {
   init(films) {
     this._films = films;
 
-    const watchedFilms = getWatchedFilms(this._films);
+    this._watchedFilms = getWatchedFilms(this._films);
 
-    this._statisticsComponent = new StatisticsView(watchedFilms);
-    this._statisticsInfoView = new StatisticsInfoView(watchedFilms);
-    this._statisticsDiagramView = new StatisticsDiagramView(watchedFilms);
+    this._statisticsComponent = new StatisticsView(this._watchedFilms);
+    this._statisticsInfoView = null;
+    this._statisticsDiagramView = null;
 
     this._statisticsComponent.setTimePeriodClickHandler(this._handleTimePeriodClick);
 
     render(this._statisticsContainer, this._statisticsComponent, RenderPosition.BEFOREEND);
-    render(this._statisticsComponent, this._statisticsInfoView, RenderPosition.BEFOREEND);
-    render(this._statisticsComponent, this._statisticsDiagramView, RenderPosition.BEFOREEND);
+    this._renderInfoStatistics(this._watchedFilms);
+
   }
 
   destroy() {
@@ -41,13 +45,28 @@ export default class StatisticsPresenter {
     remove(this._statisticsDiagramView);
   }
 
+  _removeInfoStatistics() {
+    remove(this._statisticsInfoView);
+    remove(this._statisticsDiagramView);
+  }
+
+  _renderInfoStatistics(filteredWatchedFilms) {
+    this._statisticsInfoView = new StatisticsInfoView(filteredWatchedFilms);
+    this._statisticsDiagramView = new StatisticsDiagramView(filteredWatchedFilms);
+
+    render(this._statisticsComponent, this._statisticsInfoView, RenderPosition.BEFOREEND);
+    render(this._statisticsComponent, this._statisticsDiagramView, RenderPosition.BEFOREEND);
+  }
+
   _handleTimePeriodClick(menuItemValue) {
     switch (menuItemValue) {
       case StatisticsMenuItem.ALL:
-        console.log(`ALL`);
+        this._removeInfoStatistics();
+        this._renderInfoStatistics(this._watchedFilms);
         break;
       case StatisticsMenuItem.TODAY:
-        console.log(`TODAY`);
+        this._removeInfoStatistics();
+        this._renderInfoStatistics(getTodayWatchedFilms(this._watchedFilms));
         break;
       case StatisticsMenuItem.WEEK:
         console.log(`WEEK`);

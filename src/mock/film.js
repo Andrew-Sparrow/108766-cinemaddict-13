@@ -61,7 +61,8 @@ export const generateFilm = () => {
   film.isFavorite = Boolean(getRandomInteger(0, 1));
   film.isInWatchlist = Boolean(getRandomInteger(0, 1));
   film.isWatched = Boolean(getRandomInteger(0, 1));
-  film.watchingDate = getRandomDate();
+  // film.watchingDate = getRandomDate();
+  film.watchingDate = `2019-04-12T16:12:32.554Z`;
 
   return film;
 };
