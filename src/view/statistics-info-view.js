@@ -2,13 +2,12 @@ import Smart from "./smart";
 
 import {
   countFilmsByGenres,
-  getTopGenre
+  getTopGenre, getWatchedFilms,
 } from "../utils/statistics-utils";
 
 import {
   getTimePropertiesOfTotalFilmsDuration,
-  getTotalFilmDuration,
-  getWatchedFilms
+  getTotalFilmDuration
 } from "../utils/common-utils";
 
 const createStatisticsInfoTemplate = (watchedFilms, propertiesTotalFilmsDuration, topGenre) => {

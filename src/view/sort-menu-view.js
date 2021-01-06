@@ -44,7 +44,6 @@ export default class SortMenu extends Abstract {
       return;
     }
 
-    // evt.preventDefault();
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
 

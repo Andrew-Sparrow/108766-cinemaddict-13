@@ -1,13 +1,9 @@
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import {AMOUNT_OF_LETTERS, USER_RANKS} from "./consts";
+import {getWatchedFilms} from "./statistics-utils";
 
 dayjs.extend(duration);
-
-import {
-  AMOUNT_OF_LETTERS
-} from "./consts";
-
-import {USER_RANKS} from "./consts";
 
 // Функция из интернета по генерации случайного числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
@@ -80,6 +76,3 @@ export const getTotalFilmDuration = (films) => {
   return totalDuration;
 };
 
-export const getWatchedFilms = (films) => {
-  return films.filter((film) => film.isWatched);
-};

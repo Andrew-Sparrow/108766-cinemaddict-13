@@ -81,9 +81,6 @@ export default class BoardPresenter {
   _destroyBoard() {
     this._clearSort();
     this._clearBoard({resetRenderedFilmCount: true, resetSortType: true});
-
-    // this._filmsModel.removeObserver(this._handleModelEventForRerender);
-    // this._filterModel.removeObserver(this._handleModelEventForRerender);
   }
 
   _getFilms() {

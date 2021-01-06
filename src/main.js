@@ -12,7 +12,7 @@ import {
   RenderPosition,
 } from "./utils/render-utils";
 
-const FILMS_COUNT = 18;
+const FILMS_COUNT = 13;
 
 const films = new Array(FILMS_COUNT).fill().map(generateFilm);
 const filmsModel = new FilmsModel();

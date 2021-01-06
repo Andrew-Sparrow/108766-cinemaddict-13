@@ -2,15 +2,11 @@ import Smart from "./smart";
 import dayjs from "dayjs";
 
 import {
-  countFilmsByGenres,
+  countFilmsByGenres, getWatchedFilms,
 } from "../utils/statistics-utils";
 
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-
-import {
-  getWatchedFilms
-} from "../utils/common-utils";
 
 const renderFilmsChart = (filmsCtx, watchedFilms, dateFrom, dateTo) => {
 

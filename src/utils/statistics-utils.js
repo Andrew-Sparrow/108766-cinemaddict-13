@@ -1,7 +1,9 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import isToday from "dayjs/plugin/isToday";
 
 dayjs.extend(isBetween);
+dayjs.extend(isToday);
 
 export const countWatchedFilmsInDateRange = (films, dateFrom, dateTo) => {
   return films.reduce((counter, film) => {
@@ -50,4 +52,12 @@ export const getTopGenre = (countedFilmsByGenres) => {
     }
   }
   return topGenre;
+};
+
+export const getWatchedFilms = (films) => {
+  return films.filter((film) => film.isWatched);
+};
+
+export const getTodayWatchedFilms = (watchedFilms) => {
+  return watchedFilms.filter((film) => dayjs(film.watchingDate).isToday());
 };
