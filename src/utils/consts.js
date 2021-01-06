@@ -60,9 +60,17 @@ export const BLANK_COMMENT = {
   date: null,
 };
 
-export const USER_RANKS = {
+export const UserRanks = {
   NO_RANK: `No rank`,
   NOVICE: `Novice`,
   FAN: `Fan`,
   MOVIE_BUFF: `Movie Buff`
+};
+
+export const StatisticsMenuItem = {
+  ALL: `statistic-all-time`,
+  TODAY: `statistic-today`,
+  WEEK: `statistic-week`,
+  MONTH: `statistic-month`,
+  YEAR: `statistic-year`
 };

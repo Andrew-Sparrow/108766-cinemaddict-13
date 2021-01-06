@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import {AMOUNT_OF_LETTERS, USER_RANKS} from "./consts";
+import {AMOUNT_OF_LETTERS, UserRanks} from "./consts";
 import {getWatchedFilms} from "./statistics-utils";
 
 dayjs.extend(duration);
@@ -44,13 +44,13 @@ export const getUserRank = (films) => {
   const amountWatchedFilms = getWatchedFilms(films).length;
 
   if (amountWatchedFilms === 0) {
-    userRank = USER_RANKS.NO_RANK;
+    userRank = UserRanks.NO_RANK;
   } else if (amountWatchedFilms > 0 && amountWatchedFilms < 11) {
-    userRank = USER_RANKS.NOVICE;
+    userRank = UserRanks.NOVICE;
   } else if (amountWatchedFilms > 10 && amountWatchedFilms < 21) {
-    userRank = USER_RANKS.FAN;
+    userRank = UserRanks.FAN;
   } else if (amountWatchedFilms > 20) {
-    userRank = USER_RANKS.MOVIE_BUFF;
+    userRank = UserRanks.MOVIE_BUFF;
   }
 
   return userRank;

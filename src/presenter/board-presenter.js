@@ -5,7 +5,6 @@ import ShowMoreView from "../view/show-more-view";
 import FilmsListView from "../view/films-list-view";
 import FilmCardPresenter from "./film-presenter";
 import PopupPresenter from "./popup-presenter";
-import StatisticsView from "../view/statistics-view";
 
 import {
   MenuItem,
@@ -27,8 +26,7 @@ import {
 } from "../utils/utils";
 
 import {calculateFilmsInFilter} from "../utils/filter-utils";
-import StatisticsInfoView from "../view/statistics-info-view";
-import StatisticsDiagramView from "../view/statistics-diagram-view";
+import StatisticsPresenter from "./statistics-presenter";
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -186,22 +184,18 @@ export default class BoardPresenter {
         this._renderExtraBlocks();
         break;
       case UpdateTypeForRerender.MINOR:
-        remove(this._statisticsComponent);
+        this._destroyStatistics();
         this._clearBoard();
         this._renderBoard();
         break;
       case UpdateTypeForRerender.MAJOR:
-        remove(this._statisticsComponent);
+        this._destroyStatistics();
         this._destroyBoard();
         this.init();
         break;
       case UpdateTypeForRerender.STATS:
         this._destroyBoard();
-        this._statisticsComponent = new StatisticsView(this._filmsModel.getItems());
-
-        render(this._boardContainer, this._statisticsComponent, RenderPosition.BEFOREEND);
-        render(this._statisticsComponent, new StatisticsInfoView(this._filmsModel.getItems()), RenderPosition.BEFOREEND);
-        render(this._statisticsComponent, new StatisticsDiagramView(this._filmsModel.getItems()), RenderPosition.BEFOREEND);
+        this._renderStatistics();
         break;
     }
   }
@@ -270,6 +264,15 @@ export default class BoardPresenter {
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
 
     render(this._filmListComponent, this._showMoreButtonComponent, RenderPosition.BEFOREEND);
+  }
+
+  _renderStatistics() {
+    this._statisticsPresenter = new StatisticsPresenter(this._boardContainer);
+    this._statisticsPresenter.init(this._filmsModel.getItems());
+  }
+
+  _destroyStatistics() {
+    this._statisticsPresenter.destroy();
   }
 
   _renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, blockTitle) {

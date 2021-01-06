@@ -4,7 +4,7 @@ import {
   getUserRank
 } from "../utils/common-utils";
 
-import {USER_RANKS} from "../utils/consts";
+import {UserRanks} from "../utils/consts";
 import {getWatchedFilms} from "../utils/statistics-utils";
 
 const createStatisticsTemplate = (watchedFilms) => {
@@ -17,7 +17,7 @@ const createStatisticsTemplate = (watchedFilms) => {
             <p class="statistic__rank">
               Your rank
               <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-              ${userRank === USER_RANKS.NO_RANK ? `` : `<span class="statistic__rank-label">${userRank}</span>`}
+              ${userRank === UserRanks.NO_RANK ? `` : `<span class="statistic__rank-label">${userRank}</span>`}
             </p>
 
             <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
@@ -48,6 +48,7 @@ export default class StatisticsView extends Smart {
     this._watchedFilms = getWatchedFilms(films);
 
     this._dateChangeHandler = this._dateChangeHandler.bind(this);
+    this._timePeriodClickHandler = this._timePeriodClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -63,5 +64,15 @@ export default class StatisticsView extends Smart {
       dateFrom,
       dateTo
     });
+  }
+
+  _timePeriodClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.timePeriodClick(evt.target.id);
+  }
+
+  setTimePeriodClickHandler(callback) {
+    this._callback.timePeriodClick = callback;
+    this.getElement(`.statistic__filters`).addEventListener(`change`, this._timePeriodClickHandler);
   }
 }
