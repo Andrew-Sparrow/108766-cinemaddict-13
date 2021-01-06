@@ -81,19 +81,25 @@ export default class StatisticsPresenter {
         this._renderInfoStatistics(todayWatchedFilms);
         break;
       case StatisticsMenuItem.WEEK:
-        this._weekWatchedFilms = getWatchedFilmsInDateRange(this._watchedFilms, StatisticsAmountDays.WEEK);
+        if (this._weekWatchedFilms === null) {
+          this._weekWatchedFilms = getWatchedFilmsInDateRange(this._watchedFilms, StatisticsAmountDays.WEEK);
+        }
 
         this._removeInfoStatistics();
         this._renderInfoStatistics(this._weekWatchedFilms);
         break;
       case StatisticsMenuItem.MONTH:
-        this._monthWatchedFilms = getWatchedFilmsInDateRange(this._watchedFilms, StatisticsAmountDays.MONTH);
+        if (this._monthWatchedFilms === null) {
+          this._monthWatchedFilms = getWatchedFilmsInDateRange(this._watchedFilms, StatisticsAmountDays.MONTH);
+        }
 
         this._removeInfoStatistics();
         this._renderInfoStatistics(this._monthWatchedFilms);
         break;
       case StatisticsMenuItem.YEAR:
-        this._yearWatchedFilms = getWatchedFilmsInDateRange(this._watchedFilms, StatisticsAmountDays.YEAR);
+        if (this._yearWatchedFilms === null) {
+          this._yearWatchedFilms = getWatchedFilmsInDateRange(this._watchedFilms, StatisticsAmountDays.YEAR);
+        }
 
         this._removeInfoStatistics();
         this._renderInfoStatistics(this._yearWatchedFilms);
