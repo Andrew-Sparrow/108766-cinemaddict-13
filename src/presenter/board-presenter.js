@@ -68,6 +68,7 @@ export default class BoardPresenter {
 
     this._filmsModel.addObserver(this._handleModelEventForRerender);
     this._filterModel.addObserver(this._handleModelEventForRerender);
+    this._isStatisticRendered = false;
   }
 
   init() {
@@ -81,8 +82,8 @@ export default class BoardPresenter {
   }
 
   _getFilms() {
-
     const filterType = this._filterModel.getFilter();
+
     const films = this._filmsModel.getItems();
     let filteredFilms = [];
 
@@ -267,10 +268,14 @@ export default class BoardPresenter {
   _renderStatistics() {
     this._statisticsPresenter = new StatisticsPresenter(this._boardContainer);
     this._statisticsPresenter.init(this._filmsModel.getItems());
+    this._isStatisticRendered = true;
   }
 
   _destroyStatistics() {
-    this._statisticsPresenter.destroy();
+    if (this._isStatisticRendered) {
+      this._statisticsPresenter.destroy();
+      this._isStatisticRendered = false;
+    }
   }
 
   _renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, blockTitle) {
