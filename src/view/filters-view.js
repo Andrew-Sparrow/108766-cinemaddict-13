@@ -61,7 +61,11 @@ export default class FiltersView extends Abstract {
 
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
-    this._callback.filterTypeChange(evt.target.dataset.filterType);
+    if (evt.target.classList.contains(`main-navigation__item`) ||
+      evt.target.classList.contains(`main-navigation__additional`)
+    ) {
+      this._callback.filterTypeChange(evt.target.dataset.filterType);
+    }
   }
 
   setFilterTypeChangeHandler(callback) {

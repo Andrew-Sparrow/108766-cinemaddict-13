@@ -1,4 +1,4 @@
-import PopupView from "../view/popup-view";
+import PopupView from "../view/popup/popup-view";
 import CommentsModel from "../model/comments-model";
 
 import PopupFeaturesPresenter from "./popup-features-presenter";

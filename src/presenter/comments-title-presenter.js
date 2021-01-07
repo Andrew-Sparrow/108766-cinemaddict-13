@@ -1,4 +1,4 @@
-import CommentsTitleView from "../view/comment-title-view";
+import CommentsTitleView from "../view/comments/comment-title-view";
 import {remove, render, RenderPosition, replace} from "../utils/render-utils";
 
 

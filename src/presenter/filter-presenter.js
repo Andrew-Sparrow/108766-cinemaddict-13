@@ -9,7 +9,10 @@ import {
 
 import {calculateFilmsInFilter} from "../utils/filter-utils";
 
-import {MenuItem, UpdateTypeForRerender} from "../utils/consts";
+import {
+  MenuItem,
+  UpdateTypeForRerender
+} from "../utils/consts";
 
 export default class FilterPresenter {
   constructor(filterContainer, filterModel, filmsModel) {
@@ -55,26 +58,10 @@ export default class FilterPresenter {
       return;
     }
 
-    switch (filterType) {
-      case MenuItem.ALL :
-        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
-        break;
-
-      case MenuItem.WATCHLIST :
-        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
-        break;
-
-      case MenuItem.HISTORY :
-        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
-        break;
-
-      case MenuItem.FAVORITES :
-        this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
-        break;
-
-      case MenuItem.STATS :
-        this._filterModel.setFilter(UpdateTypeForRerender.STATS, filterType);
-        break;
+    if (filterType === MenuItem.STATS) {
+      this._filterModel.setFilter(UpdateTypeForRerender.STATS, filterType);
+    } else {
+      this._filterModel.setFilter(UpdateTypeForRerender.MAJOR, filterType);
     }
   }
 

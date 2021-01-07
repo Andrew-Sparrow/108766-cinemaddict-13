@@ -1,4 +1,5 @@
-import FilmCardView from "../view/film-card-view";
+import FilmCardView from "../view/films/film-card-view";
+import dayjs from "dayjs";
 
 import {
   render,
@@ -97,7 +98,8 @@ export default class FilmCardPresenter {
         {},
         this._film,
         {
-          isWatched: !this._film.isWatched
+          isWatched: !this._film.isWatched,
+          watchingDate: dayjs().toISOString()
         }
     );
 

@@ -1,4 +1,4 @@
-import CommentsView from "../view/comments-view";
+import CommentsView from "../view/comments/comments-view";
 import PopupCommentPresenter from "./popup-comment-presenter";
 
 import {

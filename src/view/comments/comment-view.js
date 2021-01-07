@@ -1,6 +1,6 @@
-import {collectionOfComments} from "../presenter/board-presenter";
-import {formatCommentDate} from "../utils/utils";
-import Smart from "./smart";
+import {collectionOfComments} from "../../presenter/board-presenter";
+import {formatCommentDate} from "../../utils/utils";
+import Smart from "../smart";
 
 const getCommentTemplate = (commentID) => {
 

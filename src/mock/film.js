@@ -1,5 +1,6 @@
 import {GENRES} from "../utils/consts";
 import {nanoid} from 'nanoid';
+import {getRandomAmountOfItems} from "../utils/random-utils";
 
 import {
   generateDate,
@@ -9,7 +10,6 @@ import {
 
 import {
   getRandomInteger,
-  getRandomDate
 } from "../utils/common-utils";
 
 import {generateCommentsID} from "./comments";
@@ -39,7 +39,7 @@ export const generateFilm = () => {
     isFavorite: false,
     isInWatchlist: false,
     isWatched: false,
-    watchingDate: `2019-04-12T16:12:32.554Z`,
+    watchingDate: ``,
   };
 
   film.id = nanoid();
@@ -51,16 +51,16 @@ export const generateFilm = () => {
   film.screenwriters = [`Billy Wilder`, `Robert Towne`, `Quentin Tarantino`];
   film.actors = [`Tom Hanks`, `Jack Nicholson`, `Cate Blanchett`];
   film.releaseDate = generateDate();
-  film.duration = `1h 55m`;
+  film.duration = 77;
   film.country = `New Zealand`;
-  film.genres = GENRES;
+  film.genres = getRandomAmountOfItems(GENRES);
   film.description = getRandomDescriptions();
   film.ageRating = `18+`;
   film.comments = generateCommentsID();
   film.isFavorite = Boolean(getRandomInteger(0, 1));
   film.isInWatchlist = Boolean(getRandomInteger(0, 1));
   film.isWatched = Boolean(getRandomInteger(0, 1));
-  film.watchingDate = getRandomDate();
+  film.watchingDate = `2020-11-20T16:12:32.554Z`;
 
   return film;
 };

@@ -1,8 +1,8 @@
-import FilmsBoardView from "../view/films-board-view";
+import FilmsBoardView from "../view/films/films-board-view";
 import SortMenuView from "../view/sort-menu-view";
 import NoFilmsView from "../view/no-films";
 import ShowMoreView from "../view/show-more-view";
-import FilmsListView from "../view/films-list-view";
+import FilmsListView from "../view/films/films-list-view";
 import FilmCardPresenter from "./film-presenter";
 import PopupPresenter from "./popup-presenter";
 
@@ -26,6 +26,7 @@ import {
 } from "../utils/utils";
 
 import {calculateFilmsInFilter} from "../utils/filter-utils";
+import StatisticsPresenter from "./statistics-presenter";
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -64,11 +65,13 @@ export default class BoardPresenter {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
     this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel, this._filmsModel);
+
+    this._filmsModel.addObserver(this._handleModelEventForRerender);
+    this._filterModel.addObserver(this._handleModelEventForRerender);
+    this._isStatisticRendered = false;
   }
 
   init() {
-    this._filmsModel.addObserver(this._handleModelEventForRerender);
-    this._filterModel.addObserver(this._handleModelEventForRerender);
 
     this._renderBoard();
   }
@@ -76,14 +79,11 @@ export default class BoardPresenter {
   _destroyBoard() {
     this._clearSort();
     this._clearBoard({resetRenderedFilmCount: true, resetSortType: true});
-
-    this._filmsModel.removeObserver(this._handleModelEventForRerender);
-    this._filterModel.removeObserver(this._handleModelEventForRerender);
   }
 
   _getFilms() {
-
     const filterType = this._filterModel.getFilter();
+
     const films = this._filmsModel.getItems();
     let filteredFilms = [];
 
@@ -188,11 +188,13 @@ export default class BoardPresenter {
         this._renderBoard();
         break;
       case UpdateTypeForRerender.MAJOR:
-        this._clearBoard({resetRenderedTaskCount: true, resetSortType: true});
-        this._renderBoard();
+        this._destroyStatistics();
+        this._destroyBoard();
+        this.init();
         break;
       case UpdateTypeForRerender.STATS:
         this._destroyBoard();
+        this._renderStatistics();
         break;
     }
   }
@@ -218,8 +220,7 @@ export default class BoardPresenter {
 
     this._currentSortType = sortType;
 
-    this._clearFilmListInBasicBlock();
-    this._clearExtraBlocks();
+    this._clearBoard({resetRenderedFilmCount: true});
 
     this._renderSort();
     this._renderBasicFilmList();
@@ -262,6 +263,19 @@ export default class BoardPresenter {
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
 
     render(this._filmListComponent, this._showMoreButtonComponent, RenderPosition.BEFOREEND);
+  }
+
+  _renderStatistics() {
+    this._statisticsPresenter = new StatisticsPresenter(this._boardContainer);
+    this._statisticsPresenter.init(this._filmsModel.getItems());
+    this._isStatisticRendered = true;
+  }
+
+  _destroyStatistics() {
+    if (this._isStatisticRendered) {
+      this._statisticsPresenter.destroy();
+      this._isStatisticRendered = false;
+    }
   }
 
   _renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, blockTitle) {

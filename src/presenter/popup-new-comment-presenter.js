@@ -1,4 +1,4 @@
-import NewCommentView from "../view/new-comment-view";
+import NewCommentView from "../view/comments/new-comment-view";
 
 import {
   remove,

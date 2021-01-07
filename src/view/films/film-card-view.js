@@ -1,5 +1,5 @@
-import Smart from "./smart";
-import {truncateText} from "../utils/common-utils";
+import Smart from "../smart";
+import {truncateText} from "../../utils/common-utils";
 
 const createFilmCardTemplate = (film) => {
   const {

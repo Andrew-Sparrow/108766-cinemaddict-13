@@ -1,7 +1,7 @@
-import Smart from "./smart";
+import Smart from "../smart";
 
 // import {getCommentsTemplate} from "./comments-view";
-import {formatReleaseDate} from "../utils/utils";
+import {formatReleaseDate} from "../../utils/utils";
 
 const getFilmGenresTemplate = (film) => {
   const {genres} = film;

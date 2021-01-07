@@ -59,3 +59,24 @@ export const BLANK_COMMENT = {
   author: ``,
   date: null,
 };
+
+export const UserRanks = {
+  NO_RANK: `No rank`,
+  NOVICE: `Novice`,
+  FAN: `Fan`,
+  MOVIE_BUFF: `Movie Buff`
+};
+
+export const StatisticsMenuItem = {
+  ALL: `statistic-all-time`,
+  TODAY: `statistic-today`,
+  WEEK: `statistic-week`,
+  MONTH: `statistic-month`,
+  YEAR: `statistic-year`
+};
+
+export const StatisticsAmountDays = {
+  WEEK: 6,
+  MONTH: 30,
+  YEAR: 365
+};
