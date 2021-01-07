@@ -102,8 +102,6 @@ export default class StatisticsDiagramView extends Smart {
 
     this._filmsChart = null;
 
-    this._dateChangeHandler = this._dateChangeHandler.bind(this);
-
     this._setCharts();
   }
 
@@ -121,17 +119,6 @@ export default class StatisticsDiagramView extends Smart {
     if (this._filmsChart !== null) {
       this._filmsChart = null;
     }
-  }
-
-  _dateChangeHandler([dateFrom, dateTo]) {
-    if (!dateFrom || !dateTo) {
-      return;
-    }
-
-    this.updateData({
-      dateFrom,
-      dateTo
-    });
   }
 
   _setCharts() {
