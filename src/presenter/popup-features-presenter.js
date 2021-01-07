@@ -1,6 +1,15 @@
 import PopupFeaturesView from "../view/popup/popup-features-view";
-import {remove, render, RenderPosition, replace} from "../utils/render-utils";
+
+import {
+  remove,
+  render,
+  RenderPosition,
+  replace
+} from "../utils/render-utils";
+
 import {UpdateTypeForRerender} from "../utils/consts";
+
+import dayjs from "dayjs";
 
 export default class PopupFeaturesPresenter {
   constructor(popupFeaturesContainerElement, handleChangeData) {
@@ -52,7 +61,10 @@ export default class PopupFeaturesPresenter {
   }
 
   _handleWatchedClick() {
-    this._handleFeaturesClick({isWatched: !this._film.isWatched});
+    this._handleFeaturesClick({
+      isWatched: !this._film.isWatched,
+      watchingDate: dayjs().toISOString()
+    });
   }
 
   _handleWatchList() {
