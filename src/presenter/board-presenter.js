@@ -54,7 +54,6 @@ export default class BoardPresenter {
     this._showMoreButtonComponent = null;
 
     this._noFilmsComponent = new NoFilmsView();
-    this._statisticsComponent = null;
 
     this._filmListComponentTopRated = null;
     this._filmListComponentMostCommented = null;
@@ -184,7 +183,6 @@ export default class BoardPresenter {
         this._renderExtraBlocks();
         break;
       case UpdateTypeForRerender.MINOR:
-        this._destroyStatistics();
         this._clearBoard();
         this._renderBoard();
         break;
