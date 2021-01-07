@@ -22,8 +22,8 @@ const films = new Array(FILMS_COUNT).fill().map(generateFilm);
 const api = new Api(END_POINT, AUTHORIZATION);
 
 api.getFilms()
-  .then((serverFilms) => {
-    console.log(serverFilms);
+  .then((movies) => {
+    console.log(movies);
   });
 
 const filmsModel = new FilmsModel();
