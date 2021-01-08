@@ -5,6 +5,7 @@ import ShowMoreView from "../view/show-more-view";
 import FilmsListView from "../view/films/films-list-view";
 import FilmCardPresenter from "./film-presenter";
 import PopupPresenter from "./popup-presenter";
+import LoadingView from "../view/loading-view";
 
 import {
   MenuItem,
@@ -43,6 +44,7 @@ export default class BoardPresenter {
     this._listRenderedPresentersMostCommentedBlock = new Map();
 
     this._currentSortType = SortType.DEFAULT;
+    this._isLoading = true;
 
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
 
@@ -54,6 +56,7 @@ export default class BoardPresenter {
     this._showMoreButtonComponent = null;
 
     this._noFilmsComponent = new NoFilmsView();
+    this._loadingComponent = new LoadingView();
 
     this._filmListComponentTopRated = null;
     this._filmListComponentMostCommented = null;
@@ -155,6 +158,10 @@ export default class BoardPresenter {
     render(this._filmsBoardComponent, this._noFilmsComponent, RenderPosition.BEFOREEND);
   }
 
+  _renderLoading() {
+    render(this._filmsBoardComponent, this._loadingComponent, RenderPosition.BEFOREEND);
+  }
+
   _handleViewActionForFilmModel(updateTypeRerender, updatedItem) {
     // for films we only can update items
     this._filmsModel.updateItems(updateTypeRerender, updatedItem);
@@ -196,6 +203,10 @@ export default class BoardPresenter {
         this._destroyBoard();
         this._renderStatistics();
         break;
+      case UpdateTypeForRerender.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._renderBoard();
     }
   }
 
@@ -244,6 +255,7 @@ export default class BoardPresenter {
 
     remove(this._sortComponent);
     remove(this._noFilmsComponent);
+    remove(this._loadingComponent);
 
     if (resetRenderedFilmCount) {
       this._renderedFilmCount = FILMS_COUNT_PER_STEP;
@@ -343,6 +355,11 @@ export default class BoardPresenter {
   }
 
   _renderBoard() {
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+
     if (this._getFilms().length === 0) {
       this._renderNoFilms();
       return;
