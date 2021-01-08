@@ -6,28 +6,27 @@ import FilterModel from "./model/filter-model";
 import FilterPresenter from "./presenter/filter-presenter";
 import Api from "./api";
 
-import {generateFilm} from "./mock/film";
+// import {generateFilm} from "./mock/film";
 
 import {
   render,
   RenderPosition,
 } from "./utils/render-utils";
 
-const FILMS_COUNT = 13;
+// const FILMS_COUNT = 13;
 const AUTHORIZATION = `Basic hasdfTYtkjfmvGKj`;
 const END_POINT = `https://13.ecmascript.pages.academy/cinemaddict`;
 
-const films = new Array(FILMS_COUNT).fill().map(generateFilm);
+// const films = new Array(FILMS_COUNT).fill().map(generateFilm);
 
 const api = new Api(END_POINT, AUTHORIZATION);
 
+const filmsModel = new FilmsModel();
+
 api.getFilms()
   .then((movies) => {
-    console.log(movies);
+    filmsModel.setItems(movies);
   });
-
-const filmsModel = new FilmsModel();
-filmsModel.setItems(films);
 
 const filterModel = new FilterModel();
 
@@ -41,7 +40,7 @@ const userProfilePresenter = new UserProfilePresenter(siteHeaderElement);
 
 userProfilePresenter.init(filmsModel.getItems());
 
-render(footer, new FooterStatisticsView(films.length), RenderPosition.BEFOREEND);
+render(footer, new FooterStatisticsView(filmsModel.getItems().length), RenderPosition.BEFOREEND);
 
 filterPresenter.init();
 boardPresenter.init();
