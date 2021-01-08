@@ -12,6 +12,7 @@ import {
   render,
   RenderPosition,
 } from "./utils/render-utils";
+import {UpdateTypeForRerender} from "./utils/consts";
 
 // const FILMS_COUNT = 13;
 const AUTHORIZATION = `Basic hasdfTYtkjfmvGKj`;
@@ -25,7 +26,10 @@ const filmsModel = new FilmsModel();
 
 api.getFilms()
   .then((movies) => {
-    filmsModel.setItems(movies);
+    filmsModel.setItems(UpdateTypeForRerender.INIT, movies);
+  })
+  .catch(() => {
+    filmsModel.setItems(UpdateTypeForRerender.INIT, []);
   });
 
 const filterModel = new FilterModel();

@@ -7,8 +7,10 @@ export default class FilmsModel extends Observer {
     this._items = [];
   }
 
-  setItems(items) {
+  setItems(updateTypeForRerender, items) {
     this._items = items.slice();
+
+    this._notify(updateTypeForRerender);
   }
 
   getItems() {
