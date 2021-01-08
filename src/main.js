@@ -38,7 +38,7 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const footer = document.querySelector(`.footer`);
 
-const boardPresenter = new BoardPresenter(siteMainElement, filmsModel, filterModel);
+const boardPresenter = new BoardPresenter(siteMainElement, filmsModel, filterModel, api);
 const filterPresenter = new FilterPresenter(siteMainElement, filterModel, filmsModel);
 const userProfilePresenter = new UserProfilePresenter(siteHeaderElement);
 

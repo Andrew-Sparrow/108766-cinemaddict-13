@@ -34,10 +34,11 @@ const FILMS_COUNT_PER_STEP = 5;
 export const collectionOfComments = new Map();
 
 export default class BoardPresenter {
-  constructor(boardContainer, filmModel, filterModel) {
+  constructor(boardContainer, filmModel, filterModel, api) {
     this._boardContainer = boardContainer;
     this._filmsModel = filmModel;
     this._filterModel = filterModel;
+    this._api = api;
 
     this._listRenderedPresentersBasicBlock = new Map();
     this._listRenderedPresentersTopRatedBlock = new Map();
@@ -164,7 +165,11 @@ export default class BoardPresenter {
 
   _handleViewActionForFilmModel(updateTypeRerender, updatedItem) {
     // for films we only can update items
-    this._filmsModel.updateItems(updateTypeRerender, updatedItem);
+    // this._filmsModel.updateItems(updateTypeRerender, updatedItem);
+    this._api.updateItems(updatedItem)
+      .then((response) => {
+        this._filmsModel.updateItems(updateTypeRerender, response);
+      });
   }
 
   _handleModelEventForRerender(updateTypeRerender, updatedFilm) {
