@@ -39,14 +39,19 @@ export default class FilmsModel extends Observer {
         filmFromServer,
         {
           id: filmFromServer.id,
-          poster: filmFromServer.film_info.poster,
+          poster: Object.assign(
+              {},
+              {
+                src: filmFromServer.film_info.poster,
+                description: `poster of movie`
+              }),
           title: filmFromServer.film_info.title,
           originalTitle: filmFromServer.film_info.alternative_title,
           rating: filmFromServer.film_info.total_rating,
           director: filmFromServer.film_info.director,
           screenwriters: filmFromServer.film_info.writers,
           actors: filmFromServer.film_info.actors,
-          releaseDate: filmFromServer.film_info.release.date,
+          releaseDate: new Date(filmFromServer.film_info.release.date),
           duration: filmFromServer.film_info.runtime,
           country: filmFromServer.film_info.release.release_country,
           genres: filmFromServer.film_info.genre,
@@ -82,7 +87,7 @@ export default class FilmsModel extends Observer {
           "release": Object.assign(
               {},
               {
-                "date": filmFromClient.releaseDate,
+                "date": filmFromClient.releaseDate.toISOString(),
                 "release_country": filmFromClient.country
               }
           ),

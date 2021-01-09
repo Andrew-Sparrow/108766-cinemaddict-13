@@ -6,6 +6,7 @@ import FilmsListView from "../view/films/films-list-view";
 import FilmCardPresenter from "./film-presenter";
 import PopupPresenter from "./popup-presenter";
 import LoadingView from "../view/loading-view";
+import StatisticsPresenter from "./statistics-presenter";
 
 import {
   MenuItem,
@@ -27,7 +28,6 @@ import {
 } from "../utils/utils";
 
 import {calculateFilmsInFilter} from "../utils/filter-utils";
-import StatisticsPresenter from "./statistics-presenter";
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -76,7 +76,6 @@ export default class BoardPresenter {
   }
 
   init() {
-
     this._renderBoard();
   }
 
@@ -103,7 +102,7 @@ export default class BoardPresenter {
       case SortType.BY_RATING:
         return filteredFilms.sort(sortByRating);
     }
-
+    console.log(filteredFilms);
     return filteredFilms;
   }
 
@@ -143,10 +142,12 @@ export default class BoardPresenter {
     render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
     render(this._filmsBoardComponent, this._filmListComponent, RenderPosition.BEFOREEND);
 
-    const filmCount = this._getFilms().length;
-    const films = this._getFilms().slice(0, Math.min(filmCount, this._renderedFilmCount));
+    const allFilms = this._getFilms();
+    const filmCount = allFilms.length;
+    // console.log(allFilms);
 
-    this._renderFilmCards(films);
+    const filmsForRendering = allFilms.slice(0, Math.min(filmCount, this._renderedFilmCount));
+    this._renderFilmCards(filmsForRendering);
 
     if (filmCount > this._renderedFilmCount) {
       this._renderShowMoreButton();
@@ -166,7 +167,7 @@ export default class BoardPresenter {
   _handleViewActionForFilmModel(updateTypeRerender, updatedItem) {
     // for films we only can update items
     // this._filmsModel.updateItems(updateTypeRerender, updatedItem);
-    this._api.updateItems(updatedItem)
+    this._api.updateFilm(updatedItem)
       .then((response) => {
         this._filmsModel.updateItems(updateTypeRerender, response);
       });
@@ -211,7 +212,7 @@ export default class BoardPresenter {
       case UpdateTypeForRerender.INIT:
         this._isLoading = false;
         remove(this._loadingComponent);
-        this._renderBoard();
+        this.init();
     }
   }
 

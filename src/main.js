@@ -24,13 +24,6 @@ const api = new Api(END_POINT, AUTHORIZATION);
 
 const filmsModel = new FilmsModel();
 
-api.getFilms()
-  .then((movies) => {
-    filmsModel.setItems(UpdateTypeForRerender.INIT, movies);
-  })
-  .catch(() => {
-    filmsModel.setItems(UpdateTypeForRerender.INIT, []);
-  });
 
 const filterModel = new FilterModel();
 
@@ -48,3 +41,12 @@ render(footer, new FooterStatisticsView(filmsModel.getItems().length), RenderPos
 
 filterPresenter.init();
 boardPresenter.init();
+
+api.getFilms()
+  .then((movies) => {
+    filmsModel.setItems(UpdateTypeForRerender.INIT, movies);
+  })
+  .catch((evt) => {
+    console.log(evt.message);
+    filmsModel.setItems(UpdateTypeForRerender.INIT, []);
+  });
