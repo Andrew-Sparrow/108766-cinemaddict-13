@@ -81,3 +81,15 @@ export const StatisticsAmountDays = {
   MONTH: 30,
   YEAR: 365
 };
+
+export const Method = {
+  GET: `GET`,
+  PUT: `PUT`,
+  POST: `POST`,
+  DELETE: `DELETE`,
+};
+
+export const SuccessHTTPStatusRange = {
+  MIN: 200,
+  MAX: 299,
+};

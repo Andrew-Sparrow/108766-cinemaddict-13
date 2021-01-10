@@ -6,24 +6,19 @@ import FilterModel from "./model/filter-model";
 import FilterPresenter from "./presenter/filter-presenter";
 import Api from "./api";
 
-// import {generateFilm} from "./mock/film";
-
 import {
   render,
   RenderPosition,
 } from "./utils/render-utils";
+
 import {UpdateTypeForRerender} from "./utils/consts";
 
-// const FILMS_COUNT = 13;
 const AUTHORIZATION = `Basic hasdfTYtkjfmvGKj`;
 const END_POINT = `https://13.ecmascript.pages.academy/cinemaddict`;
-
-// const films = new Array(FILMS_COUNT).fill().map(generateFilm);
 
 const api = new Api(END_POINT, AUTHORIZATION);
 
 const filmsModel = new FilmsModel();
-
 
 const filterModel = new FilterModel();
 
@@ -32,6 +27,7 @@ const siteMainElement = document.querySelector(`.main`);
 const footer = document.querySelector(`.footer`);
 
 const boardPresenter = new BoardPresenter(siteMainElement, filmsModel, filterModel, api);
+
 const filterPresenter = new FilterPresenter(siteMainElement, filterModel, filmsModel);
 const userProfilePresenter = new UserProfilePresenter(siteHeaderElement);
 
@@ -46,7 +42,6 @@ api.getFilms()
   .then((movies) => {
     filmsModel.setItems(UpdateTypeForRerender.INIT, movies);
   })
-  .catch((evt) => {
-    console.log(evt.message);
+  .catch(() => {
     filmsModel.setItems(UpdateTypeForRerender.INIT, []);
   });

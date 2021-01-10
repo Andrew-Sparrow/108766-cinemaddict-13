@@ -19,10 +19,11 @@ import {
 } from "../utils/render-utils";
 
 export default class PopupPresenter {
-  constructor(handleChangeData) {
+  constructor(handleChangeData, api) {
     this._popupContainerElement = document.body.querySelector(`.footer`);
 
     this._handleChangeData = handleChangeData;
+    this._api = api;
 
     this._popupComponent = null;
 
@@ -37,7 +38,6 @@ export default class PopupPresenter {
 
     this._handleViewActionForCommentsModel = this._handleViewActionForCommentsModel.bind(this);
     this._handleCommentsModelEventForPopupRerender = this._handleCommentsModelEventForPopupRerender.bind(this);
-
   }
 
   init(film) {
@@ -48,7 +48,18 @@ export default class PopupPresenter {
     this._popupComponent = new PopupView(this._film);
 
     this._commentsModel = new CommentsModel();
-    this._commentsModel.setItems(film.comments);
+
+    this._api.getComments(this._film.id)
+      .then((comments) => {
+        console.log(comments);
+        this._commentsModel.setItems(UpdateTypeForRerender.INIT, comments);
+      })
+      .catch((evt) => {
+        console.log(evt.message);
+        this._commentsModel.setItems(UpdateTypeForRerender.INIT, []);
+      });
+
+    // this._commentsModel.setItems(film.comments);
     this._commentsModel.addObserver(this._handleCommentsModelEventForPopupRerender);
 
     this._featuresPresenter = new PopupFeaturesPresenter(
@@ -76,35 +87,55 @@ export default class PopupPresenter {
   _renderInnerElements() {
 
     this._renderFeaturesBlock();
-    this._renderCommentsTitle();
-    this._renderCommentsBlock();
-    this._renderNewCommentBlock();
+    // this._renderCommentsTitle();
+    // this._renderCommentsBlock();
+    // this._renderNewCommentBlock();
   }
 
-  _handleViewActionForCommentsModel(actionTypeModel, updatedItem) {
+  _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItem) {
     switch (actionTypeModel) {
       case UserActionForModel.DELETE_ITEM:
-        this._commentsModel.deleteItem(updatedItem);
+        this._commentsModel.deleteItem(rerenderType, updatedItem);
         break;
       case UserActionForModel.ADD_ITEM:
-        this._commentsModel.addItem(updatedItem);
+        this._commentsModel.addItem(rerenderType, updatedItem);
         break;
     }
   }
 
-  _handleCommentsModelEventForPopupRerender() {
+  _handleCommentsModelEventForPopupRerender(rerenderType) {
     this._film.comments = this._commentsModel.getItems();
 
-    this._clearCommentsTitle();
-    this._renderCommentsTitle();
+    switch (rerenderType) {
+      case UpdateTypeForRerender.PATCH:
+        this._clearCommentsTitle();
+        this._renderCommentsTitle();
 
-    this._clearPopupComments();
-    this._renderCommentsBlock();
+        this._clearPopupComments();
+        this._renderCommentsBlock();
 
-    this._clearNewCommentBlock();
-    this._renderNewCommentBlock();
+        this._clearNewCommentBlock();
+        this._renderNewCommentBlock();
 
-    this._handleChangeData(UpdateTypeForRerender.PATCH, Object.assign({}, this._film, {comments: this._film.comments}));
+        this._handleChangeData(
+            UpdateTypeForRerender.PATCH,
+            Object.assign(
+                {},
+                this._film,
+                {
+                  comments: this._film.comments
+                }
+            )
+        );
+        break;
+      case UpdateTypeForRerender.INIT:
+        this._renderCommentsTitle();
+
+        this._renderCommentsBlock();
+
+        this._renderNewCommentBlock();
+        break;
+    }
   }
 
   _renderFeaturesBlock() {

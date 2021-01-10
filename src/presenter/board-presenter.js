@@ -68,7 +68,7 @@ export default class BoardPresenter {
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel, this._filmsModel);
+    this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel, this._api);
 
     this._filmsModel.addObserver(this._handleModelEventForRerender);
     this._filterModel.addObserver(this._handleModelEventForRerender);
@@ -102,7 +102,7 @@ export default class BoardPresenter {
       case SortType.BY_RATING:
         return filteredFilms.sort(sortByRating);
     }
-    console.log(filteredFilms);
+
     return filteredFilms;
   }
 
@@ -144,7 +144,6 @@ export default class BoardPresenter {
 
     const allFilms = this._getFilms();
     const filmCount = allFilms.length;
-    // console.log(allFilms);
 
     const filmsForRendering = allFilms.slice(0, Math.min(filmCount, this._renderedFilmCount));
     this._renderFilmCards(filmsForRendering);
@@ -161,6 +160,7 @@ export default class BoardPresenter {
   }
 
   _renderLoading() {
+    render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
     render(this._filmsBoardComponent, this._loadingComponent, RenderPosition.BEFOREEND);
   }
 

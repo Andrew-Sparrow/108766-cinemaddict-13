@@ -1,16 +1,10 @@
 import FilmsModel from "./model/films-model";
+import CommentsModel from "./model/comments-model";
 
-const Method = {
-  GET: `GET`,
-  PUT: `PUT`,
-  POST: `POST`,
-  DELETE: `DELETE`
-};
-
-const SuccessHTTPStatusRange = {
-  MIN: 200,
-  MAX: 299
-};
+import {
+  Method,
+  SuccessHTTPStatusRange
+} from "./utils/consts";
 
 export default class Api {
   constructor(endPoint, authorization) {
@@ -24,14 +18,20 @@ export default class Api {
       .then((films) => films.map(FilmsModel.adaptToClient));
   }
 
+  getComments(movieId) {
+    return this._load({url: `comments/${movieId}`})
+      .then(Api.toJSON)
+      .then((comments) => comments.map(CommentsModel.adaptToClient));
+  }
+
   updateFilm(film) {
     return this._load({
-      url: `films/${film.id}`,
+      url: `movies/${film.id}`,
       method: Method.PUT,
       body: JSON.stringify(FilmsModel.adaptToServer(film)),
       headers: new Headers({"Content-Type": `application/json`})
     })
-      .then(Api.toJSON())
+      .then(Api.toJSON)
       .then(FilmsModel.adaptToClient);
   }
 

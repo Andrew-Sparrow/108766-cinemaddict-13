@@ -7,7 +7,7 @@ import {
   RenderPosition,
 } from "../utils/render-utils";
 
-import {UserActionForModel} from "../utils/consts";
+import {UpdateTypeForRerender, UserActionForModel} from "../utils/consts";
 
 export default class PopupCommentsPresenter {
   constructor(commentsContainer, handleCommentsChange) {
@@ -17,8 +17,8 @@ export default class PopupCommentsPresenter {
     this._handleDeleteCommentClick = this._handleDeleteCommentClick.bind(this);
   }
 
-  init(filmCommentsID) {
-    this._filmCommentsID = filmCommentsID;
+  init(filmComments) {
+    this._filmCommentsID = filmComments;
 
     this._popupCommentsComponent = new CommentsView();
 
@@ -30,19 +30,23 @@ export default class PopupCommentsPresenter {
     remove(this._popupCommentsComponent);
   }
 
-  _renderComment(commentID) {
+  _renderComment(comment) {
     this._commentPresenter = new PopupCommentPresenter(
         this._popupCommentsComponent,
         this._handleDeleteCommentClick
     );
-    this._commentPresenter.init(commentID);
+    this._commentPresenter.init(comment);
   }
 
-  _renderComments(commentsID) {
-    commentsID.forEach((commentID) => this._renderComment(commentID));
+  _renderComments(comments) {
+    comments.forEach((comment) => this._renderComment(comment));
   }
 
   _handleDeleteCommentClick(deletedCommentID) {
-    this._handleCommentsChange(UserActionForModel.DELETE_ITEM, deletedCommentID);
+    this._handleCommentsChange(
+        UpdateTypeForRerender.INIT,
+        UserActionForModel.DELETE_ITEM,
+        deletedCommentID
+    );
   }
 }

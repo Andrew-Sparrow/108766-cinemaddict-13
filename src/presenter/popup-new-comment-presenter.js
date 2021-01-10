@@ -6,7 +6,7 @@ import {
   RenderPosition,
 } from "../utils/render-utils";
 
-import {UserActionForModel} from "../utils/consts";
+import {UpdateTypeForRerender, UserActionForModel} from "../utils/consts";
 
 export default class PopupNewCommentPresenter {
   constructor(
@@ -33,7 +33,11 @@ export default class PopupNewCommentPresenter {
   }
 
   _handleAddNewComment(newCommentID) {
-    this._handleViewActionForCommentsModel(UserActionForModel.ADD_ITEM, newCommentID);
+    this._handleViewActionForCommentsModel(
+        UpdateTypeForRerender.PATCH,
+        UserActionForModel.ADD_ITEM,
+        newCommentID
+    );
     this._clearTemporaryCommentData();
   }
 }
