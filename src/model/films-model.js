@@ -79,7 +79,7 @@ export default class FilmsModel extends Observer {
           "title": filmFromClient.title,
           "alternative_title": filmFromClient.originalTitle,
           "total_rating": filmFromClient.rating,
-          "poster": filmFromClient.poster,
+          "poster": filmFromClient.poster.src,
           "age_rating": filmFromClient.ageRating,
           "director": filmFromClient.director,
           "writers": filmFromClient.screenwriters,
@@ -110,6 +110,7 @@ export default class FilmsModel extends Observer {
     const adaptedFilmForServer = Object.assign(
         {},
         {
+          "id": filmFromClient.id,
           "comments": filmFromClient.comments,
           "film_info": filmInfoForServer,
           "user_details": userDetailsForServer

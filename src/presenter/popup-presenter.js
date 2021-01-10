@@ -30,7 +30,6 @@ export default class PopupPresenter {
 
     this._newCommentPresenter = null;
 
-    this._isLoading = true;
     this._loadingComponent = new LoadingView();
 
     this._temporaryNewCommentData = Object.assign({}, BLANK_COMMENT);
@@ -55,11 +54,9 @@ export default class PopupPresenter {
 
     this._api.getComments(this._film.id)
       .then((comments) => {
-        console.log(comments);
         this._commentsModel.setItems(UpdateTypeForRerender.INIT, comments);
       })
-      .catch((evt) => {
-        console.log(evt.message);
+      .catch(() => {
         this._commentsModel.setItems(UpdateTypeForRerender.INIT, []);
       });
 
@@ -105,6 +102,7 @@ export default class PopupPresenter {
 
     switch (rerenderType) {
       case UpdateTypeForRerender.PATCH:
+
         this._clearCommentsTitle();
         this._renderCommentsTitle();
 
@@ -128,7 +126,6 @@ export default class PopupPresenter {
 
       case UpdateTypeForRerender.INIT:
 
-        this._isLoading = false;
         remove(this._loadingComponent);
 
         this._renderCommentsTitle();
