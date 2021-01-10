@@ -5,6 +5,7 @@ import PopupFeaturesPresenter from "./popup-features-presenter";
 import PopupCommentsPresenter from "./popup-comments-presenter";
 import PopupNewCommentPresenter from "./popup-new-comment-presenter";
 import CommentsTitlePresenter from "./comments-title-presenter";
+import LoadingView from "../view/loading-view";
 
 import {
   BLANK_COMMENT,
@@ -28,6 +29,9 @@ export default class PopupPresenter {
     this._popupComponent = null;
 
     this._newCommentPresenter = null;
+
+    this._isLoading = true;
+    this._loadingComponent = new LoadingView();
 
     this._temporaryNewCommentData = Object.assign({}, BLANK_COMMENT);
 
@@ -59,7 +63,6 @@ export default class PopupPresenter {
         this._commentsModel.setItems(UpdateTypeForRerender.INIT, []);
       });
 
-    // this._commentsModel.setItems(film.comments);
     this._commentsModel.addObserver(this._handleCommentsModelEventForPopupRerender);
 
     this._featuresPresenter = new PopupFeaturesPresenter(
@@ -74,22 +77,16 @@ export default class PopupPresenter {
     if (prevPopupComponent === null) {
       render(this._popupContainerElement, this._popupComponent, RenderPosition.AFTEREND);
 
-      this._renderInnerElements();
+      this._renderFeaturesBlock();
+      this._renderLoading();
+
     } else {
       render(this._popupContainerElement, this._popupComponent, RenderPosition.AFTEREND);
 
-      this._renderInnerElements();
+      this._renderFeaturesBlock();
 
       remove(prevPopupComponent);
     }
-  }
-
-  _renderInnerElements() {
-
-    this._renderFeaturesBlock();
-    // this._renderCommentsTitle();
-    // this._renderCommentsBlock();
-    // this._renderNewCommentBlock();
   }
 
   _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItem) {
@@ -104,7 +101,7 @@ export default class PopupPresenter {
   }
 
   _handleCommentsModelEventForPopupRerender(rerenderType) {
-    this._film.comments = this._commentsModel.getItems();
+    this._film.comments = this._commentsModel.getItems().map((comment) => comment.id);
 
     switch (rerenderType) {
       case UpdateTypeForRerender.PATCH:
@@ -128,7 +125,12 @@ export default class PopupPresenter {
             )
         );
         break;
+
       case UpdateTypeForRerender.INIT:
+
+        this._isLoading = false;
+        remove(this._loadingComponent);
+
         this._renderCommentsTitle();
 
         this._renderCommentsBlock();
@@ -136,6 +138,10 @@ export default class PopupPresenter {
         this._renderNewCommentBlock();
         break;
     }
+  }
+
+  _renderLoading() {
+    render(this._popupComponent.getCommentsWrapElement(), this._loadingComponent, RenderPosition.AFTERBEGIN);
   }
 
   _renderFeaturesBlock() {
