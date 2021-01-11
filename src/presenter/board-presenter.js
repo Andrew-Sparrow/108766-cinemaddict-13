@@ -5,6 +5,8 @@ import ShowMoreView from "../view/show-more-view";
 import FilmsListView from "../view/films/films-list-view";
 import FilmCardPresenter from "./film-presenter";
 import PopupPresenter from "./popup-presenter";
+import LoadingView from "../view/loading-view";
+import StatisticsPresenter from "./statistics-presenter";
 
 import {
   MenuItem,
@@ -26,23 +28,24 @@ import {
 } from "../utils/utils";
 
 import {calculateFilmsInFilter} from "../utils/filter-utils";
-import StatisticsPresenter from "./statistics-presenter";
 
 const FILMS_COUNT_PER_STEP = 5;
 
 export const collectionOfComments = new Map();
 
 export default class BoardPresenter {
-  constructor(boardContainer, filmModel, filterModel) {
+  constructor(boardContainer, filmModel, filterModel, api) {
     this._boardContainer = boardContainer;
     this._filmsModel = filmModel;
     this._filterModel = filterModel;
+    this._api = api;
 
     this._listRenderedPresentersBasicBlock = new Map();
     this._listRenderedPresentersTopRatedBlock = new Map();
     this._listRenderedPresentersMostCommentedBlock = new Map();
 
     this._currentSortType = SortType.DEFAULT;
+    this._isLoading = true;
 
     this._renderedFilmCount = FILMS_COUNT_PER_STEP;
 
@@ -54,6 +57,7 @@ export default class BoardPresenter {
     this._showMoreButtonComponent = null;
 
     this._noFilmsComponent = new NoFilmsView();
+    this._loadingComponent = new LoadingView();
 
     this._filmListComponentTopRated = null;
     this._filmListComponentMostCommented = null;
@@ -64,7 +68,7 @@ export default class BoardPresenter {
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel, this._filmsModel);
+    this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel, this._api);
 
     this._filmsModel.addObserver(this._handleModelEventForRerender);
     this._filterModel.addObserver(this._handleModelEventForRerender);
@@ -72,7 +76,6 @@ export default class BoardPresenter {
   }
 
   init() {
-
     this._renderBoard();
   }
 
@@ -139,10 +142,11 @@ export default class BoardPresenter {
     render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
     render(this._filmsBoardComponent, this._filmListComponent, RenderPosition.BEFOREEND);
 
-    const filmCount = this._getFilms().length;
-    const films = this._getFilms().slice(0, Math.min(filmCount, this._renderedFilmCount));
+    const allFilms = this._getFilms();
+    const filmCount = allFilms.length;
 
-    this._renderFilmCards(films);
+    const filmsForRendering = allFilms.slice(0, Math.min(filmCount, this._renderedFilmCount));
+    this._renderFilmCards(filmsForRendering);
 
     if (filmCount > this._renderedFilmCount) {
       this._renderShowMoreButton();
@@ -155,9 +159,18 @@ export default class BoardPresenter {
     render(this._filmsBoardComponent, this._noFilmsComponent, RenderPosition.BEFOREEND);
   }
 
+  _renderLoading() {
+    render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
+    render(this._filmsBoardComponent, this._loadingComponent, RenderPosition.BEFOREEND);
+  }
+
   _handleViewActionForFilmModel(updateTypeRerender, updatedItem) {
     // for films we only can update items
-    this._filmsModel.updateItems(updateTypeRerender, updatedItem);
+    // this._filmsModel.updateItems(updateTypeRerender, updatedItem);
+    this._api.updateFilm(updatedItem)
+      .then((response) => {
+        this._filmsModel.updateItems(updateTypeRerender, response);
+      });
   }
 
   _handleModelEventForRerender(updateTypeRerender, updatedFilm) {
@@ -196,6 +209,10 @@ export default class BoardPresenter {
         this._destroyBoard();
         this._renderStatistics();
         break;
+      case UpdateTypeForRerender.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this.init();
     }
   }
 
@@ -244,6 +261,7 @@ export default class BoardPresenter {
 
     remove(this._sortComponent);
     remove(this._noFilmsComponent);
+    remove(this._loadingComponent);
 
     if (resetRenderedFilmCount) {
       this._renderedFilmCount = FILMS_COUNT_PER_STEP;
@@ -343,6 +361,11 @@ export default class BoardPresenter {
   }
 
   _renderBoard() {
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+
     if (this._getFilms().length === 0) {
       this._renderNoFilms();
       return;

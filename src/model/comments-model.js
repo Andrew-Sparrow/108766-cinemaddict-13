@@ -8,27 +8,44 @@ export default class CommentsModel extends Observer {
     this._items = [];
   }
 
-  setItems(items) {
+  setItems(rerenderType, items) {
     this._items = items.slice();
+
+    this._notify(rerenderType);
   }
 
   getItems() {
     return this._items;
   }
 
-  addItem(updatedItem) {
+  addItem(rerenderType, updatedItem) {
     this._items = [
       ...this._items,
       updatedItem
     ];
 
-    this._notify();
+    this._notify(rerenderType);
   }
 
-  deleteItem(updatedItem) {
+  deleteItem(rerenderType, updatedItem) {
     this._items = this._items.filter((commentID) => commentID !== updatedItem);
     collectionOfComments.delete(updatedItem);
 
-    this._notify();
+    this._notify(rerenderType);
+  }
+
+  static adaptToClient(commentFromServer) {
+    const adaptedCommentForClient = Object.assign(
+        {},
+        commentFromServer,
+        {
+          text: commentFromServer.comment,
+          date: new Date(commentFromServer.date)
+        }
+    );
+
+    delete adaptedCommentForClient.comment;
+
+    return adaptedCommentForClient;
   }
 }

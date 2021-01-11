@@ -41,7 +41,8 @@ export const UserActionForModel = {
 export const UpdateTypeForRerender = {
   PATCH: `PATCH`,
   MINOR: `MINOR`,
-  MAJOR: `MAJOR`
+  MAJOR: `MAJOR`,
+  INIT: `INIT`
 };
 
 export const MenuItem = {
@@ -79,4 +80,16 @@ export const StatisticsAmountDays = {
   WEEK: 6,
   MONTH: 30,
   YEAR: 365
+};
+
+export const Method = {
+  GET: `GET`,
+  PUT: `PUT`,
+  POST: `POST`,
+  DELETE: `DELETE`,
+};
+
+export const SuccessHTTPStatusRange = {
+  MIN: 200,
+  MAX: 299,
 };
