@@ -7,7 +7,7 @@ import {
   replace
 } from "../utils/render-utils";
 
-import {UpdateTypeForRerender} from "../utils/consts";
+import {UpdateTypeForRerender, UserActionForModel} from "../utils/consts";
 
 import dayjs from "dayjs";
 
@@ -52,7 +52,11 @@ export default class PopupFeaturesPresenter {
 
   _handleFeaturesClick(updatedData) {
     const newData = Object.assign({}, this._film, updatedData);
-    this._handleChangeData(UpdateTypeForRerender.MINOR, newData);
+    this._handleChangeData(
+        UserActionForModel.UPDATE_ITEM,
+        UpdateTypeForRerender.MINOR,
+        newData
+    );
     this.init(newData, true);
   }
 

@@ -105,7 +105,6 @@ export default class PopupPresenter {
   _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItem) {
     switch (actionTypeModel) {
       case UserActionForModel.DELETE_ITEM:
-        // this._commentsModel.deleteItem(rerenderType, updatedItem);
         this._api.deleteComment(updatedItem)
           .then(() => {
             this._commentsModel.deleteItem(rerenderType, updatedItem);
@@ -137,6 +136,7 @@ export default class PopupPresenter {
         this._renderNewCommentBlock();
 
         this._handleChangeData(
+            UserActionForModel.UPDATE_COMMENTS,
             UpdateTypeForRerender.PATCH,
             Object.assign(
                 {},

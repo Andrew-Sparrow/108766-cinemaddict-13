@@ -21,8 +21,10 @@ export default class PopupNewCommentPresenter {
     this._handleAddNewComment = this._handleAddNewComment.bind(this);
   }
 
-  init(newCommentData, isDisabled) {
-    this._newCommentComponent = new NewCommentView(newCommentData, isDisabled);
+  init(newCommentData) {
+    this._newCommentData = newCommentData;
+    console.log(this._newCommentData);
+    this._newCommentComponent = new NewCommentView(this._newCommentData);
 
     render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
     this._newCommentComponent.setCommentSubmitHandler(this._handleAddNewComment);
@@ -42,9 +44,10 @@ export default class PopupNewCommentPresenter {
   _handleAddNewComment() {
     this._handleViewActionForCommentsModel(
         UpdateTypeForRerender.PATCH,
-        UserActionForModel.ADD_ITEM
-        // newCommentID
+        UserActionForModel.ADD_ITEM,
+        this._newCommentData
     );
+
     this._clearTemporaryCommentData();
   }
 }

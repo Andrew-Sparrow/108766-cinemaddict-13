@@ -1,7 +1,5 @@
 import Observer from "./observer";
 
-import {collectionOfComments} from "../presenter/board-presenter";
-
 export default class CommentsModel extends Observer {
   constructor() {
     super();
@@ -46,6 +44,23 @@ export default class CommentsModel extends Observer {
     );
 
     delete adaptedCommentForClient.comment;
+
+    return adaptedCommentForClient;
+  }
+
+  static adaptToServer(commentFromClient) {
+    const adaptedCommentForClient = Object.assign(
+        {},
+        commentFromClient,
+        {
+          text: commentFromClient.comment,
+          date: commentFromClient.date.toISOString
+        }
+    );
+
+    delete adaptedCommentForClient.comment;
+    delete adaptedCommentForClient.id;
+    delete adaptedCommentForClient.author;
 
     return adaptedCommentForClient;
   }

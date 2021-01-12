@@ -1,7 +1,6 @@
 import {nanoid} from 'nanoid';
 import {EMOTIONS} from "../utils/consts";
 import {getRandomInteger} from "../utils/common-utils";
-import {collectionOfComments} from "../presenter/board-presenter";
 
 const MIN_AMOUNT_OF_COMMENTS = 0;
 const MAX__AMOUNT_OF_COMMENTS = 5;
@@ -32,7 +31,7 @@ export const generateCommentsID = () => {
   for (let i = 0; i < numberOfCycles; i++) {
     let newComment = generateComment();
     commentsID.push(newComment.id);
-    collectionOfComments.set(newComment.id, newComment);
+    // collectionOfComments.set(newComment.id, newComment);
   }
 
   return commentsID;

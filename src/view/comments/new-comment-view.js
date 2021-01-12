@@ -127,9 +127,9 @@ export default class NewCommentView extends Smart {
       if (this._data.emotion && this._data.text) {
         // this._data.id = nanoid();
         this._data.date = new Date();
-        this._data.author = `Tim Macoveev`;
+        // this._data.author = `Tim Macoveev`;
 
-        collectionOfComments.set(this._data.id, this._data);
+        // collectionOfComments.set(this._data.id, this._data);
 
         // this._callback.formSubmit(this._data.id);
         this._callback.formSubmit();

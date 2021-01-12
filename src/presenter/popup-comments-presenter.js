@@ -7,7 +7,10 @@ import {
   RenderPosition,
 } from "../utils/render-utils";
 
-import {UpdateTypeForRerender, UserActionForModel} from "../utils/consts";
+import {
+  UpdateTypeForRerender,
+  UserActionForModel
+} from "../utils/consts";
 
 export default class PopupCommentsPresenter {
   constructor(commentsContainer, handleCommentsChange) {

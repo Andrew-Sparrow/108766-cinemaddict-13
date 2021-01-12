@@ -9,7 +9,7 @@ import {
 } from "../utils/render-utils";
 
 import {
-  UpdateTypeForRerender,
+  UpdateTypeForRerender, UserActionForModel,
 } from "../utils/consts";
 
 export default class FilmCardPresenter {
@@ -73,6 +73,7 @@ export default class FilmCardPresenter {
     );
 
     this._handleChangeData(
+        UserActionForModel.UPDATE_ITEM,
         UpdateTypeForRerender.MINOR,
         newData
     );
@@ -88,6 +89,7 @@ export default class FilmCardPresenter {
     );
 
     this._handleChangeData(
+        UserActionForModel.UPDATE_ITEM,
         UpdateTypeForRerender.MINOR,
         newData
     );
@@ -104,6 +106,7 @@ export default class FilmCardPresenter {
     );
 
     this._handleChangeData(
+        UserActionForModel.UPDATE_ITEM,
         UpdateTypeForRerender.MINOR,
         newData
     );
