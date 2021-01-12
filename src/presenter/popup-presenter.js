@@ -19,6 +19,11 @@ import {
   RenderPosition,
 } from "../utils/render-utils";
 
+export const State = {
+  SAVING: `SAVING`,
+  DELETING: `DELETING`
+};
+
 export default class PopupPresenter {
   constructor(handleChangeData, api) {
     this._popupContainerElement = document.body.querySelector(`.footer`);
@@ -86,13 +91,32 @@ export default class PopupPresenter {
     }
   }
 
+  setViewState(state) {
+    switch (state) {
+      case State.SAVING:
+        this._newCommentPresenter.init();
+        break;
+      case State.DELETING:
+        this.this._commentsPresenter.init();
+        break;
+    }
+  }
+
   _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItem) {
     switch (actionTypeModel) {
       case UserActionForModel.DELETE_ITEM:
         this._commentsModel.deleteItem(rerenderType, updatedItem);
+        // this._api.deleteComment(updatedItem)
+        //   .then(() => {
+        //     this._commentsModel.deleteItem(rerenderType, updatedItem);
+        //   });
         break;
       case UserActionForModel.ADD_ITEM:
-        this._commentsModel.addItem(rerenderType, updatedItem);
+        // this._commentsModel.addItem(rerenderType, updatedItem);
+        this._api.addComment(this._film, updatedItem)
+          .then((response) => {
+            this._commentsModel.addItem(rerenderType, response);
+          });
         break;
     }
   }
@@ -112,16 +136,16 @@ export default class PopupPresenter {
         this._clearNewCommentBlock();
         this._renderNewCommentBlock();
 
-        this._handleChangeData(
-            UpdateTypeForRerender.PATCH,
-            Object.assign(
-                {},
-                this._film,
-                {
-                  comments: this._film.comments
-                }
-            )
-        );
+        // this._handleChangeData(
+        //     UpdateTypeForRerender.PATCH,
+        //     Object.assign(
+        //         {},
+        //         this._film,
+        //         {
+        //           comments: this._film.comments
+        //         }
+        //     )
+        // );
         break;
 
       case UpdateTypeForRerender.INIT:

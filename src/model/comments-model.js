@@ -29,7 +29,6 @@ export default class CommentsModel extends Observer {
 
   deleteItem(rerenderType, updatedItem) {
     this._items = this._items.filter((commentID) => commentID !== updatedItem);
-    collectionOfComments.delete(updatedItem);
 
     this._notify(rerenderType);
   }

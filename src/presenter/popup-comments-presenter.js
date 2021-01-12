@@ -42,11 +42,11 @@ export default class PopupCommentsPresenter {
     comments.forEach((comment) => this._renderComment(comment));
   }
 
-  _handleDeleteCommentClick(deletedComment) {
+  _handleDeleteCommentClick(deletedCommentID) {
     this._handleCommentsChange(
         UpdateTypeForRerender.PATCH,
         UserActionForModel.DELETE_ITEM,
-        deletedComment.id
+        deletedCommentID
     );
   }
 }

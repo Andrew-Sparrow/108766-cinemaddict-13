@@ -1,7 +1,7 @@
 import {formatCommentDate} from "../../utils/utils";
 import Smart from "../smart";
 
-const getCommentTemplate = (comment) => {
+const getCommentTemplate = (comment, isDisabled) => {
 
   const {
     id,
@@ -20,7 +20,7 @@ const getCommentTemplate = (comment) => {
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${author}</span>
                 <span class="film-details__comment-day">${formatCommentDate(date)}</span>
-                <button class="film-details__comment-delete" data-comment-id="${id}">Delete</button>
+                <button class="film-details__comment-delete" data-comment-id="${id} ${isDisabled ? `disabled` : ``}">Delete</button>
               </p>
             </div>
           </li>`;

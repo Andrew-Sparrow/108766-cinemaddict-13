@@ -1,8 +1,6 @@
 import Smart from "../smart";
 import he from "he";
 
-import {nanoid} from 'nanoid';
-
 import {collectionOfComments} from "../../presenter/board-presenter";
 
 import {BLANK_COMMENT} from "../../utils/consts";
@@ -127,13 +125,14 @@ export default class NewCommentView extends Smart {
 
     if ((evt.ctrlKey || evt.metaKey) && evt.keyCode === 13) {
       if (this._data.emotion && this._data.text) {
-        this._data.id = nanoid();
+        // this._data.id = nanoid();
         this._data.date = new Date();
         this._data.author = `Tim Macoveev`;
 
         collectionOfComments.set(this._data.id, this._data);
 
-        this._callback.formSubmit(this._data.id);
+        // this._callback.formSubmit(this._data.id);
+        this._callback.formSubmit();
 
         this._data = BLANK_COMMENT;
         this.updateElement();

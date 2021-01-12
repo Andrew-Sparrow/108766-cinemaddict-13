@@ -31,8 +31,6 @@ import {calculateFilmsInFilter} from "../utils/filter-utils";
 
 const FILMS_COUNT_PER_STEP = 5;
 
-export const collectionOfComments = new Map();
-
 export default class BoardPresenter {
   constructor(boardContainer, filmModel, filterModel, api) {
     this._boardContainer = boardContainer;

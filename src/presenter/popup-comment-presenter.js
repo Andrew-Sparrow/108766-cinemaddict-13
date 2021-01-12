@@ -14,9 +14,9 @@ export default class PopupCommentPresenter {
     this._handleDeleteComment = handleDeleteComment;
   }
 
-  init(comment) {
+  init(comment, isDisabled) {
     this._comment = comment;
-    this._filmCommentComponent = new CommentView(this._comment);
+    this._filmCommentComponent = new CommentView(this._comment, isDisabled);
     this._filmCommentComponent.setDeleteCommentClick(this._handleDeleteComment);
 
     render(this._commentContainer, this._filmCommentComponent, RenderPosition.BEFOREEND);
