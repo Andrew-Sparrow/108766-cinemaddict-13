@@ -120,12 +120,9 @@ export default class PopupPresenter {
       case UserActionForModel.ADD_ITEM:
         this._api.addComment(this._film, updatedItem)
           .then((response) => {
-            // this._commentsModel.clear();
-            // const comments = response.comments.map((comment) => CommentsModel.adaptToClient(comment));
-            const lastComment = response.comments[response.comments.length - 1];
-            // this._commentsModel.addItem(rerenderType, CommentsModel.adaptToClient(lastComment));
-            this._commentsModel.addItem(rerenderType, CommentsModel.adaptToClient(lastComment));
-            // this._commentsModel.setItems(rerenderType, comments);
+            this._commentsModel.clear();
+            const commentsAdaptedToClient = response.comments.map((comment) => CommentsModel.adaptToClient(comment));
+            this._commentsModel.setItems(rerenderType, commentsAdaptedToClient);
           });
         break;
     }
