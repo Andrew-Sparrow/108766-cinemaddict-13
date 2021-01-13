@@ -1,8 +1,6 @@
 import Smart from "../smart";
 import he from "he";
 
-import {collectionOfComments} from "../../presenter/board-presenter";
-
 import {BLANK_COMMENT} from "../../utils/consts";
 
 const getNewCommentTemplate = (comment) => {
@@ -92,7 +90,7 @@ export default class NewCommentView extends Smart {
   _commentInputHandler(evt) {
     evt.preventDefault();
 
-    this._data.text = evt.target.value;
+    this._data.text = evt.target.value.trim();
   }
 
   _emojiClickHandler(evt) {
@@ -128,11 +126,10 @@ export default class NewCommentView extends Smart {
 
         this._data.date = new Date();
 
-        // this._callback.formSubmit(this._data.id);
         this._callback.formSubmit();
 
-        // this._data = BLANK_COMMENT;
-        this.updateElement();
+        this._data = Object.assign({}, BLANK_COMMENT);
+
       } else {
         textAreaElement.style.border = `2px solid #ff0000`;
         this.getElement(`.tooltiptext`).style.visibility = `visible`;

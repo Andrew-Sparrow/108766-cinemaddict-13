@@ -4,7 +4,7 @@ import PopupCommentPresenter from "./popup-comment-presenter";
 import {
   remove,
   render,
-  RenderPosition,
+  RenderPosition, replace,
 } from "../utils/render-utils";
 
 import {
@@ -17,20 +17,36 @@ export default class PopupCommentsPresenter {
     this._commentsContainer = commentsContainer;
     this._handleCommentsChange = handleCommentsChange;
 
+    this._popupCommentsComponent = null;
+
     this._handleDeleteCommentClick = this._handleDeleteCommentClick.bind(this);
   }
 
-  init(filmComments) {
-    this._filmCommentsID = filmComments;
+  init(filmCommentsID) {
+    this._filmCommentsID = filmCommentsID;
+
+    const prevPopupCommentsComponent = this._popupCommentsComponent;
 
     this._popupCommentsComponent = new CommentsView();
 
-    render(this._commentsContainer, this._popupCommentsComponent, RenderPosition.BEFOREEND);
-    this._renderComments(this._filmCommentsID);
+    if (prevPopupCommentsComponent === null) {
+      render(this._commentsContainer, this._popupCommentsComponent, RenderPosition.BEFOREEND);
+
+      this._renderComments(this._filmCommentsID);
+    } else {
+
+      this._cleanCommentsList();
+      this._renderComments(this._filmCommentsID);
+      replace(this._popupCommentsComponent, prevPopupCommentsComponent);
+    }
   }
 
   destroy() {
     remove(this._popupCommentsComponent);
+  }
+
+  _cleanCommentsList() {
+    this._popupCommentsComponent.getElement().innerHTML = ``;
   }
 
   _renderComment(comment) {
@@ -47,7 +63,7 @@ export default class PopupCommentsPresenter {
 
   _handleDeleteCommentClick(deletedCommentID) {
     this._handleCommentsChange(
-        UpdateTypeForRerender.PATCH,
+        UpdateTypeForRerender.DELETE_COMMENT,
         UserActionForModel.DELETE_ITEM,
         deletedCommentID
     );

@@ -55,6 +55,13 @@ export default class PopupPresenter {
 
     this._popupComponent = new PopupView(this._film);
 
+    this._commentsPresenter = new PopupCommentsPresenter(
+        this._popupComponent.getCommentsWrapElement(),
+        this._handleViewActionForCommentsModel
+    );
+
+    this._commentsTitlePresenter = new CommentsTitlePresenter(this._popupComponent.getCommentsWrapElement());
+
     this._commentsModel = new CommentsModel();
 
     this._api.getComments(this._film.id)
@@ -112,9 +119,13 @@ export default class PopupPresenter {
         break;
       case UserActionForModel.ADD_ITEM:
         this._api.addComment(this._film, updatedItem)
-          .then((comments) => {
-            this._commentsModel.clear();
-            this._commentsModel.setItems(rerenderType, comments);
+          .then((response) => {
+            // this._commentsModel.clear();
+            // const comments = response.comments.map((comment) => CommentsModel.adaptToClient(comment));
+            const lastComment = response.comments[response.comments.length - 1];
+            // this._commentsModel.addItem(rerenderType, CommentsModel.adaptToClient(lastComment));
+            this._commentsModel.addItem(rerenderType, CommentsModel.adaptToClient(lastComment));
+            // this._commentsModel.setItems(rerenderType, comments);
           });
         break;
     }
@@ -124,15 +135,16 @@ export default class PopupPresenter {
     this._film.comments = this._commentsModel.getItems().map((comment) => comment.id);
 
     switch (rerenderType) {
-      case UpdateTypeForRerender.PATCH:
+      case UpdateTypeForRerender.ADD_COMMENT:
 
-        this._clearCommentsTitle();
         this._renderCommentsTitle();
 
-        this._clearPopupComments();
         this._renderCommentsBlock();
 
         this._clearNewCommentBlock();
+
+        this._clearTemporaryNewCommentData();
+
         this._renderNewCommentBlock();
 
         this._handleChangeData(
@@ -142,7 +154,26 @@ export default class PopupPresenter {
                 {},
                 this._film,
                 {
-                  comments: this._film.comments
+                  comments: this._commentsModel.getItems().map((comment) => comment.id)
+                }
+            )
+        );
+        break;
+
+      case UpdateTypeForRerender.DELETE_COMMENT:
+
+        this._renderCommentsTitle();
+
+        this._renderCommentsBlock();
+
+        this._handleChangeData(
+            UserActionForModel.UPDATE_COMMENTS,
+            UpdateTypeForRerender.PATCH,
+            Object.assign(
+                {},
+                this._film,
+                {
+                  comments: this._commentsModel.getItems().map((comment) => comment.id)
                 }
             )
         );
@@ -170,26 +201,11 @@ export default class PopupPresenter {
   }
 
   _renderCommentsTitle() {
-    this._commentsTitlePresenter = new CommentsTitlePresenter(this._popupComponent.getCommentsWrapElement());
-
     this._commentsTitlePresenter.init(this._film);
   }
 
-  _clearCommentsTitle() {
-    this._commentsTitlePresenter.destroy();
-  }
-
   _renderCommentsBlock() {
-    this._commentsPresenter = new PopupCommentsPresenter(
-        this._popupComponent.getCommentsWrapElement(),
-        this._handleViewActionForCommentsModel
-    );
-
     this._commentsPresenter.init(this._commentsModel.getItems());
-  }
-
-  _clearPopupComments() {
-    this._commentsPresenter.destroy();
   }
 
   _renderNewCommentBlock() {

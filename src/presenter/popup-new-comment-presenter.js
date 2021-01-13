@@ -44,7 +44,7 @@ export default class PopupNewCommentPresenter {
   _handleAddNewComment() {
 
     this._handleViewActionForCommentsModel(
-        UpdateTypeForRerender.PATCH,
+        UpdateTypeForRerender.ADD_COMMENT,
         UserActionForModel.ADD_ITEM,
         this._newCommentData
     );

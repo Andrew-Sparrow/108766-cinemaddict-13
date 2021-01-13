@@ -43,7 +43,9 @@ export const UpdateTypeForRerender = {
   PATCH: `PATCH`,
   MINOR: `MINOR`,
   MAJOR: `MAJOR`,
-  INIT: `INIT`
+  INIT: `INIT`,
+  ADD_COMMENT: `ADD_COMMENT`,
+  DELETE_COMMENT: `DELETE_COMMENT`
 };
 
 export const MenuItem = {

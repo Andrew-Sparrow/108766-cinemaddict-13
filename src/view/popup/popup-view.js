@@ -119,10 +119,6 @@ export default class PopupView extends Smart {
     return createPopupTemplate(this._film);
   }
 
-  getCommentsTitleElement() {
-    return this.getElement(`.film-details__comments-title`);
-  }
-
   getCommentsWrapElement() {
     return this.getElement(`.film-details__comments-wrap`);
   }
