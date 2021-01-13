@@ -125,16 +125,13 @@ export default class NewCommentView extends Smart {
 
     if ((evt.ctrlKey || evt.metaKey) && evt.keyCode === 13) {
       if (this._data.emotion && this._data.text) {
-        // this._data.id = nanoid();
-        this._data.date = new Date();
-        // this._data.author = `Tim Macoveev`;
 
-        // collectionOfComments.set(this._data.id, this._data);
+        this._data.date = new Date();
 
         // this._callback.formSubmit(this._data.id);
         this._callback.formSubmit();
 
-        this._data = BLANK_COMMENT;
+        // this._data = BLANK_COMMENT;
         this.updateElement();
       } else {
         textAreaElement.style.border = `2px solid #ff0000`;

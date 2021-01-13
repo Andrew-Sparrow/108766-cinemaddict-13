@@ -111,10 +111,10 @@ export default class PopupPresenter {
           });
         break;
       case UserActionForModel.ADD_ITEM:
-        // this._commentsModel.addItem(rerenderType, updatedItem);
         this._api.addComment(this._film, updatedItem)
-          .then((response) => {
-            this._commentsModel.addItem(rerenderType, response);
+          .then((comments) => {
+            this._commentsModel.clear();
+            this._commentsModel.setItems(rerenderType, comments);
           });
         break;
     }

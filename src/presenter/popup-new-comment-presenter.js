@@ -23,7 +23,7 @@ export default class PopupNewCommentPresenter {
 
   init(newCommentData) {
     this._newCommentData = newCommentData;
-    console.log(this._newCommentData);
+
     this._newCommentComponent = new NewCommentView(this._newCommentData);
 
     render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
@@ -42,6 +42,7 @@ export default class PopupNewCommentPresenter {
   }
 
   _handleAddNewComment() {
+
     this._handleViewActionForCommentsModel(
         UpdateTypeForRerender.PATCH,
         UserActionForModel.ADD_ITEM,

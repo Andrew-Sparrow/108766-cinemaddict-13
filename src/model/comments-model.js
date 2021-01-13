@@ -12,17 +12,12 @@ export default class CommentsModel extends Observer {
     this._notify(rerenderType);
   }
 
-  getItems() {
-    return this._items;
+  clear() {
+    this._items = [];
   }
 
-  addItem(rerenderType, updatedItem) {
-    this._items = [
-      ...this._items,
-      updatedItem
-    ];
-
-    this._notify(rerenderType);
+  getItems() {
+    return this._items;
   }
 
   deleteItem(rerenderType, updatedItem) {
@@ -53,12 +48,12 @@ export default class CommentsModel extends Observer {
         {},
         commentFromClient,
         {
-          text: commentFromClient.comment,
-          date: commentFromClient.date.toISOString
+          comment: commentFromClient.text,
+          date: commentFromClient.date.toISOString()
         }
     );
 
-    delete adaptedCommentForClient.comment;
+    delete adaptedCommentForClient.text;
     delete adaptedCommentForClient.id;
     delete adaptedCommentForClient.author;
 
