@@ -1,13 +1,11 @@
 import Smart from "../smart";
 import he from "he";
 
-import {BLANK_COMMENT} from "../../utils/consts";
-
-const getNewCommentTemplate = (comment, commentFeatures) => {
+const getNewCommentTemplate = (commentData, commentFeatures) => {
   const {
     text,
     emotion
-  } = comment;
+  } = commentData;
 
   const {
     isDisabled
@@ -76,9 +74,9 @@ const getNewCommentTemplate = (comment, commentFeatures) => {
 };
 
 export default class NewCommentView extends Smart {
-  constructor(comment, commentFeatures) {
+  constructor(commentData, commentFeatures) {
     super();
-    this._data = comment;
+    this._data = commentData;
     this._commentFeatures = commentFeatures;
 
     this._emojiClickHandler = this._emojiClickHandler.bind(this);
@@ -137,8 +135,6 @@ export default class NewCommentView extends Smart {
         this._data.date = new Date();
 
         this._callback.formSubmit();
-
-        this._data = Object.assign({}, BLANK_COMMENT);
 
       } else {
         textAreaElement.style.border = `2px solid #ff0000`;
