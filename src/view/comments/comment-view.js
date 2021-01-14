@@ -1,7 +1,7 @@
 import {formatCommentDate} from "../../utils/utils";
 import Smart from "../smart";
 
-const getCommentTemplate = (comment, isDisabled) => {
+const getCommentTemplate = (comment, commentFeatures) => {
 
   const {
     id,
@@ -10,6 +10,11 @@ const getCommentTemplate = (comment, isDisabled) => {
     author,
     date
   } = comment;
+
+  const {
+    isDisabled,
+    isDeleting
+  } = commentFeatures;
 
   return `<li class="film-details__comment">
             <span class="film-details__comment-emoji">
@@ -20,22 +25,30 @@ const getCommentTemplate = (comment, isDisabled) => {
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${author}</span>
                 <span class="film-details__comment-day">${formatCommentDate(date)}</span>
-                <button class="film-details__comment-delete" data-comment-id="${id} ${isDisabled ? `disabled` : ``}">Delete</button>
+                <button
+                  type="button"
+                  class="film-details__comment-delete"
+                  data-comment-id="${id}"
+                  ${isDisabled ? `disabled` : ``}
+                >
+                  ${isDeleting ? `Deleting...` : `Delete`}
+                </button>
               </p>
             </div>
           </li>`;
 };
 
 export default class CommentView extends Smart {
-  constructor(comment) {
+  constructor(comment, commentFeatures) {
     super();
     this._comment = comment;
+    this._commentFeatures = commentFeatures;
 
     this._deleteCommentClickHandler = this._deleteCommentClickHandler.bind(this);
   }
 
   getTemplate() {
-    return getCommentTemplate(this._comment);
+    return getCommentTemplate(this._comment, this._commentFeatures);
   }
 
   _deleteCommentClickHandler(evt) {

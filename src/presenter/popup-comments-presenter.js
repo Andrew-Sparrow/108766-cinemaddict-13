@@ -18,25 +18,32 @@ export default class PopupCommentsPresenter {
     this._handleCommentsChange = handleCommentsChange;
 
     this._popupCommentsComponent = null;
+    // this._commentPresenter = null;
 
-    this._handleDeleteCommentClick = this._handleDeleteCommentClick.bind(this);
+    // this._handleDeleteCommentClick = this._handleDeleteCommentClick.bind(this);
   }
 
-  init(filmCommentsID) {
-    this._filmCommentsID = filmCommentsID;
+  init(filmComments) {
+    this._filmComments = filmComments;
 
     const prevPopupCommentsComponent = this._popupCommentsComponent;
 
     this._popupCommentsComponent = new CommentsView();
 
+    // this._commentPresenter = new PopupCommentPresenter(
+    //     this._popupCommentsComponent,
+    //     // this._handleDeleteCommentClick
+    //     this._handleCommentsChange
+    // );
+
     if (prevPopupCommentsComponent === null) {
       render(this._commentsContainer, this._popupCommentsComponent, RenderPosition.BEFOREEND);
 
-      this._renderComments(this._filmCommentsID);
+      this._renderComments(this._filmComments);
     } else {
 
       this._cleanCommentsList();
-      this._renderComments(this._filmCommentsID);
+      this._renderComments(this._filmComments);
       replace(this._popupCommentsComponent, prevPopupCommentsComponent);
     }
   }
@@ -50,22 +57,24 @@ export default class PopupCommentsPresenter {
   }
 
   _renderComment(comment) {
-    this._commentPresenter = new PopupCommentPresenter(
+    const commentPresenter = new PopupCommentPresenter(
         this._popupCommentsComponent,
-        this._handleDeleteCommentClick
+        // this._handleDeleteCommentClick
+        this._handleCommentsChange
     );
-    this._commentPresenter.init(comment);
+
+    commentPresenter.init(comment);
   }
 
   _renderComments(comments) {
     comments.forEach((comment) => this._renderComment(comment));
   }
 
-  _handleDeleteCommentClick(deletedCommentID) {
-    this._handleCommentsChange(
-        UpdateTypeForRerender.DELETE_COMMENT,
-        UserActionForModel.DELETE_ITEM,
-        deletedCommentID
-    );
-  }
+  // _handleDeleteCommentClick(deletedCommentID) {
+  //   this._handleCommentsChange(
+  //       UpdateTypeForRerender.DELETE_COMMENT,
+  //       UserActionForModel.DELETE_ITEM,
+  //       deletedCommentID
+  //   );
+  // }
 }

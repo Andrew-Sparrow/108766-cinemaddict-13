@@ -98,16 +98,6 @@ export default class PopupPresenter {
     }
   }
 
-  setViewState(state) {
-    switch (state) {
-      case State.SAVING:
-        this._newCommentPresenter.init();
-        break;
-      case State.DELETING:
-        this.this._commentsPresenter.init();
-        break;
-    }
-  }
 
   _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItem) {
     switch (actionTypeModel) {
