@@ -12,6 +12,7 @@ import {
   MenuItem,
   SortType,
   UpdateTypeForRerender,
+  UserActionForModel
 } from "../utils/consts";
 
 import {
@@ -30,8 +31,6 @@ import {
 import {calculateFilmsInFilter} from "../utils/filter-utils";
 
 const FILMS_COUNT_PER_STEP = 5;
-
-export const collectionOfComments = new Map();
 
 export default class BoardPresenter {
   constructor(boardContainer, filmModel, filterModel, api) {
@@ -164,13 +163,18 @@ export default class BoardPresenter {
     render(this._filmsBoardComponent, this._loadingComponent, RenderPosition.BEFOREEND);
   }
 
-  _handleViewActionForFilmModel(updateTypeRerender, updatedItem) {
-    // for films we only can update items
-    // this._filmsModel.updateItems(updateTypeRerender, updatedItem);
-    this._api.updateFilm(updatedItem)
-      .then((response) => {
-        this._filmsModel.updateItems(updateTypeRerender, response);
-      });
+  _handleViewActionForFilmModel(actionTypeModel, updateTypeRerender, updatedItem) {
+    switch (actionTypeModel) {
+      case UserActionForModel.UPDATE_COMMENTS:
+        this._filmsModel.updateItems(updateTypeRerender, updatedItem);
+        break;
+      case UserActionForModel.UPDATE_ITEM:
+        this._api.updateFilm(updatedItem)
+          .then((response) => {
+            this._filmsModel.updateItems(updateTypeRerender, response);
+          });
+        break;
+    }
   }
 
   _handleModelEventForRerender(updateTypeRerender, updatedFilm) {

@@ -19,6 +19,11 @@ import {
   RenderPosition,
 } from "../utils/render-utils";
 
+export const State = {
+  SAVING: `SAVING`,
+  DELETING: `DELETING`
+};
+
 export default class PopupPresenter {
   constructor(handleChangeData, api) {
     this._popupContainerElement = document.body.querySelector(`.footer`);
@@ -49,6 +54,13 @@ export default class PopupPresenter {
     const prevPopupComponent = this._popupComponent;
 
     this._popupComponent = new PopupView(this._film);
+
+    this._commentsPresenter = new PopupCommentsPresenter(
+        this._popupComponent.getCommentsWrapElement(),
+        this._handleViewActionForCommentsModel
+    );
+
+    this._commentsTitlePresenter = new CommentsTitlePresenter(this._popupComponent.getCommentsWrapElement());
 
     this._commentsModel = new CommentsModel();
 
@@ -86,13 +98,30 @@ export default class PopupPresenter {
     }
   }
 
-  _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItem) {
+
+  _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItemID) {
     switch (actionTypeModel) {
       case UserActionForModel.DELETE_ITEM:
-        this._commentsModel.deleteItem(rerenderType, updatedItem);
+        this._api.deleteComment(updatedItemID)
+          .then(() => {
+            this._commentsModel.deleteItem(rerenderType, updatedItemID);
+          })
+          .catch(() => {
+            this._commentsPresenter.getRenderedCommentPresenter(updatedItemID).setAborting();
+          });
         break;
       case UserActionForModel.ADD_ITEM:
-        this._commentsModel.addItem(rerenderType, updatedItem);
+        this._api.addComment(this._film, updatedItemID)
+          .then((response) => {
+            this._commentsModel.clear();
+            const commentsAdaptedToClient = response.comments.map((comment) => CommentsModel.adaptToClient(comment));
+            this._commentsModel.setItems(rerenderType, commentsAdaptedToClient);
+          })
+          .catch(() => {
+            this._newCommentPresenter.setAborting();
+            // this._clearNewCommentBlock();
+            // this._renderNewCommentBlock();
+          });
         break;
     }
   }
@@ -101,24 +130,45 @@ export default class PopupPresenter {
     this._film.comments = this._commentsModel.getItems().map((comment) => comment.id);
 
     switch (rerenderType) {
-      case UpdateTypeForRerender.PATCH:
+      case UpdateTypeForRerender.ADD_COMMENT:
 
-        this._clearCommentsTitle();
         this._renderCommentsTitle();
 
-        this._clearPopupComments();
         this._renderCommentsBlock();
 
         this._clearNewCommentBlock();
+
+        this._clearTemporaryNewCommentData();
+
         this._renderNewCommentBlock();
 
         this._handleChangeData(
+            UserActionForModel.UPDATE_COMMENTS,
             UpdateTypeForRerender.PATCH,
             Object.assign(
                 {},
                 this._film,
                 {
-                  comments: this._film.comments
+                  comments: this._commentsModel.getItems().map((comment) => comment.id)
+                }
+            )
+        );
+        break;
+
+      case UpdateTypeForRerender.DELETE_COMMENT:
+
+        this._renderCommentsTitle();
+
+        this._renderCommentsBlock();
+
+        this._handleChangeData(
+            UserActionForModel.UPDATE_COMMENTS,
+            UpdateTypeForRerender.PATCH,
+            Object.assign(
+                {},
+                this._film,
+                {
+                  comments: this._commentsModel.getItems().map((comment) => comment.id)
                 }
             )
         );
@@ -146,26 +196,11 @@ export default class PopupPresenter {
   }
 
   _renderCommentsTitle() {
-    this._commentsTitlePresenter = new CommentsTitlePresenter(this._popupComponent.getCommentsWrapElement());
-
     this._commentsTitlePresenter.init(this._film);
   }
 
-  _clearCommentsTitle() {
-    this._commentsTitlePresenter.destroy();
-  }
-
   _renderCommentsBlock() {
-    this._commentsPresenter = new PopupCommentsPresenter(
-        this._popupComponent.getCommentsWrapElement(),
-        this._handleViewActionForCommentsModel
-    );
-
     this._commentsPresenter.init(this._commentsModel.getItems());
-  }
-
-  _clearPopupComments() {
-    this._commentsPresenter.destroy();
   }
 
   _renderNewCommentBlock() {

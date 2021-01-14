@@ -1,9 +1,11 @@
 import CommentView from "../view/comments/comment-view";
 
 import {
+  remove,
   render,
-  RenderPosition,
+  RenderPosition, replace,
 } from "../utils/render-utils";
+import {UpdateTypeForRerender, UserActionForModel} from "../utils/consts";
 
 export default class PopupCommentPresenter {
   constructor(
@@ -12,13 +14,44 @@ export default class PopupCommentPresenter {
   ) {
     this._commentContainer = commentContainer.getElement();
     this._handleDeleteComment = handleDeleteComment;
+
+    this._filmCommentComponent = null;
+
+    this._handleDeleteCommentClick = this._handleDeleteCommentClick.bind(this);
   }
 
-  init(comment) {
+  init(comment, commentFeatures = {}) {
     this._comment = comment;
-    this._filmCommentComponent = new CommentView(this._comment);
-    this._filmCommentComponent.setDeleteCommentClick(this._handleDeleteComment);
+    const prevFilmCommentComponent = this._filmCommentComponent;
 
-    render(this._commentContainer, this._filmCommentComponent, RenderPosition.BEFOREEND);
+    this._filmCommentComponent = new CommentView(this._comment, commentFeatures);
+    this._filmCommentComponent.setDeleteCommentClick(this._handleDeleteCommentClick);
+
+    if (prevFilmCommentComponent === null) {
+      render(this._commentContainer, this._filmCommentComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    replace(this._filmCommentComponent, prevFilmCommentComponent);
+    remove(prevFilmCommentComponent);
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.init(this._comment, {isDeleting: false, isDisabled: false});
+    };
+
+    this._filmCommentComponent.shake(resetFormState);
+  }
+
+  _handleDeleteCommentClick(deletedCommentID) {
+
+    this.init(this._comment, {isDeleting: true, isDisabled: true});
+
+    this._handleDeleteComment(
+        UpdateTypeForRerender.DELETE_COMMENT,
+        UserActionForModel.DELETE_ITEM,
+        deletedCommentID
+    );
   }
 }

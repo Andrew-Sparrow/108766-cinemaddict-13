@@ -1,17 +1,15 @@
 import Smart from "../smart";
 import he from "he";
 
-import {nanoid} from 'nanoid';
-
-import {collectionOfComments} from "../../presenter/board-presenter";
-
-import {BLANK_COMMENT} from "../../utils/consts";
-
-const getNewCommentTemplate = (comment) => {
+const getNewCommentTemplate = (commentData, commentFeatures) => {
   const {
     text,
     emotion
-  } = comment;
+  } = commentData;
+
+  const {
+    isDisabled
+  } = commentFeatures;
 
   return `<div class="film-details__new-comment">
             <div class="film-details__add-emoji-label">
@@ -22,7 +20,8 @@ const getNewCommentTemplate = (comment) => {
               <textarea
                 class="film-details__comment-input"
                 placeholder="Select reaction below and write comment here"
-                name="comment">${he.encode(text)}</textarea>
+                name="comment"
+                ${isDisabled ? `disabled` : ``}>${he.encode(text)}</textarea>
               <span class="tooltiptext">Please, write comment and choose emoji</span>
             </label>
 
@@ -32,7 +31,8 @@ const getNewCommentTemplate = (comment) => {
                  type="radio"
                  id="emoji-smile"
                  value="smile"
-                 ${emotion === `smile` ? `checked` : ``}>
+                 ${emotion === `smile` ? `checked` : ``}
+                 ${isDisabled ? `disabled` : ``}>
               <label class="film-details__emoji-label" for="emoji-smile">
                 <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji" data-emoji="smile">
               </label>
@@ -42,7 +42,8 @@ const getNewCommentTemplate = (comment) => {
                 type="radio"
                 id="emoji-sleeping"
                 value="sleeping"
-                ${emotion === `sleeping` ? `checked` : ``}>
+                ${emotion === `sleeping` ? `checked` : ``}
+                ${isDisabled ? `disabled` : ``}>
               <label class="film-details__emoji-label" for="emoji-sleeping">
                 <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji" data-emoji="sleeping">
               </label>
@@ -52,7 +53,8 @@ const getNewCommentTemplate = (comment) => {
                 type="radio"
                 id="emoji-puke"
                 value="puke"
-                ${emotion === `puke` ? `checked` : ``}>
+                ${emotion === `puke` ? `checked` : ``}
+                ${isDisabled ? `disabled` : ``}>
               <label class="film-details__emoji-label" for="emoji-puke">
                 <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji" data-emoji="puke">
               </label>
@@ -62,7 +64,8 @@ const getNewCommentTemplate = (comment) => {
                 type="radio"
                 id="emoji-angry"
                 value="angry"
-                ${emotion === `angry` ? `checked` : ``}>
+                ${emotion === `angry` ? `checked` : ``}
+                ${isDisabled ? `disabled` : ``}>
               <label class="film-details__emoji-label" for="emoji-angry">
                 <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji" data-emoji="angry">
               </label>
@@ -71,9 +74,10 @@ const getNewCommentTemplate = (comment) => {
 };
 
 export default class NewCommentView extends Smart {
-  constructor(comment) {
+  constructor(commentData, commentFeatures) {
     super();
-    this._data = comment;
+    this._data = commentData;
+    this._commentFeatures = commentFeatures;
 
     this._emojiClickHandler = this._emojiClickHandler.bind(this);
     this._commentInputHandler = this._commentInputHandler.bind(this);
@@ -83,7 +87,7 @@ export default class NewCommentView extends Smart {
   }
 
   getTemplate() {
-    return getNewCommentTemplate(this._data);
+    return getNewCommentTemplate(this._data, this._commentFeatures);
   }
 
   restoreHandlers() {
@@ -94,7 +98,7 @@ export default class NewCommentView extends Smart {
   _commentInputHandler(evt) {
     evt.preventDefault();
 
-    this._data.text = evt.target.value;
+    this._data.text = evt.target.value.trim();
   }
 
   _emojiClickHandler(evt) {
@@ -127,16 +131,11 @@ export default class NewCommentView extends Smart {
 
     if ((evt.ctrlKey || evt.metaKey) && evt.keyCode === 13) {
       if (this._data.emotion && this._data.text) {
-        this._data.id = nanoid();
+
         this._data.date = new Date();
-        this._data.author = `Tim Macoveev`;
 
-        collectionOfComments.set(this._data.id, this._data);
+        this._callback.formSubmit();
 
-        this._callback.formSubmit(this._data.id);
-
-        this._data = BLANK_COMMENT;
-        this.updateElement();
       } else {
         textAreaElement.style.border = `2px solid #ff0000`;
         this.getElement(`.tooltiptext`).style.visibility = `visible`;

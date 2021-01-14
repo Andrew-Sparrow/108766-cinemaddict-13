@@ -3,7 +3,7 @@ import NewCommentView from "../view/comments/new-comment-view";
 import {
   remove,
   render,
-  RenderPosition,
+  RenderPosition, replace,
 } from "../utils/render-utils";
 
 import {UpdateTypeForRerender, UserActionForModel} from "../utils/consts";
@@ -18,26 +18,50 @@ export default class PopupNewCommentPresenter {
     this._handleViewActionForCommentsModel = handleViewActionForCommentsModel;
     this._clearTemporaryCommentData = clearTemporaryCommentData;
 
+    this._newCommentComponent = null;
+
     this._handleAddNewComment = this._handleAddNewComment.bind(this);
   }
 
-  init(newCommentData) {
-    this._newCommentComponent = new NewCommentView(newCommentData);
+  init(newCommentData, commentFeatures = {}) {
+    this._newCommentData = newCommentData;
 
-    render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
+    const prevNewCommentComponent = this._newCommentComponent;
+
+    this._newCommentComponent = new NewCommentView(this._newCommentData, commentFeatures);
     this._newCommentComponent.setCommentSubmitHandler(this._handleAddNewComment);
+
+    if (prevNewCommentComponent === null) {
+      render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    replace(this._newCommentComponent, prevNewCommentComponent);
+    remove(prevNewCommentComponent);
   }
 
   destroy() {
     remove(this._newCommentComponent);
   }
 
-  _handleAddNewComment(newCommentID) {
+  setAborting() {
+    const resetFormState = () => {
+      this.init(this._newCommentData, {isDisabled: false});
+    };
+
+    this._newCommentComponent.shake(resetFormState);
+  }
+
+  _handleAddNewComment() {
+
+    this.init(this._newCommentData, {isDisabled: true});
+
     this._handleViewActionForCommentsModel(
-        UpdateTypeForRerender.PATCH,
+        UpdateTypeForRerender.ADD_COMMENT,
         UserActionForModel.ADD_ITEM,
-        newCommentID
+        this._newCommentData
     );
+
     this._clearTemporaryCommentData();
   }
 }

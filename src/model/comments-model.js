@@ -1,7 +1,5 @@
 import Observer from "./observer";
 
-import {collectionOfComments} from "../presenter/board-presenter";
-
 export default class CommentsModel extends Observer {
   constructor() {
     super();
@@ -14,22 +12,26 @@ export default class CommentsModel extends Observer {
     this._notify(rerenderType);
   }
 
+  clear() {
+    this._items = [];
+  }
+
   getItems() {
     return this._items;
   }
 
-  addItem(rerenderType, updatedItem) {
+  addItem(updateType, update) {
     this._items = [
       ...this._items,
-      updatedItem
+      update
     ];
-
-    this._notify(rerenderType);
+    this._notify(updateType, update);
   }
 
   deleteItem(rerenderType, updatedItem) {
-    this._items = this._items.filter((commentID) => commentID !== updatedItem);
-    collectionOfComments.delete(updatedItem);
+    this._items = this._items.filter((comment) => {
+      return parseInt(comment.id, 10) !== parseInt(updatedItem, 10);
+    });
 
     this._notify(rerenderType);
   }
@@ -45,6 +47,23 @@ export default class CommentsModel extends Observer {
     );
 
     delete adaptedCommentForClient.comment;
+
+    return adaptedCommentForClient;
+  }
+
+  static adaptToServer(commentFromClient) {
+    const adaptedCommentForClient = Object.assign(
+        {},
+        commentFromClient,
+        {
+          comment: commentFromClient.text,
+          date: commentFromClient.date.toISOString()
+        }
+    );
+
+    delete adaptedCommentForClient.text;
+    delete adaptedCommentForClient.id;
+    delete adaptedCommentForClient.author;
 
     return adaptedCommentForClient;
   }

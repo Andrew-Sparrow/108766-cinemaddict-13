@@ -1,6 +1,11 @@
 import CommentsTitleView from "../view/comments/comment-title-view";
-import {remove, render, RenderPosition, replace} from "../utils/render-utils";
 
+import {
+  remove,
+  render,
+  replace,
+  RenderPosition
+} from "../utils/render-utils";
 
 export default class CommentsTitlePresenter {
   constructor(commentsTitleContainer) {
@@ -20,10 +25,7 @@ export default class CommentsTitlePresenter {
       return;
     }
 
-    if (this._commentsTitleContainer.contains(prevCommentsTitleComponent.getElement())) {
-      replace(this._commentsTitleContainer, prevCommentsTitleComponent);
-    }
-
+    replace(this._commentsTitleComponent, prevCommentsTitleComponent);
     remove(prevCommentsTitleComponent);
   }
 
