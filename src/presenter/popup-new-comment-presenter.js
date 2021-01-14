@@ -3,7 +3,7 @@ import NewCommentView from "../view/comments/new-comment-view";
 import {
   remove,
   render,
-  RenderPosition,
+  RenderPosition, replace,
 } from "../utils/render-utils";
 
 import {UpdateTypeForRerender, UserActionForModel} from "../utils/consts";
@@ -18,30 +18,43 @@ export default class PopupNewCommentPresenter {
     this._handleViewActionForCommentsModel = handleViewActionForCommentsModel;
     this._clearTemporaryCommentData = clearTemporaryCommentData;
 
+    this._newCommentComponent = null;
+
     this._handleAddNewComment = this._handleAddNewComment.bind(this);
   }
 
-  init(newCommentData) {
+  init(newCommentData, commentFeatures = {}) {
     this._newCommentData = newCommentData;
 
-    this._newCommentComponent = new NewCommentView(this._newCommentData);
+    const prevNewCommentComponent = this._newCommentComponent;
 
-    render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
+    this._newCommentComponent = new NewCommentView(this._newCommentData, commentFeatures);
     this._newCommentComponent.setCommentSubmitHandler(this._handleAddNewComment);
+
+    if (prevNewCommentComponent === null) {
+      render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    replace(this._newCommentComponent, prevNewCommentComponent);
+    remove(prevNewCommentComponent);
   }
 
   destroy() {
     remove(this._newCommentComponent);
   }
 
-  setSaving() {
-    this._newCommentComponent.updateData({
-      isDisabled: true,
-      isSaving: true
-    });
+  setAborting() {
+    const resetFormState = () => {
+      this.init(this._newCommentData, {isDisabled: false});
+    };
+
+    this._newCommentComponent.shake(resetFormState);
   }
 
   _handleAddNewComment() {
+
+    this.init(this._newCommentData, {isDisabled: true});
 
     this._handleViewActionForCommentsModel(
         UpdateTypeForRerender.ADD_COMMENT,

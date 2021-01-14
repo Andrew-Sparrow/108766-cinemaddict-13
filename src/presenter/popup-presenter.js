@@ -116,6 +116,11 @@ export default class PopupPresenter {
             this._commentsModel.clear();
             const commentsAdaptedToClient = response.comments.map((comment) => CommentsModel.adaptToClient(comment));
             this._commentsModel.setItems(rerenderType, commentsAdaptedToClient);
+          })
+          .catch(() => {
+            this._newCommentPresenter.setAborting();
+            // this._clearNewCommentBlock();
+            // this._renderNewCommentBlock();
           });
         break;
     }
