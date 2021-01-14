@@ -7,20 +7,12 @@ import {
   RenderPosition, replace,
 } from "../utils/render-utils";
 
-import {
-  UpdateTypeForRerender,
-  UserActionForModel
-} from "../utils/consts";
-
 export default class PopupCommentsPresenter {
   constructor(commentsContainer, handleCommentsChange) {
     this._commentsContainer = commentsContainer;
     this._handleCommentsChange = handleCommentsChange;
 
     this._popupCommentsComponent = null;
-    // this._commentPresenter = null;
-
-    // this._handleDeleteCommentClick = this._handleDeleteCommentClick.bind(this);
   }
 
   init(filmComments) {
@@ -29,12 +21,6 @@ export default class PopupCommentsPresenter {
     const prevPopupCommentsComponent = this._popupCommentsComponent;
 
     this._popupCommentsComponent = new CommentsView();
-
-    // this._commentPresenter = new PopupCommentPresenter(
-    //     this._popupCommentsComponent,
-    //     // this._handleDeleteCommentClick
-    //     this._handleCommentsChange
-    // );
 
     if (prevPopupCommentsComponent === null) {
       render(this._commentsContainer, this._popupCommentsComponent, RenderPosition.BEFOREEND);
@@ -59,7 +45,6 @@ export default class PopupCommentsPresenter {
   _renderComment(comment) {
     const commentPresenter = new PopupCommentPresenter(
         this._popupCommentsComponent,
-        // this._handleDeleteCommentClick
         this._handleCommentsChange
     );
 
@@ -69,12 +54,4 @@ export default class PopupCommentsPresenter {
   _renderComments(comments) {
     comments.forEach((comment) => this._renderComment(comment));
   }
-
-  // _handleDeleteCommentClick(deletedCommentID) {
-  //   this._handleCommentsChange(
-  //       UpdateTypeForRerender.DELETE_COMMENT,
-  //       UserActionForModel.DELETE_ITEM,
-  //       deletedCommentID
-  //   );
-  // }
 }
