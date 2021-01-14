@@ -99,16 +99,19 @@ export default class PopupPresenter {
   }
 
 
-  _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItem) {
+  _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItemID) {
     switch (actionTypeModel) {
       case UserActionForModel.DELETE_ITEM:
-        this._api.deleteComment(updatedItem)
+        this._api.deleteComment(updatedItemID)
           .then(() => {
-            this._commentsModel.deleteItem(rerenderType, updatedItem);
+            this._commentsModel.deleteItem(rerenderType, updatedItemID);
+          })
+          .catch(() => {
+            this._commentsPresenter.getRenderedCommentPresenter(updatedItemID).setAborting();
           });
         break;
       case UserActionForModel.ADD_ITEM:
-        this._api.addComment(this._film, updatedItem)
+        this._api.addComment(this._film, updatedItemID)
           .then((response) => {
             this._commentsModel.clear();
             const commentsAdaptedToClient = response.comments.map((comment) => CommentsModel.adaptToClient(comment));

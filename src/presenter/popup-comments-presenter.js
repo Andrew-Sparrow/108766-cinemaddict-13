@@ -12,6 +12,8 @@ export default class PopupCommentsPresenter {
     this._commentsContainer = commentsContainer;
     this._handleCommentsChange = handleCommentsChange;
 
+    this._renderedCommentPresenters = new Map();
+
     this._popupCommentsComponent = null;
   }
 
@@ -38,6 +40,10 @@ export default class PopupCommentsPresenter {
     remove(this._popupCommentsComponent);
   }
 
+  getRenderedCommentPresenter(commentID) {
+    return this._renderedCommentPresenters.get(commentID);
+  }
+
   _cleanCommentsList() {
     this._popupCommentsComponent.getElement().innerHTML = ``;
   }
@@ -49,6 +55,7 @@ export default class PopupCommentsPresenter {
     );
 
     commentPresenter.init(comment);
+    this._renderedCommentPresenters.set(comment.id, commentPresenter);
   }
 
   _renderComments(comments) {

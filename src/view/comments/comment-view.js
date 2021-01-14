@@ -25,6 +25,7 @@ const getCommentTemplate = (comment, commentFeatures) => {
               <p class="film-details__comment-info">
                 <span class="film-details__comment-author">${author}</span>
                 <span class="film-details__comment-day">${formatCommentDate(date)}</span>
+
                 <button
                   type="button"
                   class="film-details__comment-delete"

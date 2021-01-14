@@ -36,6 +36,14 @@ export default class PopupCommentPresenter {
     remove(prevFilmCommentComponent);
   }
 
+  setAborting() {
+    const resetFormState = () => {
+      this.init(this._comment, {isDeleting: false, isDisabled: false});
+    };
+
+    this._filmCommentComponent.shake(resetFormState);
+  }
+
   _handleDeleteCommentClick(deletedCommentID) {
 
     this.init(this._comment, {isDeleting: true, isDisabled: true});
