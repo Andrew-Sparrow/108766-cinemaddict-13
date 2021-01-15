@@ -45,3 +45,7 @@ api.getFilms()
   .catch(() => {
     filmsModel.setItems(UpdateTypeForRerender.INIT, []);
   });
+
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`/sw.js`);
+});
