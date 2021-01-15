@@ -1,10 +1,10 @@
-import FilmsModel from "./model/films-model";
-import CommentsModel from "./model/comments-model";
+import FilmsModel from "../model/films-model";
+import CommentsModel from "../model/comments-model";
 
 import {
   Method,
   SuccessHTTPStatusRange
-} from "./utils/consts";
+} from "../utils/consts";
 
 export default class Api {
   constructor(endPoint, authorization) {

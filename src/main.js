@@ -4,7 +4,7 @@ import BoardPresenter from "./presenter/board-presenter";
 import UserProfilePresenter from "./presenter/user-profile-presenter";
 import FilterModel from "./model/filter-model";
 import FilterPresenter from "./presenter/filter-presenter";
-import Api from "./api";
+import Api from "./api/api";
 
 import {
   render,
