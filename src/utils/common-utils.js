@@ -76,3 +76,6 @@ export const getTotalFilmDuration = (films) => {
   return totalDuration;
 };
 
+export const isOnline = () => {
+  return window.navigator.onLine;
+};
