@@ -20,7 +20,7 @@ export default class Provider {
     this._store = store;
   }
 
-  getFilms() {
+  getItems() {
     if (isOnline()) {
       return this._api.getFilms()
         .then((films) => {
@@ -35,9 +35,9 @@ export default class Provider {
     return Promise.resolve(storeTasks.map(FilmsModel.adaptToClient));
   }
 
-  updateTask(film) {
+  updateItem(film) {
     if (isOnline()) {
-      return this._api.updateTask(film)
+      return this._api.updateFilm(film)
         .then((updatedFilm) => {
           this._store.setItem(updatedFilm.id, FilmsModel.adaptToServer(updatedFilm));
           return updatedFilm;
@@ -49,25 +49,25 @@ export default class Provider {
     return Promise.resolve(film);
   }
 
-  addFilm(film) {
+  addComment(film) {
     if (isOnline()) {
-      return this._api.addFilm(film)
+      return this._api.addComment(film)
         .then((newFilm) => {
           this._store.setItem(newFilm.id, FilmsModel.adaptToServer(newFilm));
           return newFilm;
         });
     }
 
-    return Promise.reject(new Error(`Add task failed`));
+    return Promise.reject(new Error(`Add comment failed`));
   }
 
-  deleteFilm(film) {
+  deleteComment(comment) {
     if (isOnline()) {
-      return this._api.deleteFilm(film)
-        .then(() => this._store.removeItem(film.id));
+      return this._api.deleteComment(comment)
+        .then(() => this._store.removeItem(comment.id));
     }
 
-    return Promise.reject(new Error(`Delete film failed`));
+    return Promise.reject(new Error(`Delete comment failed`));
   }
 
   sync() {
@@ -77,12 +77,11 @@ export default class Provider {
       return this._api.sync(storeFilms)
         .then((response) => {
           // Забираем из ответа синхронизированные задачи
-          const createdTasks = getSyncedFilms(response.created);
           const updatedTasks = getSyncedFilms(response.updated);
 
           // Добавляем синхронизированные задачи в хранилище.
           // Хранилище должно быть актуальным в любой момент.
-          const items = createStoreStructure([...createdTasks, ...updatedTasks]);
+          const items = createStoreStructure([...updatedTasks]);
 
           this._store.setItems(items);
         });

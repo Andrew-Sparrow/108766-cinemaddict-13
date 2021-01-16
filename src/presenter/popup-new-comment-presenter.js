@@ -3,10 +3,17 @@ import NewCommentView from "../view/comments/new-comment-view";
 import {
   remove,
   render,
-  RenderPosition, replace,
+  replace,
+  RenderPosition
 } from "../utils/render-utils";
 
-import {UpdateTypeForRerender, UserActionForModel} from "../utils/consts";
+import {
+  UpdateTypeForRerender,
+  UserActionForModel
+} from "../utils/consts";
+
+import {isOnline} from "../utils/common-utils";
+import {toast} from "../utils/toast/toast";
 
 export default class PopupNewCommentPresenter {
   constructor(
@@ -53,6 +60,10 @@ export default class PopupNewCommentPresenter {
   }
 
   _handleAddNewComment() {
+    if (!isOnline()) {
+      toast(`You can't save comment offline`);
+      return;
+    }
 
     this.init(this._newCommentData, {isDisabled: true});
 

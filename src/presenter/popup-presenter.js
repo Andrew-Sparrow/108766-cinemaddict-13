@@ -19,17 +19,13 @@ import {
   RenderPosition,
 } from "../utils/render-utils";
 
-export const State = {
-  SAVING: `SAVING`,
-  DELETING: `DELETING`
-};
 
 export default class PopupPresenter {
-  constructor(handleChangeData, api) {
+  constructor(handleChangeData, apiWithProvider) {
     this._popupContainerElement = document.body.querySelector(`.footer`);
 
     this._handleChangeData = handleChangeData;
-    this._api = api;
+    this._apiWithProvider = apiWithProvider;
 
     this._popupComponent = null;
 
@@ -64,7 +60,7 @@ export default class PopupPresenter {
 
     this._commentsModel = new CommentsModel();
 
-    this._api.getComments(this._film.id)
+    this._apiWithProvider.getComments(this._film.id)
       .then((comments) => {
         this._commentsModel.setItems(UpdateTypeForRerender.INIT, comments);
       })
@@ -102,7 +98,7 @@ export default class PopupPresenter {
   _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItemID) {
     switch (actionTypeModel) {
       case UserActionForModel.DELETE_ITEM:
-        this._api.deleteComment(updatedItemID)
+        this._apiWithProvider.deleteComment(updatedItemID)
           .then(() => {
             this._commentsModel.deleteItem(rerenderType, updatedItemID);
           })
@@ -111,7 +107,7 @@ export default class PopupPresenter {
           });
         break;
       case UserActionForModel.ADD_ITEM:
-        this._api.addComment(this._film, updatedItemID)
+        this._apiWithProvider.addComment(this._film, updatedItemID)
           .then((response) => {
             this._commentsModel.clear();
             const commentsAdaptedToClient = response.comments.map((comment) => CommentsModel.adaptToClient(comment));
@@ -119,8 +115,6 @@ export default class PopupPresenter {
           })
           .catch(() => {
             this._newCommentPresenter.setAborting();
-            // this._clearNewCommentBlock();
-            // this._renderNewCommentBlock();
           });
         break;
     }
