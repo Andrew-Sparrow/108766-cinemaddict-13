@@ -6,6 +6,7 @@ import PopupCommentsPresenter from "./popup-comments-presenter";
 import PopupNewCommentPresenter from "./popup-new-comment-presenter";
 import CommentsTitlePresenter from "./comments-title-presenter";
 import LoadingView from "../view/loading-view";
+import NoInternetConnectionView from "../view/comments/no-connection-view";
 
 import {
   BLANK_COMMENT,
@@ -32,6 +33,7 @@ export default class PopupPresenter {
     this._newCommentPresenter = null;
 
     this._loadingComponent = new LoadingView();
+    this._noInternetConnectionComponent = new NoInternetConnectionView()
 
     this._temporaryNewCommentData = Object.assign({}, BLANK_COMMENT);
 
@@ -65,7 +67,9 @@ export default class PopupPresenter {
         this._commentsModel.setItems(UpdateTypeForRerender.INIT, comments);
       })
       .catch(() => {
-        this._commentsModel.setItems(UpdateTypeForRerender.INIT_OFFLINE, []);
+        this._removeLoading();
+        this._renderCommentsTitle();
+        this._renderNoInternetConnection();
       });
 
     this._commentsModel.addObserver(this._handleCommentsModelEventForPopupRerender);
@@ -170,7 +174,7 @@ export default class PopupPresenter {
 
       case UpdateTypeForRerender.INIT:
 
-        remove(this._loadingComponent);
+        this._removeLoading();
 
         this._renderCommentsTitle();
 
@@ -183,12 +187,26 @@ export default class PopupPresenter {
 
         remove(this._loadingComponent);
 
+        this._renderCommentsTitle();
+
         break;
     }
   }
 
   _renderLoading() {
     render(this._popupComponent.getCommentsWrapElement(), this._loadingComponent, RenderPosition.AFTERBEGIN);
+  }
+
+  _removeLoading() {
+    remove(this._loadingComponent);
+  }
+
+  _renderNoInternetConnection() {
+    render(this._popupComponent.getCommentsWrapElement(), this._noInternetConnectionComponent, RenderPosition.BEFOREEND);
+  }
+
+  _removeNoInternetConnection() {
+    remove(this._noInternetConnectionComponent);
   }
 
   _renderFeaturesBlock() {

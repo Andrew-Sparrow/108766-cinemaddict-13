@@ -1,11 +1,6 @@
 import FilmsModel from "../model/films-model";
 import {isOnline} from "../utils/common-utils";
 
-const getSyncedFilms = (items) => {
-  return items.filter(({success}) => success)
-    .map(({payload}) => payload.film);
-};
-
 const createStoreStructure = (items) => {
   return items.reduce((acc, current) => {
     return Object.assign({}, acc, {
@@ -40,9 +35,7 @@ export default class Provider {
       return this._api.getComments(movieId);
     }
 
-    const storeFilms = Object.values(this._store.getItems());
-
-    return Promise.resolve(storeFilms.map(FilmsModel.adaptToClient));
+    return Promise.reject(new Error(`Get comments failed`));
   }
 
   updateFilm(film) {
@@ -87,7 +80,7 @@ export default class Provider {
       return this._api.sync(storeFilms)
         .then((response) => {
           // Забираем из ответа синхронизированные задачи
-          const updatedFilms = getSyncedFilms(response.updated);
+          const updatedFilms = response.updated;
 
           // Добавляем синхронизированные задачи в хранилище.
           // Хранилище должно быть актуальным в любой момент.
