@@ -65,7 +65,8 @@ export default class PopupPresenter {
         this._commentsModel.setItems(UpdateTypeForRerender.INIT, comments);
       })
       .catch(() => {
-        this._commentsModel.setItems(UpdateTypeForRerender.INIT, []);
+        console.log(`catch`);
+        this._commentsModel.setItems(UpdateTypeForRerender.INIT_OFFLINE, []);
       });
 
     this._commentsModel.addObserver(this._handleCommentsModelEventForPopupRerender);
@@ -177,6 +178,12 @@ export default class PopupPresenter {
         this._renderCommentsBlock();
 
         this._renderNewCommentBlock();
+        break;
+
+      case UpdateTypeForRerender.INIT_OFFLINE:
+
+        remove(this._loadingComponent);
+
         break;
     }
   }

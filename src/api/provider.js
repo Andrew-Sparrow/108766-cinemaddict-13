@@ -20,7 +20,7 @@ export default class Provider {
     this._store = store;
   }
 
-  getItems() {
+  getFilms() {
     if (isOnline()) {
       return this._api.getFilms()
         .then((films) => {
@@ -30,12 +30,22 @@ export default class Provider {
         });
     }
 
-    const storeTasks = Object.values(this._store.getItems());
+    const storeFilms = Object.values(this._store.getItems());
 
-    return Promise.resolve(storeTasks.map(FilmsModel.adaptToClient));
+    return Promise.resolve(storeFilms.map(FilmsModel.adaptToClient));
   }
 
-  updateItem(film) {
+  getComments(movieId) {
+    if (isOnline()) {
+      return this._api.getComments(movieId);
+    }
+
+    const storeFilms = Object.values(this._store.getItems());
+
+    return Promise.resolve(storeFilms.map(FilmsModel.adaptToClient));
+  }
+
+  updateFilm(film) {
     if (isOnline()) {
       return this._api.updateFilm(film)
         .then((updatedFilm) => {

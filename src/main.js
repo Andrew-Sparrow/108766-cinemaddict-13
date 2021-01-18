@@ -42,13 +42,12 @@ const filterPresenter = new FilterPresenter(siteMainElement, filterModel, filmsM
 const userProfilePresenter = new UserProfilePresenter(siteHeaderElement);
 
 filterPresenter.init();
-// boardPresenter.init();
+boardPresenter.init();
 
-apiWithProvider.getItems()
+apiWithProvider.getFilms()
   .then((movies) => {
     filmsModel.setItems(UpdateTypeForRerender.INIT, movies);
     userProfilePresenter.init(filmsModel.getItems());
-    console.log(filmsModel.getItems().length);
     render(footer, new FooterStatisticsView(filmsModel.getItems().length), RenderPosition.BEFOREEND);
   })
   .catch(() => {

@@ -1,7 +1,6 @@
 import Smart from "./smart";
 
 const createFooterStatisticsTemplate = (amountOfFilms) => {
-  console.log(amountOfFilms);
   return `<section class="footer__statistics">
       <p>${amountOfFilms} movies inside</p>
     </section>`;
