@@ -33,7 +33,7 @@ export default class PopupPresenter {
     this._newCommentPresenter = null;
 
     this._loadingComponent = new LoadingView();
-    this._noInternetConnectionComponent = new NoInternetConnectionView()
+    this._noInternetConnectionComponent = new NoInternetConnectionView();
 
     this._temporaryNewCommentData = Object.assign({}, BLANK_COMMENT);
 
@@ -175,6 +175,8 @@ export default class PopupPresenter {
       case UpdateTypeForRerender.INIT:
 
         this._removeLoading();
+
+        this._removeNoInternetConnection();
 
         this._renderCommentsTitle();
 
