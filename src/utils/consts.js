@@ -45,7 +45,8 @@ export const UpdateTypeForRerender = {
   MAJOR: `MAJOR`,
   INIT: `INIT`,
   ADD_COMMENT: `ADD_COMMENT`,
-  DELETE_COMMENT: `DELETE_COMMENT`
+  DELETE_COMMENT: `DELETE_COMMENT`,
+  INIT_OFFLINE: `INIT_OFFLINE`
 };
 
 export const MenuItem = {

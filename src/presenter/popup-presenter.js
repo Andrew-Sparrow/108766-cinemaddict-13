@@ -6,6 +6,7 @@ import PopupCommentsPresenter from "./popup-comments-presenter";
 import PopupNewCommentPresenter from "./popup-new-comment-presenter";
 import CommentsTitlePresenter from "./comments-title-presenter";
 import LoadingView from "../view/loading-view";
+import NoInternetConnectionView from "../view/comments/no-connection-view";
 
 import {
   BLANK_COMMENT,
@@ -19,23 +20,20 @@ import {
   RenderPosition,
 } from "../utils/render-utils";
 
-export const State = {
-  SAVING: `SAVING`,
-  DELETING: `DELETING`
-};
 
 export default class PopupPresenter {
-  constructor(handleChangeData, api) {
+  constructor(handleChangeData, apiWithProvider) {
     this._popupContainerElement = document.body.querySelector(`.footer`);
 
     this._handleChangeData = handleChangeData;
-    this._api = api;
+    this._apiWithProvider = apiWithProvider;
 
     this._popupComponent = null;
 
     this._newCommentPresenter = null;
 
     this._loadingComponent = new LoadingView();
+    this._noInternetConnectionComponent = new NoInternetConnectionView();
 
     this._temporaryNewCommentData = Object.assign({}, BLANK_COMMENT);
 
@@ -64,12 +62,14 @@ export default class PopupPresenter {
 
     this._commentsModel = new CommentsModel();
 
-    this._api.getComments(this._film.id)
+    this._apiWithProvider.getComments(this._film.id)
       .then((comments) => {
         this._commentsModel.setItems(UpdateTypeForRerender.INIT, comments);
       })
       .catch(() => {
-        this._commentsModel.setItems(UpdateTypeForRerender.INIT, []);
+        this._removeLoading();
+        this._renderCommentsTitle();
+        this._renderNoInternetConnection();
       });
 
     this._commentsModel.addObserver(this._handleCommentsModelEventForPopupRerender);
@@ -102,7 +102,7 @@ export default class PopupPresenter {
   _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItemID) {
     switch (actionTypeModel) {
       case UserActionForModel.DELETE_ITEM:
-        this._api.deleteComment(updatedItemID)
+        this._apiWithProvider.deleteComment(updatedItemID)
           .then(() => {
             this._commentsModel.deleteItem(rerenderType, updatedItemID);
           })
@@ -111,7 +111,7 @@ export default class PopupPresenter {
           });
         break;
       case UserActionForModel.ADD_ITEM:
-        this._api.addComment(this._film, updatedItemID)
+        this._apiWithProvider.addComment(this._film, updatedItemID)
           .then((response) => {
             this._commentsModel.clear();
             const commentsAdaptedToClient = response.comments.map((comment) => CommentsModel.adaptToClient(comment));
@@ -119,8 +119,6 @@ export default class PopupPresenter {
           })
           .catch(() => {
             this._newCommentPresenter.setAborting();
-            // this._clearNewCommentBlock();
-            // this._renderNewCommentBlock();
           });
         break;
     }
@@ -176,7 +174,9 @@ export default class PopupPresenter {
 
       case UpdateTypeForRerender.INIT:
 
-        remove(this._loadingComponent);
+        this._removeLoading();
+
+        this._removeNoInternetConnection();
 
         this._renderCommentsTitle();
 
@@ -184,11 +184,31 @@ export default class PopupPresenter {
 
         this._renderNewCommentBlock();
         break;
+
+      case UpdateTypeForRerender.INIT_OFFLINE:
+
+        remove(this._loadingComponent);
+
+        this._renderCommentsTitle();
+
+        break;
     }
   }
 
   _renderLoading() {
     render(this._popupComponent.getCommentsWrapElement(), this._loadingComponent, RenderPosition.AFTERBEGIN);
+  }
+
+  _removeLoading() {
+    remove(this._loadingComponent);
+  }
+
+  _renderNoInternetConnection() {
+    render(this._popupComponent.getCommentsWrapElement(), this._noInternetConnectionComponent, RenderPosition.BEFOREEND);
+  }
+
+  _removeNoInternetConnection() {
+    remove(this._noInternetConnectionComponent);
   }
 
   _renderFeaturesBlock() {

@@ -1,4 +1,4 @@
-import Abstract from "./abstract";
+import Smart from "./smart";
 
 const createFooterStatisticsTemplate = (amountOfFilms) => {
   return `<section class="footer__statistics">
@@ -6,7 +6,7 @@ const createFooterStatisticsTemplate = (amountOfFilms) => {
     </section>`;
 };
 
-export default class FooterStatisticsView extends Abstract {
+export default class FooterStatisticsView extends Smart {
   constructor(amountOfFilms) {
     super();
     this._amountOfFilms = amountOfFilms;

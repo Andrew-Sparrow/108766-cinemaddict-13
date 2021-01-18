@@ -33,11 +33,11 @@ import {calculateFilmsInFilter} from "../utils/filter-utils";
 const FILMS_COUNT_PER_STEP = 5;
 
 export default class BoardPresenter {
-  constructor(boardContainer, filmModel, filterModel, api) {
+  constructor(boardContainer, filmModel, filterModel, apiWithProvider) {
     this._boardContainer = boardContainer;
     this._filmsModel = filmModel;
     this._filterModel = filterModel;
-    this._api = api;
+    this._apiWithProvider = apiWithProvider;
 
     this._listRenderedPresentersBasicBlock = new Map();
     this._listRenderedPresentersTopRatedBlock = new Map();
@@ -67,7 +67,7 @@ export default class BoardPresenter {
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel, this._api);
+    this._popupPresenter = new PopupPresenter(this._handleViewActionForFilmModel, this._apiWithProvider);
 
     this._filmsModel.addObserver(this._handleModelEventForRerender);
     this._filterModel.addObserver(this._handleModelEventForRerender);
@@ -169,7 +169,7 @@ export default class BoardPresenter {
         this._filmsModel.updateItems(updateTypeRerender, updatedItem);
         break;
       case UserActionForModel.UPDATE_ITEM:
-        this._api.updateFilm(updatedItem)
+        this._apiWithProvider.updateFilm(updatedItem)
           .then((response) => {
             this._filmsModel.updateItems(updateTypeRerender, response);
           });

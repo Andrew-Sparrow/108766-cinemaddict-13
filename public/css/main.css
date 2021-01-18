@@ -322,7 +322,8 @@ button {
   flex-wrap: wrap;
 }
 
-.films-list {
+.films-list,
+.comments-list {
   flex-basis: 100%;
   flex-shrink: 0;
   padding-bottom: 60px;

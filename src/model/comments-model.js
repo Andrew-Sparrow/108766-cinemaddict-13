@@ -20,14 +20,6 @@ export default class CommentsModel extends Observer {
     return this._items;
   }
 
-  addItem(updateType, update) {
-    this._items = [
-      ...this._items,
-      update
-    ];
-    this._notify(updateType, update);
-  }
-
   deleteItem(rerenderType, updatedItem) {
     this._items = this._items.filter((comment) => {
       return parseInt(comment.id, 10) !== parseInt(updatedItem, 10);

@@ -1,10 +1,10 @@
-import FilmsModel from "./model/films-model";
-import CommentsModel from "./model/comments-model";
+import FilmsModel from "../model/films-model";
+import CommentsModel from "../model/comments-model";
 
 import {
   Method,
   SuccessHTTPStatusRange
-} from "./utils/consts";
+} from "../utils/consts";
 
 export default class Api {
   constructor(endPoint, authorization) {
@@ -53,6 +53,16 @@ export default class Api {
       url: `comments/${commentID}`,
       method: Method.DELETE
     });
+  }
+
+  sync(data) {
+    return this._load({
+      url: `movies/sync`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(Api.toJSON);
   }
 
   _load({

@@ -5,7 +5,13 @@ import {
   render,
   RenderPosition, replace,
 } from "../utils/render-utils";
-import {UpdateTypeForRerender, UserActionForModel} from "../utils/consts";
+import {
+  UpdateTypeForRerender,
+  UserActionForModel
+} from "../utils/consts";
+
+import {isOnline} from "../utils/common-utils";
+import {toast} from "../utils/toast/toast";
 
 export default class PopupCommentPresenter {
   constructor(
@@ -45,6 +51,12 @@ export default class PopupCommentPresenter {
   }
 
   _handleDeleteCommentClick(deletedCommentID) {
+    if (!isOnline()) {
+      toast(`You can't delete comment offline`);
+      this._filmCommentComponent.shake();
+
+      return;
+    }
 
     this.init(this._comment, {isDeleting: true, isDisabled: true});
 

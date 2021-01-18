@@ -9,8 +9,10 @@ import {
 } from "../utils/render-utils";
 
 import {
-  UpdateTypeForRerender, UserActionForModel,
+  UpdateTypeForRerender,
+  UserActionForModel
 } from "../utils/consts";
+
 
 export default class FilmCardPresenter {
   constructor(filmListContainerElement, handleChangeData, popupPresenter) {
