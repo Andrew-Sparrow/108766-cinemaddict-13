@@ -169,7 +169,7 @@ export default class BoardPresenter {
         this._filmsModel.updateItems(updateTypeRerender, updatedItem);
         break;
       case UserActionForModel.UPDATE_ITEM:
-        this._apiWithProvider.updateItem(updatedItem)
+        this._apiWithProvider.updateFilm(updatedItem)
           .then((response) => {
             this._filmsModel.updateItems(updateTypeRerender, response);
           });

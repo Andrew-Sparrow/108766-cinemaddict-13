@@ -87,11 +87,11 @@ export default class Provider {
       return this._api.sync(storeFilms)
         .then((response) => {
           // Забираем из ответа синхронизированные задачи
-          const updatedTasks = getSyncedFilms(response.updated);
+          const updatedFilms = getSyncedFilms(response.updated);
 
           // Добавляем синхронизированные задачи в хранилище.
           // Хранилище должно быть актуальным в любой момент.
-          const items = createStoreStructure([...updatedTasks]);
+          const items = createStoreStructure([...updatedFilms]);
 
           this._store.setItems(items);
         });

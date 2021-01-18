@@ -65,7 +65,6 @@ export default class PopupPresenter {
         this._commentsModel.setItems(UpdateTypeForRerender.INIT, comments);
       })
       .catch(() => {
-        console.log(`catch`);
         this._commentsModel.setItems(UpdateTypeForRerender.INIT_OFFLINE, []);
       });
 
