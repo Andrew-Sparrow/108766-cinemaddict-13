@@ -53,7 +53,7 @@ export default class PopupCommentPresenter {
   _handleDeleteCommentClick(deletedCommentID) {
     if (!isOnline()) {
       toast(`You can't delete comment offline`);
-      this.setAborting();
+      this._filmCommentComponent.shake();
 
       return;
     }

@@ -62,6 +62,7 @@ export default class PopupNewCommentPresenter {
   _handleAddNewComment() {
     if (!isOnline()) {
       toast(`You can't save comment offline`);
+      this._newCommentComponent.shake();
       return;
     }
 
