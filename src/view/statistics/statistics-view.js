@@ -9,8 +9,6 @@ import {getWatchedFilms} from "../../utils/statistics-utils";
 
 const createStatisticsTemplate = (watchedFilms) => {
 
-  // const watchedFilmsInDateRange = countWatchedFilmsInDateRange(films, dateFrom, dateTo);
-
   const userRank = getUserRank(watchedFilms);
 
   return `<section class="statistic">

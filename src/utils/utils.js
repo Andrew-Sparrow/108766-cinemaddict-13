@@ -1,40 +1,32 @@
 import dayjs from "dayjs";
 
-import {DESCRIPTIONS, pictureTitles} from "./consts";
+import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
+import updateLocale from "dayjs/plugin/updateLocale";
 
-import {getRandomIndexOfList, getRandomInteger} from "./common-utils.js";
+dayjs.extend(updateLocale);
+dayjs.extend(relativeTime);
+dayjs.extend(duration);
 
-
-const MIN_AMOUNT_PHRASES = 1;
-const MAX_AMOUNT_PHRASES = 5;
-const YEARS_AGO_AMOUNT = 5;
-const MAX_AMOUNT_EXTRA_CARDS = 2;
-
-
-export const getRandomDescriptions = () => {
-  const sumStrings = [];
-  const phrases = DESCRIPTIONS.split(`.`);
-
-  for (let i = 0; i < getRandomInteger(MIN_AMOUNT_PHRASES, MAX_AMOUNT_PHRASES); i++) {
-    sumStrings.push(phrases[getRandomIndexOfList(phrases)]);
+dayjs.updateLocale(`en`, {
+  relativeTime: {
+    future: `in %s`,
+    past: `%s ago`,
+    s: `a few seconds`,
+    m: `a minute`,
+    mm: `%d minutes`,
+    h: `an hour`,
+    hh: `%d hours`,
+    d: `a day`,
+    dd: `%d days`,
+    M: `a month`,
+    MM: `%d months`,
+    y: `a year`,
+    yy: `%d years`
   }
+});
 
-  return sumStrings.join(` `);
-};
-
-export const getRandomPoster = () => {
-  const poster = {};
-  const posterTitle = pictureTitles[getRandomInteger(0, pictureTitles.length - 1)];
-  poster.src = `./images/posters/${posterTitle}`;
-  poster.description = `poster of movie`;
-
-  return poster;
-};
-
-export const generateDate = () => {
-  const yearsAgoAmount = getRandomInteger(0, YEARS_AGO_AMOUNT);
-  return dayjs().subtract(yearsAgoAmount, `year`).toDate();
-};
+const MAX_AMOUNT_EXTRA_CARDS = 2;
 
 export const createElement = (template) => {
   const newElement = document.createElement(`div`);
@@ -43,7 +35,7 @@ export const createElement = (template) => {
 };
 
 export const formatCommentDate = (date) => {
-  return dayjs(date).format(`YYYY/MM/DD HH:SS`);
+  return dayjs(date).fromNow();
 };
 
 export const formatReleaseDate = (date) => {

@@ -36,8 +36,6 @@ export default class StatisticsPresenter {
     this._yearWatchedFilms = null;
 
     this._statisticsComponent = new StatisticsView(this._watchedFilms);
-    // this._statisticsInfoView = null;
-    // this._statisticsDiagramView = null;
 
     this._statisticsComponent.setTimePeriodClickHandler(this._handleTimePeriodClick);
 

@@ -1,6 +1,5 @@
 import Smart from "../smart";
 
-// import {getCommentsTemplate} from "./comments-view";
 import {formatReleaseDate} from "../../utils/utils";
 
 const getFilmGenresTemplate = (film) => {

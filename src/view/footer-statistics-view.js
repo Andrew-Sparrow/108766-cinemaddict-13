@@ -2,8 +2,8 @@ import Smart from "./smart";
 
 const createFooterStatisticsTemplate = (amountOfFilms) => {
   return `<section class="footer__statistics">
-      <p>${amountOfFilms} movies inside</p>
-    </section>`;
+            <p>${amountOfFilms} movies inside</p>
+          </section>`;
 };
 
 export default class FooterStatisticsView extends Smart {

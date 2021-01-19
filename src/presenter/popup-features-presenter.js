@@ -1,5 +1,7 @@
 import PopupFeaturesView from "../view/popup/popup-features-view";
 
+import dayjs from "dayjs";
+
 import {
   remove,
   render,
@@ -7,9 +9,11 @@ import {
   replace
 } from "../utils/render-utils";
 
-import {UpdateTypeForRerender, UserActionForModel} from "../utils/consts";
+import {
+  UpdateTypeForRerender,
+  UserActionForModel
+} from "../utils/consts";
 
-import dayjs from "dayjs";
 
 export default class PopupFeaturesPresenter {
   constructor(popupFeaturesContainerElement, handleChangeData) {

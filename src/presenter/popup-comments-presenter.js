@@ -4,7 +4,8 @@ import PopupCommentPresenter from "./popup-comment-presenter";
 import {
   remove,
   render,
-  RenderPosition, replace,
+  replace,
+  RenderPosition
 } from "../utils/render-utils";
 
 export default class PopupCommentsPresenter {
