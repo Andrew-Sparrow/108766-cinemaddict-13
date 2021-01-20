@@ -52,11 +52,12 @@ export default class Provider {
     return Promise.resolve(film);
   }
 
-  addComment(film) {
+  addComment(film, comment) {
     if (isOnline()) {
-      return this._api.addComment(film)
+      return this._api.addComment(film, comment)
         .then((newFilm) => {
-          this._store.setItem(newFilm.id, FilmsModel.adaptToServer(newFilm));
+          console.log(newFilm);
+          this._store.setItem(newFilm.id, newFilm.movie);
           return newFilm;
         });
     }
