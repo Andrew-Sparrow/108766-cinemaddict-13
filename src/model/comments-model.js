@@ -7,12 +7,14 @@ export default class CommentsModel extends Observer {
   }
 
   setItems(rerenderType, items) {
+    this._items = [];
     this._items = items.slice();
 
     this._notify(rerenderType);
   }
 
   clear() {
+    this._items = null;
     this._items = [];
   }
 

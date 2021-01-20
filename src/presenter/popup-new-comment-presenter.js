@@ -18,24 +18,20 @@ import {toast} from "../utils/toast/toast";
 export default class PopupNewCommentPresenter {
   constructor(
       newCommentContainer,
-      handleViewActionForCommentsModel,
-      clearTemporaryCommentData
+      handleViewActionForCommentsModel
   ) {
     this._newCommentContainer = newCommentContainer;
     this._handleViewActionForCommentsModel = handleViewActionForCommentsModel;
-    this._clearTemporaryCommentData = clearTemporaryCommentData;
 
     this._newCommentComponent = null;
 
     this._handleAddNewComment = this._handleAddNewComment.bind(this);
   }
 
-  init(newCommentData, commentFeatures = {}) {
-    this._newCommentData = newCommentData;
-
+  init(commentFeatures = {}) {
     const prevNewCommentComponent = this._newCommentComponent;
 
-    this._newCommentComponent = new NewCommentView(this._newCommentData, commentFeatures);
+    this._newCommentComponent = new NewCommentView(commentFeatures);
     this._newCommentComponent.setCommentSubmitHandler(this._handleAddNewComment);
 
     if (prevNewCommentComponent === null) {
@@ -53,27 +49,25 @@ export default class PopupNewCommentPresenter {
 
   setAborting() {
     const resetFormState = () => {
-      this.init(this._newCommentData, {isDisabled: false});
+      this.init({isDisabled: false});
     };
 
     this._newCommentComponent.shake(resetFormState);
   }
 
-  _handleAddNewComment() {
+  _handleAddNewComment(commentData) {
     if (!isOnline()) {
       toast(`You can't save comment offline`);
       this._newCommentComponent.shake();
       return;
     }
 
-    this.init(this._newCommentData, {isDisabled: true});
+    this.init({isDisabled: true});
 
     this._handleViewActionForCommentsModel(
         UpdateTypeForRerender.ADD_COMMENT,
         UserActionForModel.ADD_ITEM,
-        this._newCommentData
+        commentData
     );
-
-    this._clearTemporaryCommentData();
   }
 }

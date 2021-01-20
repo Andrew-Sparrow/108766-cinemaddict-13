@@ -1,5 +1,6 @@
 import Smart from "../smart";
 import he from "he";
+import {BLANK_COMMENT} from "../../utils/consts";
 
 const getNewCommentTemplate = (commentData, commentFeatures) => {
   const {
@@ -74,9 +75,9 @@ const getNewCommentTemplate = (commentData, commentFeatures) => {
 };
 
 export default class NewCommentView extends Smart {
-  constructor(commentData, commentFeatures) {
+  constructor(commentFeatures) {
     super();
-    this._data = commentData;
+    this._data = Object.assign({}, BLANK_COMMENT);
     this._commentFeatures = commentFeatures;
 
     this._emojiClickHandler = this._emojiClickHandler.bind(this);
@@ -98,7 +99,8 @@ export default class NewCommentView extends Smart {
   _commentInputHandler(evt) {
     evt.preventDefault();
 
-    this._data.text = evt.target.value.trim();
+    // this._data.text = evt.target.value.trim();
+    this.updateData({text: evt.target.value.trim()}, true);
   }
 
   _emojiClickHandler(evt) {
@@ -107,6 +109,7 @@ export default class NewCommentView extends Smart {
     if (evt.target.tagName === `IMG`) {
       this._data.emotion = evt.target.dataset.emoji;
       this.updateElement();
+      // this.updateElement({emotion: evt.target.dataset.emoji});
     }
 
     const textAreaElement = this.getElement(`.film-details__comment-input`);
@@ -127,6 +130,7 @@ export default class NewCommentView extends Smart {
   }
 
   _commentSubmitHandler(evt) {
+    console.log(`_commentSubmitHandler`);
     const textAreaElement = this.getElement(`.film-details__comment-input`);
 
     if ((evt.ctrlKey || evt.metaKey) && evt.keyCode === 13) {
@@ -134,7 +138,7 @@ export default class NewCommentView extends Smart {
 
         this._data.date = new Date();
 
-        this._callback.formSubmit();
+        this._callback.formSubmit(this._data);
 
       } else {
         textAreaElement.style.border = `2px solid #ff0000`;

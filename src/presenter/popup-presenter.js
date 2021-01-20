@@ -35,12 +35,8 @@ export default class PopupPresenter {
     this._loadingComponent = new LoadingView();
     this._noInternetConnectionComponent = new NoInternetConnectionView();
 
-    this._temporaryNewCommentData = Object.assign({}, BLANK_COMMENT);
-
     this._handlePopupCloseClick = this._handlePopupCloseClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
-
-    this._clearTemporaryNewCommentData = this._clearTemporaryNewCommentData.bind(this);
 
     this._handleViewActionForCommentsModel = this._handleViewActionForCommentsModel.bind(this);
     this._handleCommentsModelEventForPopupRerender = this._handleCommentsModelEventForPopupRerender.bind(this);
@@ -98,7 +94,6 @@ export default class PopupPresenter {
     }
   }
 
-
   _handleViewActionForCommentsModel(rerenderType, actionTypeModel, updatedItemID) {
     switch (actionTypeModel) {
       case UserActionForModel.DELETE_ITEM:
@@ -135,8 +130,6 @@ export default class PopupPresenter {
         this._renderCommentsBlock();
 
         this._clearNewCommentBlock();
-
-        this._clearTemporaryNewCommentData();
 
         this._renderNewCommentBlock();
 
@@ -184,14 +177,6 @@ export default class PopupPresenter {
 
         this._renderNewCommentBlock();
         break;
-
-      case UpdateTypeForRerender.INIT_OFFLINE:
-
-        remove(this._loadingComponent);
-
-        this._renderCommentsTitle();
-
-        break;
     }
   }
 
@@ -226,19 +211,13 @@ export default class PopupPresenter {
   _renderNewCommentBlock() {
     this._newCommentPresenter = new PopupNewCommentPresenter(
         this._popupComponent.getCommentsWrapElement(),
-        this._handleViewActionForCommentsModel,
-        this._clearTemporaryNewCommentData
+        this._handleViewActionForCommentsModel
     );
-    this._clearTemporaryNewCommentData();
-    this._newCommentPresenter.init(this._temporaryNewCommentData);
+    this._newCommentPresenter.init();
   }
 
   _clearNewCommentBlock() {
     this._newCommentPresenter.destroy();
-  }
-
-  _clearTemporaryNewCommentData() {
-    this._temporaryNewCommentData = Object.assign({}, BLANK_COMMENT);
   }
 
   _handlePopupCloseClick() {
@@ -246,7 +225,6 @@ export default class PopupPresenter {
     remove(this._popupComponent);
     document.removeEventListener(`keydown`, this._handleEscKeyDown);
     this._featuresPresenter.destroy();
-    this._clearTemporaryNewCommentData();
   }
 
   _handleEscKeyDown(evt) {
@@ -256,7 +234,6 @@ export default class PopupPresenter {
       remove(this._popupComponent);
       document.removeEventListener(`keydown`, this._handleEscKeyDown);
       this._featuresPresenter.destroy();
-      this._clearTemporaryNewCommentData();
     }
   }
 }
