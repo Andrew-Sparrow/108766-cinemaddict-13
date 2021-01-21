@@ -133,7 +133,6 @@ export default class NewCommentView extends Smart {
   }
 
   _commentSubmitHandler(evt) {
-    console.log(`ddddddddd`);
     const textAreaElement = this.getElement(`.film-details__comment-input`);
 
     if ((evt.ctrlKey || evt.metaKey) && evt.keyCode === ENTER_KEY_CODE) {
