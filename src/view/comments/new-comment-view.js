@@ -77,14 +77,14 @@ const getNewCommentTemplate = (commentData, commentFeatures) => {
 };
 
 export default class NewCommentView extends Smart {
-  constructor(commentData, commentFeatures) {
+  constructor(data, features) {
     super();
-    this._data = commentData;
-    this._commentFeatures = commentFeatures;
+    this._data = data;
+    this._commentFeatures = features;
 
     this._emojiClickHandler = this._emojiClickHandler.bind(this);
-    this._commentInputHandler = this._commentInputHandler.bind(this);
-    this._commentSubmitHandler = this._commentSubmitHandler.bind(this);
+    this._inputHandler = this._inputHandler.bind(this);
+    this._submitHandler = this._submitHandler.bind(this);
 
     this._setInnerHandlers();
   }
@@ -95,14 +95,14 @@ export default class NewCommentView extends Smart {
 
   restoreHandlers() {
     this._setInnerHandlers();
-    this.setCommentSubmitHandler(this._callback.formSubmit);
+    this.setSubmitHandler(this._callback.formSubmit);
   }
 
   getTextArea() {
     return this.getElement(`.film-details__comment-input`);
   }
 
-  _commentInputHandler(evt) {
+  _inputHandler(evt) {
     evt.preventDefault();
 
     this.updateData({text: evt.target.value.trim()}, true);
@@ -129,10 +129,10 @@ export default class NewCommentView extends Smart {
       .addEventListener(`click`, this._emojiClickHandler);
 
     this.getElement(`.film-details__comment-input`)
-      .addEventListener(`input`, this._commentInputHandler);
+      .addEventListener(`input`, this._inputHandler);
   }
 
-  _commentSubmitHandler(evt) {
+  _submitHandler(evt) {
     const textAreaElement = this.getElement(`.film-details__comment-input`);
 
     if ((evt.ctrlKey || evt.metaKey) && evt.keyCode === ENTER_KEY_CODE) {
@@ -152,13 +152,13 @@ export default class NewCommentView extends Smart {
     }
   }
 
-  setCommentSubmitHandler(callback) {
+  setSubmitHandler(callback) {
     this._callback.formSubmit = callback;
 
-    document.addEventListener(`keydown`, this._commentSubmitHandler);
+    document.addEventListener(`keydown`, this._submitHandler);
   }
 
-  removeCommentSubmitHandler() {
-    document.removeEventListener(`keydown`, this._commentSubmitHandler);
+  removeSubmitHandler() {
+    document.removeEventListener(`keydown`, this._submitHandler);
   }
 }

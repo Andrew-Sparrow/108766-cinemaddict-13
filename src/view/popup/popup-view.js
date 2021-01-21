@@ -111,7 +111,7 @@ export default class PopupView extends Smart {
     super();
     this._film = film;
 
-    this._popupCloseHandler = this._popupCloseHandler.bind(this);
+    this._closeHandler = this._closeHandler.bind(this);
   }
 
   getTemplate() {
@@ -126,14 +126,14 @@ export default class PopupView extends Smart {
     return this.getElement(`.film-details__top-container`);
   }
 
-  _popupCloseHandler(evt) {
+  _closeHandler(evt) {
     evt.preventDefault();
     this._callback.popupCloseClick();
   }
 
-  setPopupCloseClickHandler(callback) {
+  setCloseClickHandler(callback) {
     this._callback.popupCloseClick = callback;
     this.getElement(`.film-details__close-btn`)
-     .addEventListener(`click`, this._popupCloseHandler);
+     .addEventListener(`click`, this._closeHandler);
   }
 }

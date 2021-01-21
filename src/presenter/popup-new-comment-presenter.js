@@ -18,27 +18,27 @@ import {toast} from "../utils/toast/toast";
 
 export default class PopupNewCommentPresenter {
   constructor(
-      newCommentContainer,
+      container,
       handleViewActionForCommentsModel
   ) {
-    this._newCommentContainer = newCommentContainer;
+    this._container = container;
     this._handleViewActionForCommentsModel = handleViewActionForCommentsModel;
 
-    this._newCommentComponent = null;
+    this._component = null;
 
     this._handleAddNewComment = this._handleAddNewComment.bind(this);
   }
 
   init(commentData, commentFeatures = {isDisabled: false}) {
-    const prevNewCommentComponent = this._newCommentComponent;
+    const prevNewCommentComponent = this._component;
 
-    this._newCommentComponent = new NewCommentView(commentData, commentFeatures);
-    this._newCommentComponent.setCommentSubmitHandler(this._handleAddNewComment);
+    this._component = new NewCommentView(commentData, commentFeatures);
+    this._component.setSubmitHandler(this._handleAddNewComment);
 
     if (prevNewCommentComponent === null) {
-      render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
+      render(this._container, this._component, RenderPosition.BEFOREEND);
     } else {
-      replace(this._newCommentComponent, prevNewCommentComponent);
+      replace(this._component, prevNewCommentComponent);
       remove(prevNewCommentComponent);
     }
   }
@@ -48,21 +48,21 @@ export default class PopupNewCommentPresenter {
       this.init({isDisabled: false});
     };
 
-    this._newCommentComponent.shake(resetFormState);
+    this._component.shake(resetFormState);
   }
 
   setTextAreaFocus() {
-    this._newCommentComponent.getTextArea().focus();
+    this._component.getTextArea().focus();
   }
 
-  removeCommitSubmitListener() {
-    this._newCommentComponent.removeCommentSubmitHandler();
+  removeSubmitListener() {
+    this._component.removeSubmitHandler();
   }
 
   _handleAddNewComment(commentData) {
     if (!isOnline()) {
       toast(`You can not save comment offline`);
-      this._newCommentComponent.shake();
+      this._component.shake();
       return;
     }
 

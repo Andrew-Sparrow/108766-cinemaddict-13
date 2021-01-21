@@ -21,8 +21,8 @@ import {
 } from "../utils/consts";
 
 export default class StatisticsPresenter {
-  constructor(statisticsContainer) {
-    this._statisticsContainer = statisticsContainer;
+  constructor(container) {
+    this._container = container;
 
     this._handleTimePeriodClick = this._handleTimePeriodClick.bind(this);
   }
@@ -35,17 +35,17 @@ export default class StatisticsPresenter {
     this._monthWatchedFilms = null;
     this._yearWatchedFilms = null;
 
-    this._statisticsComponent = new StatisticsView(this._watchedFilms);
+    this._component = new StatisticsView(this._watchedFilms);
 
-    this._statisticsComponent.setTimePeriodClickHandler(this._handleTimePeriodClick);
+    this._component.setTimePeriodClickHandler(this._handleTimePeriodClick);
 
-    render(this._statisticsContainer, this._statisticsComponent, RenderPosition.BEFOREEND);
+    render(this._container, this._component, RenderPosition.BEFOREEND);
     this._renderInfoStatistics(this._watchedFilms);
 
   }
 
   destroy() {
-    remove(this._statisticsComponent);
+    remove(this._component);
     remove(this._statisticsInfoView);
     remove(this._statisticsDiagramView);
   }
@@ -59,10 +59,10 @@ export default class StatisticsPresenter {
     this._statisticsInfoView = new StatisticsInfoView(filteredWatchedFilms);
     this._statisticsDiagramView = new StatisticsDiagramView(filteredWatchedFilms);
 
-    render(this._statisticsComponent, this._statisticsInfoView, RenderPosition.BEFOREEND);
+    render(this._component, this._statisticsInfoView, RenderPosition.BEFOREEND);
 
     if (filteredWatchedFilms.length !== 0) {
-      render(this._statisticsComponent, this._statisticsDiagramView, RenderPosition.BEFOREEND);
+      render(this._component, this._statisticsDiagramView, RenderPosition.BEFOREEND);
     }
   }
 

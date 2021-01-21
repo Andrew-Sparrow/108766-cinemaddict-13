@@ -82,17 +82,17 @@ export default class FilmCardView extends Smart {
     this._callback.watched();
   }
 
-  setCardPosterClickHandler(callback) {
+  setPosterClickHandler(callback) {
     this._callback.posterClick = callback;
     this.getElement(`.film-card__poster`).addEventListener(`click`, this._posterClickHandler);
   }
 
-  setCardTitleClickHandler(callback) {
+  setTitleClickHandler(callback) {
     this._callback.titleClick = callback;
     this.getElement(`.film-card__title`).addEventListener(`click`, this._titleClickHandler);
   }
 
-  setCardCommentsClickHandler(callback) {
+  setCommentsClickHandler(callback) {
     this._callback.commentsClick = callback;
     this.getElement(`.film-card__comments`).addEventListener(`click`, this._commentsClickHandler);
   }

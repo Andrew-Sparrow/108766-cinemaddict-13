@@ -8,28 +8,28 @@ import {
 } from "../utils/render-utils";
 
 export default class CommentsTitlePresenter {
-  constructor(commentsTitleContainer) {
-    this._commentsTitleContainer = commentsTitleContainer;
-    this._commentsTitleComponent = null;
+  constructor(container) {
+    this._container = container;
+    this._component = null;
   }
 
   init(film) {
     this._film = film;
-    const prevCommentsTitleComponent = this._commentsTitleComponent;
+    const prevCommentsTitleComponent = this._component;
 
     this._film = film;
-    this._commentsTitleComponent = new CommentsTitleView(this._film);
+    this._component = new CommentsTitleView(this._film);
 
     if (prevCommentsTitleComponent === null) {
-      render(this._commentsTitleContainer, this._commentsTitleComponent, RenderPosition.BEFOREEND);
+      render(this._container, this._component, RenderPosition.BEFOREEND);
       return;
     }
 
-    replace(this._commentsTitleComponent, prevCommentsTitleComponent);
+    replace(this._component, prevCommentsTitleComponent);
     remove(prevCommentsTitleComponent);
   }
 
   destroy() {
-    remove(this._commentsTitleComponent);
+    remove(this._component);
   }
 }

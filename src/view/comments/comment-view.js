@@ -40,25 +40,25 @@ const getCommentTemplate = (comment, commentFeatures) => {
 };
 
 export default class CommentView extends Smart {
-  constructor(comment, commentFeatures) {
+  constructor(comment, features) {
     super();
     this._comment = comment;
-    this._commentFeatures = commentFeatures;
+    this._features = features;
 
-    this._deleteCommentClickHandler = this._deleteCommentClickHandler.bind(this);
+    this._deleteClickHandler = this._deleteClickHandler.bind(this);
   }
 
   getTemplate() {
-    return getCommentTemplate(this._comment, this._commentFeatures);
+    return getCommentTemplate(this._comment, this._features);
   }
 
-  _deleteCommentClickHandler(evt) {
+  _deleteClickHandler(evt) {
     evt.preventDefault();
     this._callback.commentDeleteClick(evt.target.dataset.commentId);
   }
 
   setDeleteCommentClick(callback) {
     this._callback.commentDeleteClick = callback;
-    this.getElement(`.film-details__comment-delete`).addEventListener(`click`, this._deleteCommentClickHandler);
+    this.getElement(`.film-details__comment-delete`).addEventListener(`click`, this._deleteClickHandler);
   }
 }

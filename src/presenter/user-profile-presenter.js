@@ -12,26 +12,26 @@ import {
 } from "../utils/common-utils";
 
 export default class UserProfilePresenter {
-  constructor(userProfileContainer) {
-    this._userProfileContainer = userProfileContainer;
+  constructor(container) {
+    this._container = container;
 
-    this._userProfileComponent = null;
+    this._component = null;
   }
 
   init(films) {
     this._films = films;
-    const prevUserProfileComponent = this._userProfileComponent;
+    const prevUserProfileComponent = this._component;
     const userRank = getUserRank(this._films);
 
-    this._userProfileComponent = new UserProfileView(userRank);
+    this._component = new UserProfileView(userRank);
 
     if (prevUserProfileComponent === null) {
-      render(this._userProfileContainer, this._userProfileComponent, RenderPosition.BEFOREEND);
+      render(this._container, this._component, RenderPosition.BEFOREEND);
       return;
     }
 
-    if (this._userProfileContainer.contains(prevUserProfileComponent.getElement())) {
-      replace(this._userProfileComponent, prevUserProfileComponent);
+    if (this._container.contains(prevUserProfileComponent.getElement())) {
+      replace(this._component, prevUserProfileComponent);
     }
 
     remove(prevUserProfileComponent);

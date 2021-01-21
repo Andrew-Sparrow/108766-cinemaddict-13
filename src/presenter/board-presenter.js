@@ -32,8 +32,8 @@ import {
 import {calculateFilmsInFilter} from "../utils/filter-utils";
 
 export default class BoardPresenter {
-  constructor(boardContainer, filmModel, filterModel, apiWithProvider) {
-    this._boardContainer = boardContainer;
+  constructor(container, filmModel, filterModel, apiWithProvider) {
+    this._container = container;
     this._filmsModel = filmModel;
     this._filterModel = filterModel;
     this._apiWithProvider = apiWithProvider;
@@ -74,12 +74,12 @@ export default class BoardPresenter {
   }
 
   init() {
-    this._renderBoard();
+    this._renderDesk();
   }
 
-  _destroyBoard() {
+  _destroy() {
     this._clearSort();
-    this._clearBoard({resetRenderedFilmCount: true, resetSortType: true});
+    this._clearDesk({resetRenderedFilmCount: true, resetSortType: true});
   }
 
   _getFilms() {
@@ -113,7 +113,7 @@ export default class BoardPresenter {
     this._sortComponent = new SortMenuView(this._currentSortType);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
 
-    render(this._boardContainer, this._sortComponent, RenderPosition.BEFOREEND);
+    render(this._container, this._sortComponent, RenderPosition.BEFOREEND);
   }
 
   _clearSort() {
@@ -137,7 +137,7 @@ export default class BoardPresenter {
   }
 
   _renderBasicFilmList() {
-    render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
+    render(this._container, this._filmsBoardComponent, RenderPosition.BEFOREEND);
     render(this._filmsBoardComponent, this._filmListComponent, RenderPosition.BEFOREEND);
 
     const allFilms = this._getFilms();
@@ -153,12 +153,12 @@ export default class BoardPresenter {
 
   _renderNoFilms() {
     remove(this._sortComponent);
-    render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
+    render(this._container, this._filmsBoardComponent, RenderPosition.BEFOREEND);
     render(this._filmsBoardComponent, this._noFilmsComponent, RenderPosition.BEFOREEND);
   }
 
   _renderLoading() {
-    render(this._boardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
+    render(this._container, this._filmsBoardComponent, RenderPosition.BEFOREEND);
     render(this._filmsBoardComponent, this._loadingComponent, RenderPosition.BEFOREEND);
   }
 
@@ -200,16 +200,16 @@ export default class BoardPresenter {
         this._renderExtraBlocks();
         break;
       case UpdateTypeForRerender.MINOR:
-        this._clearBoard();
-        this._renderBoard();
+        this._clearDesk();
+        this._renderDesk();
         break;
       case UpdateTypeForRerender.MAJOR:
         this._destroyStatistics();
-        this._destroyBoard();
+        this._destroy();
         this.init();
         break;
       case UpdateTypeForRerender.STATS:
-        this._destroyBoard();
+        this._destroy();
         this._renderStatistics();
         break;
       case UpdateTypeForRerender.INIT:
@@ -240,7 +240,7 @@ export default class BoardPresenter {
 
     this._currentSortType = sortType;
 
-    this._clearBoard({resetRenderedFilmCount: true});
+    this._clearDesk({resetRenderedFilmCount: true});
 
     this._renderSort();
     this._renderBasicFilmList();
@@ -257,7 +257,7 @@ export default class BoardPresenter {
     remove(this._showMoreButtonComponent);
   }
 
-  _clearBoard({resetRenderedFilmCount = false, resetSortType = false} = {}) {
+  _clearDesk({resetRenderedFilmCount = false, resetSortType = false} = {}) {
 
     this._clearFilmListInBasicBlock();
     this._clearExtraBlocks();
@@ -287,7 +287,7 @@ export default class BoardPresenter {
   }
 
   _renderStatistics() {
-    this._statisticsPresenter = new StatisticsPresenter(this._boardContainer);
+    this._statisticsPresenter = new StatisticsPresenter(this._container);
     this._statisticsPresenter.init(this._filmsModel.getItems());
     this._isStatisticRendered = true;
   }
@@ -363,7 +363,7 @@ export default class BoardPresenter {
     remove(this._filmListComponentMostCommented);
   }
 
-  _renderBoard() {
+  _renderDesk() {
     if (this._isLoading) {
       this._renderLoading();
       return;

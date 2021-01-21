@@ -28,7 +28,7 @@ export default class PopupPresenter {
     this._handleChangeData = handleChangeData;
     this._apiWithProvider = apiWithProvider;
 
-    this._popupComponent = null;
+    this._component = null;
 
     this._newCommentPresenter = null;
 
@@ -45,21 +45,21 @@ export default class PopupPresenter {
   init(film) {
     this._film = film;
 
-    const prevPopupComponent = this._popupComponent;
+    const prevPopupComponent = this._component;
 
-    this._popupComponent = new PopupView(this._film);
+    this._component = new PopupView(this._film);
 
     this._commentsPresenter = new PopupCommentsPresenter(
-        this._popupComponent.getCommentsWrapElement(),
+        this._component.getCommentsWrapElement(),
         this._handleViewActionForCommentsModel
     );
 
     this._newCommentPresenter = new PopupNewCommentPresenter(
-        this._popupComponent.getCommentsWrapElement(),
+        this._component.getCommentsWrapElement(),
         this._handleViewActionForCommentsModel
     );
 
-    this._commentsTitlePresenter = new CommentsTitlePresenter(this._popupComponent.getCommentsWrapElement());
+    this._commentsTitlePresenter = new CommentsTitlePresenter(this._component.getCommentsWrapElement());
 
     this._commentsModel = new CommentsModel();
 
@@ -76,22 +76,22 @@ export default class PopupPresenter {
     this._commentsModel.addObserver(this._handleCommentsModelEventForPopupRerender);
 
     this._featuresPresenter = new PopupFeaturesPresenter(
-        this._popupComponent.getFeaturesContainerElement(),
+        this._component.getFeaturesContainerElement(),
         this._handleChangeData
     );
 
     document.addEventListener(`keydown`, this._handleEscKeyDown);
 
-    this._popupComponent.setPopupCloseClickHandler(this._handlePopupCloseClick);
+    this._component.setCloseClickHandler(this._handlePopupCloseClick);
 
     if (prevPopupComponent === null) {
-      render(this._popupContainerElement, this._popupComponent, RenderPosition.AFTEREND);
+      render(this._popupContainerElement, this._component, RenderPosition.AFTEREND);
 
       this._renderFeaturesBlock();
       this._renderLoading();
 
     } else {
-      render(this._popupContainerElement, this._popupComponent, RenderPosition.AFTEREND);
+      render(this._popupContainerElement, this._component, RenderPosition.AFTEREND);
 
       this._renderFeaturesBlock();
 
@@ -183,7 +183,7 @@ export default class PopupPresenter {
   }
 
   _renderLoading() {
-    render(this._popupComponent.getCommentsWrapElement(), this._loadingComponent, RenderPosition.AFTERBEGIN);
+    render(this._component.getCommentsWrapElement(), this._loadingComponent, RenderPosition.AFTERBEGIN);
   }
 
   _removeLoading() {
@@ -191,7 +191,7 @@ export default class PopupPresenter {
   }
 
   _renderNoInternetConnection() {
-    render(this._popupComponent.getCommentsWrapElement(), this._noInternetConnectionComponent, RenderPosition.BEFOREEND);
+    render(this._component.getCommentsWrapElement(), this._noInternetConnectionComponent, RenderPosition.BEFOREEND);
   }
 
   _removeNoInternetConnection() {
@@ -218,7 +218,7 @@ export default class PopupPresenter {
 
   _handlePopupCloseClick() {
     document.body.classList.remove(`hide-overflow`);
-    remove(this._popupComponent);
+    remove(this._component);
     document.removeEventListener(`keydown`, this._handleEscKeyDown);
     this._featuresPresenter.destroy();
   }
@@ -227,10 +227,10 @@ export default class PopupPresenter {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
       document.body.classList.remove(`hide-overflow`);
-      remove(this._popupComponent);
+      remove(this._component);
       document.removeEventListener(`keydown`, this._handleEscKeyDown);
       this._featuresPresenter.destroy();
-      this._newCommentPresenter.removeCommitSubmitListener();
+      this._newCommentPresenter.removeSubmitListener();
     }
   }
 }

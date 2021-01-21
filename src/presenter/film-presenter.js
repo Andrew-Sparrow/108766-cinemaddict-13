@@ -21,7 +21,7 @@ export default class FilmCardPresenter {
     this._handleChangeData = handleChangeData;
     this._popupPresenter = popupPresenter;
 
-    this._filmCardComponent = null;
+    this._component = null;
 
     this._handlePopupOpen = this._handlePopupOpen.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
@@ -32,32 +32,32 @@ export default class FilmCardPresenter {
   init(film) {
     this._film = film;
 
-    const prevFilmCardComponent = this._filmCardComponent;
+    const prevFilmCardComponent = this._component;
 
-    this._filmCardComponent = new FilmCardView(film);
+    this._component = new FilmCardView(film);
 
-    this._filmCardComponent.setCardPosterClickHandler(this._handlePopupOpen);
-    this._filmCardComponent.setCardTitleClickHandler(this._handlePopupOpen);
-    this._filmCardComponent.setCardCommentsClickHandler(this._handlePopupOpen);
+    this._component.setPosterClickHandler(this._handlePopupOpen);
+    this._component.setTitleClickHandler(this._handlePopupOpen);
+    this._component.setCommentsClickHandler(this._handlePopupOpen);
 
-    this._filmCardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    this._filmCardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
-    this._filmCardComponent.setWatchedClickHandler(this._handleWatchedClick);
+    this._component.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._component.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._component.setWatchedClickHandler(this._handleWatchedClick);
 
     if (prevFilmCardComponent === null) {
-      render(this._filmListContainerElement, this._filmCardComponent, RenderPosition.BEFOREEND);
+      render(this._filmListContainerElement, this._component, RenderPosition.BEFOREEND);
       return;
     }
 
     if (this._filmListContainerElement.contains(prevFilmCardComponent.getElement())) {
-      replace(this._filmCardComponent, prevFilmCardComponent);
+      replace(this._component, prevFilmCardComponent);
     }
 
     remove(prevFilmCardComponent);
   }
 
   destroy() {
-    remove(this._filmCardComponent);
+    remove(this._component);
   }
 
   _handlePopupOpen() {
