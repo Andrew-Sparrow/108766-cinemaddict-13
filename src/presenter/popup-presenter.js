@@ -113,7 +113,6 @@ export default class PopupPresenter {
       case UserActionForModel.ADD_ITEM:
         this._apiWithProvider.addComment(this._film, updatedItemID)
           .then((response) => {
-            // this._commentsModel.clear();
             const commentsAdaptedToClient = response.comments.map((comment) => CommentsModel.adaptToClient(comment));
             this._commentsModel.setItems(rerenderType, commentsAdaptedToClient);
           })
@@ -213,12 +212,8 @@ export default class PopupPresenter {
 
   _renderNewCommentBlock() {
 
-    // this._newCommentPresenter.init({});
     this._newCommentPresenter.init(Object.assign({}, BLANK_COMMENT), {isDisabled: false});
-  }
-
-  _clearNewCommentBlock() {
-    this._newCommentPresenter.destroy();
+    this._newCommentPresenter.setTextAreaFocus();
   }
 
   _handlePopupCloseClick() {

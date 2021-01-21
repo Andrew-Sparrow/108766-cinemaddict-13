@@ -55,9 +55,13 @@ export default class PopupNewCommentPresenter {
     this._newCommentComponent.shake(resetFormState);
   }
 
+  setTextAreaFocus() {
+    this._newCommentComponent.getTextArea().focus();
+  }
+
   _handleAddNewComment(commentData) {
     if (!isOnline()) {
-      toast(`You can't save comment offline`);
+      toast(`You can not save comment offline`);
       this._newCommentComponent.shake();
       return;
     }

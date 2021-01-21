@@ -1,7 +1,5 @@
 import Smart from "../smart";
 import he from "he";
-import {BLANK_COMMENT} from "../../utils/consts";
-import {remove} from "../../utils/render-utils";
 
 const getNewCommentTemplate = (commentData, commentFeatures) => {
   const {
@@ -34,7 +32,7 @@ const getNewCommentTemplate = (commentData, commentFeatures) => {
                  id="emoji-smile"
                  value="smile"
                  ${emotion === `smile` ? `checked` : ``}
-                 ${isDisabled ? `disabled` : ``}>
+                 ${isDisabled ? `disabled` : ``} disabled>
               <label class="film-details__emoji-label" for="emoji-smile">
                 <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji" data-emoji="smile">
               </label>
@@ -97,6 +95,10 @@ export default class NewCommentView extends Smart {
     this.setCommentSubmitHandler(this._callback.formSubmit);
   }
 
+  getTextArea() {
+    return this.getElement(`.film-details__comment-input`);
+  }
+
   _commentInputHandler(evt) {
     evt.preventDefault();
 
@@ -131,13 +133,14 @@ export default class NewCommentView extends Smart {
     const textAreaElement = this.getElement(`.film-details__comment-input`);
 
     if ((evt.ctrlKey || evt.metaKey) && evt.keyCode === 13) {
-      if (this._data.emotion && this._data.text) {
+      if (this._data.text && this._data.emotion) {
 
         this._data.date = new Date();
 
         this._callback.formSubmit(this._data);
 
         this._data.text = ``;
+        this._data.emotion = null;
 
       } else {
         textAreaElement.style.border = `2px solid #ff0000`;
