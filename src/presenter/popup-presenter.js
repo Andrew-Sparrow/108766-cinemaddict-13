@@ -54,6 +54,11 @@ export default class PopupPresenter {
         this._handleViewActionForCommentsModel
     );
 
+    this._newCommentPresenter = new PopupNewCommentPresenter(
+        this._popupComponent.getCommentsWrapElement(),
+        this._handleViewActionForCommentsModel
+    );
+
     this._commentsTitlePresenter = new CommentsTitlePresenter(this._popupComponent.getCommentsWrapElement());
 
     this._commentsModel = new CommentsModel();
@@ -108,7 +113,7 @@ export default class PopupPresenter {
       case UserActionForModel.ADD_ITEM:
         this._apiWithProvider.addComment(this._film, updatedItemID)
           .then((response) => {
-            this._commentsModel.clear();
+            // this._commentsModel.clear();
             const commentsAdaptedToClient = response.comments.map((comment) => CommentsModel.adaptToClient(comment));
             this._commentsModel.setItems(rerenderType, commentsAdaptedToClient);
           })
@@ -128,8 +133,6 @@ export default class PopupPresenter {
         this._renderCommentsTitle();
 
         this._renderCommentsBlock();
-
-        this._clearNewCommentBlock();
 
         this._renderNewCommentBlock();
 
@@ -209,11 +212,9 @@ export default class PopupPresenter {
   }
 
   _renderNewCommentBlock() {
-    this._newCommentPresenter = new PopupNewCommentPresenter(
-        this._popupComponent.getCommentsWrapElement(),
-        this._handleViewActionForCommentsModel
-    );
-    this._newCommentPresenter.init();
+
+    // this._newCommentPresenter.init({});
+    this._newCommentPresenter.init(Object.assign({}, BLANK_COMMENT), {isDisabled: false});
   }
 
   _clearNewCommentBlock() {

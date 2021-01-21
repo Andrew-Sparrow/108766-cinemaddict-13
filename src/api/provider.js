@@ -53,7 +53,6 @@ export default class Provider {
   }
 
   addComment(film, comment) {
-    console.log(comment);
     if (isOnline()) {
       return this._api.addComment(film, comment)
         .then((newFilm) => {

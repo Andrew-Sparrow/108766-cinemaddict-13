@@ -34,6 +34,7 @@ export default class PopupCommentsPresenter {
       this._cleanCommentsList();
       this._renderComments(this._filmComments);
       replace(this._popupCommentsComponent, prevPopupCommentsComponent);
+      remove(prevPopupCommentsComponent);
     }
   }
 
@@ -47,6 +48,8 @@ export default class PopupCommentsPresenter {
 
   _cleanCommentsList() {
     this._popupCommentsComponent.getElement().innerHTML = ``;
+    this._renderedCommentPresenters = null;
+    this._renderedCommentPresenters = new Map();
   }
 
   _renderComment(comment) {

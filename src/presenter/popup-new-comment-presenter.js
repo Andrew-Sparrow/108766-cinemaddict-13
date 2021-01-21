@@ -1,4 +1,5 @@
 import NewCommentView from "../view/comments/new-comment-view";
+import {BLANK_COMMENT} from "../utils/consts";
 
 import {
   remove,
@@ -28,19 +29,18 @@ export default class PopupNewCommentPresenter {
     this._handleAddNewComment = this._handleAddNewComment.bind(this);
   }
 
-  init(commentFeatures = {}) {
+  init(commentData, commentFeatures = {isDisabled: false}) {
     const prevNewCommentComponent = this._newCommentComponent;
 
-    this._newCommentComponent = new NewCommentView(commentFeatures);
+    this._newCommentComponent = new NewCommentView(commentData, commentFeatures);
     this._newCommentComponent.setCommentSubmitHandler(this._handleAddNewComment);
 
     if (prevNewCommentComponent === null) {
       render(this._newCommentContainer, this._newCommentComponent, RenderPosition.BEFOREEND);
-      return;
+    } else {
+      replace(this._newCommentComponent, prevNewCommentComponent);
+      remove(prevNewCommentComponent);
     }
-
-    replace(this._newCommentComponent, prevNewCommentComponent);
-    remove(prevNewCommentComponent);
   }
 
   destroy() {
@@ -62,7 +62,7 @@ export default class PopupNewCommentPresenter {
       return;
     }
 
-    this.init({isDisabled: true});
+    this.init(Object.assign({}, BLANK_COMMENT), {isDisabled: true});
 
     this._handleViewActionForCommentsModel(
         UpdateTypeForRerender.ADD_COMMENT,
