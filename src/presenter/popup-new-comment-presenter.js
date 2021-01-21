@@ -43,10 +43,6 @@ export default class PopupNewCommentPresenter {
     }
   }
 
-  destroy() {
-    remove(this._newCommentComponent);
-  }
-
   setAborting() {
     const resetFormState = () => {
       this.init({isDisabled: false});
@@ -57,6 +53,10 @@ export default class PopupNewCommentPresenter {
 
   setTextAreaFocus() {
     this._newCommentComponent.getTextArea().focus();
+  }
+
+  removeCommitSubmitListener() {
+    this._newCommentComponent.removeCommentSubmitHandler();
   }
 
   _handleAddNewComment(commentData) {

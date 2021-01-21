@@ -230,6 +230,7 @@ export default class PopupPresenter {
       remove(this._popupComponent);
       document.removeEventListener(`keydown`, this._handleEscKeyDown);
       this._featuresPresenter.destroy();
+      this._newCommentPresenter.removeCommitSubmitListener();
     }
   }
 }
