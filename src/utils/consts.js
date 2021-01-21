@@ -1,4 +1,18 @@
+export const FILMS_COUNT_PER_STEP = 5;
+
 export const AMOUNT_OF_LETTERS = 140;
+
+export const SHOW_TIME = 5000;
+
+export const MAX_AMOUNT_WATCHED_FILMS_NOVICE = 10;
+
+export const MAX_AMOUNT_WATCHED_FILMS_FAN = 20;
+
+export const BASE = 10; // the base in mathematical numeral systems
+
+export const MINUTES_IN_HOUR = 60;
+
+export const ENTER_KEY_CODE = 13;
 
 export const SortType = {
   DEFAULT: `default`,

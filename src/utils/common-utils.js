@@ -3,7 +3,11 @@ import duration from "dayjs/plugin/duration";
 
 import {
   AMOUNT_OF_LETTERS,
-  UserRanks
+  BASE,
+  MAX_AMOUNT_WATCHED_FILMS_FAN,
+  MAX_AMOUNT_WATCHED_FILMS_NOVICE,
+  MINUTES_IN_HOUR,
+  UserRanks,
 } from "./consts";
 
 import {getWatchedFilms} from "./statistics-utils";
@@ -33,11 +37,11 @@ export const getUserRank = (films) => {
 
   if (amountWatchedFilms === 0) {
     userRank = UserRanks.NO_RANK;
-  } else if (amountWatchedFilms > 0 && amountWatchedFilms < 11) {
+  } else if (amountWatchedFilms > 0 && amountWatchedFilms <= MAX_AMOUNT_WATCHED_FILMS_NOVICE) {
     userRank = UserRanks.NOVICE;
-  } else if (amountWatchedFilms > 10 && amountWatchedFilms < 21) {
+  } else if (amountWatchedFilms > MAX_AMOUNT_WATCHED_FILMS_NOVICE && amountWatchedFilms <= MAX_AMOUNT_WATCHED_FILMS_FAN) {
     userRank = UserRanks.FAN;
-  } else if (amountWatchedFilms > 20) {
+  } else if (amountWatchedFilms > MAX_AMOUNT_WATCHED_FILMS_FAN) {
     userRank = UserRanks.MOVIE_BUFF;
   }
 
@@ -47,7 +51,7 @@ export const getUserRank = (films) => {
 export const getTimePropertiesOfTotalFilmsDuration = (timeOfDuration) => {
 
   const hoursFilmDuration = Math.floor(dayjs.duration(timeOfDuration, `minutes`).asHours());
-  const minutesFilmDuration = timeOfDuration - (hoursFilmDuration * 60);
+  const minutesFilmDuration = timeOfDuration - (hoursFilmDuration * MINUTES_IN_HOUR);
   const propertiesOfFilmDuration = {};
 
   propertiesOfFilmDuration.hours = hoursFilmDuration;
@@ -58,7 +62,7 @@ export const getTimePropertiesOfTotalFilmsDuration = (timeOfDuration) => {
 
 export const getTotalFilmDuration = (films) => {
   const totalDuration = films.reduce((accumulator, currentFilm) => {
-    return accumulator + parseInt(currentFilm.duration, 10);
+    return accumulator + parseInt(currentFilm.duration, BASE);
   }, 0);
 
   return totalDuration;

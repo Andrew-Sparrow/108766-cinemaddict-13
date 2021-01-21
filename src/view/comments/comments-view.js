@@ -2,7 +2,7 @@ import Smart from "../smart";
 
 const getCommentsTemplate = () => {
   return `<ul class="film-details__comments-list">
-        </ul>`;
+          </ul>`;
 };
 
 export default class CommentsView extends Smart {

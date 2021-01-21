@@ -9,6 +9,7 @@ import LoadingView from "../view/loading-view";
 import StatisticsPresenter from "./statistics-presenter";
 
 import {
+  FILMS_COUNT_PER_STEP,
   MenuItem,
   SortType,
   UpdateTypeForRerender,
@@ -18,7 +19,7 @@ import {
 import {
   remove,
   render,
-  RenderPosition,
+  RenderPosition
 } from "../utils/render-utils";
 
 import {
@@ -29,8 +30,6 @@ import {
 } from "../utils/utils";
 
 import {calculateFilmsInFilter} from "../utils/filter-utils";
-
-const FILMS_COUNT_PER_STEP = 5;
 
 export default class BoardPresenter {
   constructor(boardContainer, filmModel, filterModel, apiWithProvider) {

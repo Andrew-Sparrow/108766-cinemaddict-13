@@ -1,5 +1,8 @@
 import Smart from "../smart";
+
 import he from "he";
+
+import {ENTER_KEY_CODE} from "../../utils/consts";
 
 const getNewCommentTemplate = (commentData, commentFeatures) => {
   const {
@@ -132,7 +135,7 @@ export default class NewCommentView extends Smart {
   _commentSubmitHandler(evt) {
     const textAreaElement = this.getElement(`.film-details__comment-input`);
 
-    if ((evt.ctrlKey || evt.metaKey) && evt.keyCode === 13) {
+    if ((evt.ctrlKey || evt.metaKey) && evt.keyCode === ENTER_KEY_CODE) {
       if (this._data.text && this._data.emotion) {
 
         this._data.date = new Date();
