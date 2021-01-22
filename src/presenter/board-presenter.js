@@ -327,7 +327,7 @@ export default class BoardPresenter {
 
     filmListComponent.addTitleForFilmListBlock(blockTitle);
 
-    for (let film of mostValuedFilms) {
+    for (const film of mostValuedFilms) {
       this._renderFilmCardPresenterInExtraBlock(filmListContainerComponent, film, blockTitle);
     }
 

@@ -9,7 +9,7 @@ const filmToFilterMap = {
 export const calculateFilmsInFilter = (films) => {
   const filterToCount = {};
 
-  for (let [filterName, filteredFilms] of Object.entries(filmToFilterMap)) {
+  for (const [filterName, filteredFilms] of Object.entries(filmToFilterMap)) {
     filterToCount[filterName] = filteredFilms(films);
   }
 

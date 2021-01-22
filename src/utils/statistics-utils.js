@@ -27,7 +27,7 @@ export const getTopGenre = (countedFilmsByGenres) => {
   let topGenre = ``;
   let maxCountedGenre = 0;
 
-  for (let property in countedFilmsByGenres) {
+  for (const property in countedFilmsByGenres) {
     if (countedFilmsByGenres[property] > maxCountedGenre) {
       topGenre = property;
       maxCountedGenre = countedFilmsByGenres[property];
