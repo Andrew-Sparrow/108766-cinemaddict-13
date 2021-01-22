@@ -1,4 +1,4 @@
-// v1.0
+// v1.1
 
 import FilmsModel from "./model/films-model";
 import FooterStatisticsView from "./view/footer-statistics-view";
