@@ -49,7 +49,7 @@ export const sortByDate = (filmA, filmB) => {
 
 
 export const sortByRating = (filmA, filmB) => {
-  const result = parseInt(filmB.rating, 10) - parseInt(filmA.rating, 10);
+  const result = parseFloat(filmB.rating) - parseFloat(filmA.rating);
 
   return result;
 };

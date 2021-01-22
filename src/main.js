@@ -1,3 +1,5 @@
+// v1.0
+
 import FilmsModel from "./model/films-model";
 import FooterStatisticsView from "./view/footer-statistics-view";
 import BoardPresenter from "./presenter/board-presenter";
