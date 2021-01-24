@@ -1,13 +1,13 @@
 # Проект «Киноман» 
 
 ### Used technologies 
-OOP
-MVP
-Inheritance and polymorphism
-Abstract classes
-REST API
-Promise
-webpack
+- OOP
+- MVP
+- Inheritance and polymorphism
+- Abstract classes
+- REST API
+- Promise
+- webpack
  
  
 ### functionality:
