@@ -1,4 +1,4 @@
-# Проект «Киноман» 
+# Project «Cinemaddict» 
 
 ### Used technologies 
 - OOP
