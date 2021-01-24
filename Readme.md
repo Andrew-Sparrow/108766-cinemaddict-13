@@ -1,6 +1,6 @@
 # Проект «Киноман» 
 
-###Used technologies 
+### Used technologies 
 OOP
 MVP
 Inheritance and polymorphism
@@ -10,7 +10,7 @@ Promise
 webpack
  
  
-###functionality:
+### functionality:
 - filtering the list of movies
 - sorting movies
 - add, delete movie's comments
