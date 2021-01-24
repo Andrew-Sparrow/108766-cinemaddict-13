@@ -1,38 +1,26 @@
-# Проект «Киноман» [![Build status][travis-image]][travis-url]
+# Проект «Киноман» 
 
-ООП
+###Used technologies 
+OOP
 MVP
-Наследование и полиморфизм
-Абстрактные классы
+Inheritance and polymorphism
+Abstract classes
 REST API
 Promise
 webpack
  
-функционал:
-- фильтрация списка событий путешествия
-- сортировка событий
-- добавление, удаление, редактирование события путешествия
-- взаимодействие с сервером
  
-ТЗ к проекту Cinemaddict
-
+###functionality:
+- filtering the list of movies
+- sorting movies
+- add, delete movie's comments
+- interaction with the server
+ 
+Technical requirements:
+https://www.evernote.com/shard/s396/sh/86bfb869-7b11-4e47-952e-ad2aa985fa9c/624683fd4476394e35d17749ca7ab6b1
 
 ---
 
 
-### Памятка
-
-#### 1. Зарегистрируйтесь на Гитхабе
-
-Если у вас ещё нет аккаунта на [github.com](https://github.com/join), скорее зарегистрируйтесь.
-
-#### 2. Создайте форк
-
-
-#### 3. Клонируйте репозиторий на свой компьютер
-
-
-
-#### 4. Начинайте обучение!
 
 
